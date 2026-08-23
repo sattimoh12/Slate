@@ -1,0 +1,2421 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1116">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Slate">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>Slate — Pre-production HQ</title>
+<style>
+:root{
+  --bg:#0f1116;--panel:#161a22;--panel2:#1c212b;--panel3:#232936;
+  --line:#2a3040;--text:#e7eaf0;--dim:#98a1b3;--dimmer:#6b7488;
+  --accent:#7fd6c1;--accent-ink:#0f1116;--amber:#e5ae6b;
+  --good:#82c08a;--warn:#dfa657;--bad:#d98d8d;--violet:#a99ae0;--r:12px;--r2:8px;
+}
+[data-theme="light"]{
+  --bg:#f5f6f9;--panel:#fff;--panel2:#eef0f5;--panel3:#e4e8ef;
+  --line:#dce0e9;--text:#171a21;--dim:#5b6474;--dimmer:#8b93a3;
+  --accent:#1f9c86;--accent-ink:#fff;--amber:#b3771f;
+  --good:#3f8a4c;--warn:#a8721f;--bad:#b1524f;--violet:#6f5fc0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);
+  font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:none}
+a{color:var(--accent)}
+img{max-width:100%}
+
+#app{display:flex;min-height:100vh}
+#side{width:238px;flex:0 0 238px;background:var(--panel);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+#main{flex:1;min-width:0;padding:34px 40px 150px;max-width:1280px}
+.brand{padding:20px 18px 14px;display:flex;align-items:center;gap:9px}
+.brand b{font-size:17px;letter-spacing:.4px}
+.brand .clap{width:20px;height:20px;border-radius:4px;background:var(--accent);position:relative;flex:0 0 auto}
+.brand .clap:after{content:"";position:absolute;inset:0 0 62% 0;background:var(--bg);
+  -webkit-mask:repeating-linear-gradient(115deg,#000 0 6px,transparent 6px 11px);
+  mask:repeating-linear-gradient(115deg,#000 0 6px,transparent 6px 11px)}
+.projpick{margin:2px 12px 14px}
+.projpick select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r2);padding:9px 10px}
+nav{padding:0 10px;display:flex;flex-direction:column;gap:1px;overflow-y:auto}
+nav button{display:flex;align-items:center;gap:10px;width:100%;padding:8.5px 11px;border-radius:var(--r2);color:var(--dim);text-align:left;font-size:14px}
+nav button:hover{background:var(--panel2);color:var(--text)}
+nav button.on{background:var(--panel3);color:var(--text);font-weight:600}
+nav .ic{width:17px;text-align:center;opacity:.9;font-size:13px}
+nav .cnt{margin-left:auto;font-size:11px;color:var(--dimmer);background:var(--panel2);padding:1px 7px;border-radius:20px}
+nav button.on .cnt{background:var(--bg)}
+.navlbl{font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--dimmer);padding:13px 12px 5px}
+#navfoot{margin-top:auto;padding:10px;display:flex;gap:4px;flex-wrap:wrap;border-top:1px solid var(--line)}
+#navfoot button{flex:1;padding:6px 8px;border-radius:6px;color:var(--dimmer);font-size:12px;text-align:center}
+#navfoot button:hover{background:var(--panel2);color:var(--text)}
+#navfoot button.on{background:var(--panel3);color:var(--text)}
+#sidefoot{padding:12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--dimmer)}
+.ind{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--good);flex:0 0 auto}
+#sidefoot .brow{display:flex;gap:6px;margin-top:9px}
+#sidefoot .brow button{flex:1;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:5px;font-size:11px;color:var(--dim)}
+#sidefoot .brow button:hover{color:var(--text)}
+
+h1{font-size:26px;letter-spacing:-.4px;margin-bottom:4px;font-weight:650}
+h2{font-size:17px;margin-bottom:2px;font-weight:640}
+h3{font-size:13.5px;font-weight:640}
+.sub{color:var(--dim);font-size:13.5px;margin-bottom:24px;max-width:66ch}
+.head{margin-bottom:22px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.card+.card{margin-top:14px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.muted{color:var(--dim)}
+.tiny{font-size:12px}
+.mono{font-variant-numeric:tabular-nums}
+.sect{margin:30px 0 12px;display:flex;align-items:center;gap:12px}
+.sect h2{margin:0}
+.sect .line{flex:1;height:1px;background:var(--line)}
+.empty{border:1px dashed var(--line);border-radius:var(--r);padding:30px;text-align:center;color:var(--dim);font-size:13.5px}
+
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:var(--r2);padding:8px 14px;font-size:13.5px;color:var(--text);display:inline-flex;align-items:center;gap:7px}
+.btn:hover{background:var(--panel3)}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:transparent;font-weight:620}
+.btn.pri:hover{filter:brightness(1.08)}
+.btn.sm{padding:5px 10px;font-size:12.5px}
+.btn.gh{background:none;border-color:transparent;color:var(--dim)}
+.btn.gh:hover{background:var(--panel2);color:var(--text)}
+.btn.danger{color:var(--bad)}
+.btnrow{display:flex;gap:9px;flex-wrap:wrap}
+
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;padding:2.5px 9px;border-radius:20px;background:var(--panel2);color:var(--dim);border:1px solid var(--line);white-space:nowrap}
+.pill.ess{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent);border-color:transparent;font-weight:620}
+.pill.rec{background:color-mix(in srgb,var(--amber) 15%,transparent);color:var(--amber);border-color:transparent}
+.pill.opt{background:var(--panel2);color:var(--dimmer)}
+.pill.cond{background:color-mix(in srgb,var(--violet) 16%,transparent);color:var(--violet);border-color:transparent}
+.pill.good{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good);border-color:transparent}
+.pill.warn{background:color-mix(in srgb,var(--warn) 15%,transparent);color:var(--warn);border-color:transparent}
+.pill.bad{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad);border-color:transparent}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+
+.seg{display:inline-flex;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{padding:7px 13px;border-radius:7px;font-size:12.5px;color:var(--dim)}
+.seg button.on{background:var(--panel);color:var(--text);font-weight:620;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+
+.promise{border-left:3px solid var(--amber);background:linear-gradient(90deg,color-mix(in srgb,var(--amber) 9%,transparent),transparent 60%)}
+.onething{border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));background:linear-gradient(150deg,color-mix(in srgb,var(--accent) 8%,var(--panel)),var(--panel))}
+.onething .lbl{font-size:10.5px;letter-spacing:1.1px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:9px}
+.onething .task{font-size:21px;line-height:1.35;font-weight:600;margin-bottom:6px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.stat .n{font-size:23px;font-weight:660;letter-spacing:-.5px}
+.stat .l{font-size:11.5px;color:var(--dim);margin-top:1px}
+.ring{--p:0;width:46px;height:46px;border-radius:50%;flex:0 0 auto;
+  background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--panel2) 0);display:grid;place-items:center;position:relative}
+.ring:before{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--panel)}
+.ring span{position:relative;font-size:11.5px;font-weight:660}
+.bar{height:6px;border-radius:6px;background:var(--panel2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.bar i.over{background:var(--warn)}
+
+.item{display:flex;gap:12px;align-items:flex-start;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.item+.item{margin-top:7px}
+.item .grow{flex:1;min-width:0}
+.item .ttl{font-size:14.5px}
+.item.done .ttl{text-decoration:line-through;color:var(--dimmer)}
+.chk{width:19px;height:19px;border:1.6px solid var(--line);border-radius:6px;flex:0 0 auto;margin-top:2px;display:grid;place-items:center;font-size:11px;color:transparent}
+.chk:hover{border-color:var(--accent)}
+.chk.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.acts{display:flex;gap:4px;opacity:0;transition:opacity .12s}
+.item:hover .acts,.row:hover .acts,.frame:hover .acts,.shot:hover .acts,.thumb:hover .acts{opacity:1}
+.row{display:flex;align-items:center;gap:12px;padding:11px 13px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:none}
+.row:hover{background:var(--panel2)}
+
+.grp{margin-bottom:8px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--panel)}
+.grp>summary{padding:12px 15px;cursor:pointer;display:flex;align-items:center;gap:10px;background:var(--panel2);list-style:none;font-weight:620;font-size:14px}
+.grp>summary::-webkit-details-marker{display:none}
+.grp>summary:before{content:"\203A";transition:transform .15s;color:var(--dim);font-size:17px}
+.grp[open]>summary:before{transform:rotate(90deg)}
+.grp>summary .n{margin-left:auto;font-size:12px;color:var(--dim);font-weight:400}
+.crole{padding:13px 15px;border-top:1px solid var(--line);display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.crole .main{flex:1;min-width:210px}
+.crole .nm{font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.crole .why{color:var(--dim);font-size:12.5px;margin-top:3px;max-width:64ch}
+.crole .skip{color:var(--dimmer);font-size:12px;margin-top:3px;font-style:italic}
+.crole .assign{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.crole select{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:6px 9px;font-size:12.5px;max-width:170px}
+.prepitem{padding:10px 15px;border-top:1px solid var(--line);display:flex;gap:11px;align-items:flex-start}
+.prepitem .t{flex:1;font-size:13.5px}
+.prepitem.on .t{color:var(--dimmer);text-decoration:line-through}
+
+.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.frame{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.frame .im{aspect-ratio:16/9;background:var(--panel2);display:grid;place-items:center;overflow:hidden;position:relative}
+.frame .im img{width:100%;height:100%;object-fit:cover;display:block}
+.frame .im .ph{color:var(--dimmer);font-size:12px}
+.frame .im .no{position:absolute;left:8px;top:8px;background:rgba(8,10,14,.8);color:#fff;
+  font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:.4px}
+.frame .meta{padding:11px 13px;flex:1;display:flex;flex-direction:column;gap:7px}
+.frame .desc{font-size:13px;line-height:1.45}
+.frame .foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:6px}
+.drop{border:1.5px dashed var(--line);border-radius:var(--r);padding:30px;text-align:center;color:var(--dim);font-size:13.5px;cursor:pointer}
+.drop.hot{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent);color:var(--text)}
+
+.shot{display:flex;gap:11px;align-items:flex-start;padding:10px 14px;border-top:1px solid var(--line)}
+.shot .no{width:46px;flex:0 0 auto;font-weight:700;font-size:13px;letter-spacing:.3px;padding-top:1px}
+.shot .body{flex:1;min-width:0}
+.shot .d{font-size:13.5px;line-height:1.45}
+.shot.got .d{color:var(--dimmer);text-decoration:line-through}
+.shot .side{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+body.shoot .shot{padding:16px 14px}
+body.shoot .shot .chk{width:28px;height:28px;font-size:15px;margin-top:0}
+body.shoot .shot .no{width:56px;font-size:16px}
+body.shoot .shot .d{font-size:15.5px}
+body.shoot .hideshoot{display:none!important}
+
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.thumb{width:88px;height:60px;border-radius:8px;overflow:hidden;background:var(--panel2);position:relative;flex:0 0 auto}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .acts{position:absolute;right:3px;top:3px}
+.thumb .acts button{background:rgba(8,10,14,.8);border-radius:6px;padding:1px 6px;font-size:11px;color:#fff}
+
+table.dod{width:100%;border-collapse:collapse;font-size:12.5px}
+table.dod th,table.dod td{border:1px solid var(--line);padding:6px 9px;text-align:center;white-space:nowrap}
+table.dod th:first-child,table.dod td:first-child{text-align:left;position:sticky;left:0;background:var(--panel)}
+table.dod thead th{background:var(--panel2);font-weight:620}
+table.dod td.x{color:var(--accent);font-weight:700}
+.scrollx{overflow-x:auto}
+
+#veil{position:fixed;inset:0;background:rgba(6,8,12,.68);display:none;place-items:center;z-index:60;padding:20px;backdrop-filter:blur(3px)}
+#veil.on{display:grid}
+#modal{background:var(--panel);border:1px solid var(--line);border-radius:15px;width:min(640px,100%);max-height:88vh;overflow:auto;padding:24px}
+#modal h2{margin-bottom:16px}
+.f{margin-bottom:14px}
+.f label{display:block;font-size:12.5px;color:var(--dim);margin-bottom:5px}
+.f input,.f select,.f textarea{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r2);padding:9px 11px;outline:none}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+.f textarea{min-height:78px;resize:vertical;line-height:1.55}
+.f .hint{font-size:11.5px;color:var(--dimmer);margin-top:4px}
+.cg{display:flex;flex-wrap:wrap;gap:7px}
+.cg label{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:20px;padding:5px 11px;font-size:12.5px;color:var(--text);cursor:pointer;margin:0}
+.cg input{width:auto}
+.modfoot{display:flex;gap:9px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+
+#focus{position:fixed;right:22px;bottom:22px;z-index:50;background:var(--panel);border:1px solid var(--line);
+  border-radius:14px;padding:13px 16px;display:none;align-items:center;gap:14px;box-shadow:0 10px 34px rgba(0,0,0,.4);max-width:min(400px,calc(100vw - 44px))}
+#focus.on{display:flex}
+#focus .t{font-size:27px;font-weight:660;letter-spacing:-.5px}
+#focus .w{font-size:12px;color:var(--dim);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#cap{position:fixed;left:260px;bottom:22px;z-index:50;background:var(--accent);color:var(--accent-ink);
+  border-radius:30px;padding:11px 18px;font-weight:620;font-size:13.5px;box-shadow:0 8px 24px rgba(0,0,0,.32)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;z-index:70;background:var(--panel3);
+  border:1px solid var(--line);border-radius:10px;padding:11px 17px;font-size:13.5px;display:none;
+  align-items:center;gap:12px;box-shadow:0 8px 26px rgba(0,0,0,.35);max-width:min(600px,92vw)}
+#toast.on{display:flex}
+#toast button{color:var(--accent);font-weight:620;font-size:13px;white-space:nowrap}
+
+
+.pline{display:block;width:100%;text-align:left;color:var(--dim);font-size:13px;padding:9px 13px;
+  border:1px solid var(--line);border-radius:10px;background:var(--panel);margin-bottom:26px}
+.pline:hover{color:var(--text)}
+.hero{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:44px 34px;text-align:center;margin-bottom:26px}
+.hero .lbl{font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--dimmer);font-weight:700;margin-bottom:16px}
+.hero .big{font-size:27px;line-height:1.3;font-weight:620;letter-spacing:-.4px;max-width:20ch;margin:0 auto 28px}
+.btn.xl{padding:15px 34px;font-size:15.5px;border-radius:12px}
+.hero .mini{display:flex;gap:20px;justify-content:center;margin-top:20px}
+.hero .mini button{color:var(--dimmer);font-size:12.5px}
+.hero .mini button:hover{color:var(--text)}
+.qline{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:13px 15px;
+  border:1px solid var(--line);border-radius:11px;background:var(--panel);margin-bottom:8px;font-size:13.5px}
+.qline:hover{background:var(--panel2)}
+.qline .arrow{margin-left:auto;color:var(--dimmer)}
+.morebar{text-align:center;margin:30px 0 10px}
+.arealist{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+.arearow{display:flex;align-items:center;gap:13px;padding:13px 15px;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.arearow:last-child{border-bottom:none}
+.arearow:hover{background:var(--panel2)}
+.arearow .nm{flex:1;font-size:13.5px}
+.arearow .pr{width:56px;height:4px;border-radius:4px;background:var(--panel3);overflow:hidden;flex:0 0 auto}
+.arearow .pr i{display:block;height:100%;background:var(--accent)}
+
+#tabbar,#topmore{display:none}
+#topmore{flex:0 0 auto;width:38px;height:38px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);color:var(--dim);font-size:19px;line-height:1}
+@media(max-width:760px){
+  #app{flex-direction:column}
+  #side{position:static;width:100%;flex:none;height:auto;border:none;background:transparent;
+    flex-direction:row;align-items:center;gap:10px;padding:8px 14px;
+    padding-top:calc(8px + env(safe-area-inset-top))}
+  .brand{padding:0;flex:0 0 auto}
+  .brand b{display:none}
+  .projpick{margin:0;flex:1}
+  .projpick select{padding:8px 10px;font-size:14px}
+  nav,#navfoot,#sidefoot{display:none}
+  #topmore{display:block}
+  #main{padding:14px 16px calc(96px + env(safe-area-inset-bottom));max-width:none}
+  #cap{left:auto;right:16px;bottom:calc(82px + env(safe-area-inset-bottom));padding:13px 18px}
+  #focus{right:12px;left:12px;bottom:calc(82px + env(safe-area-inset-bottom));max-width:none}
+  #toast{bottom:calc(84px + env(safe-area-inset-bottom))}
+  #tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:55;
+    background:color-mix(in srgb,var(--panel) 94%,transparent);backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  #tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:7px 2px;color:var(--dimmer);font-size:10.5px;border-radius:10px}
+  #tabbar button .ic{font-size:17px;line-height:1}
+  #tabbar button.on{color:var(--accent)}
+  #tabbar button .cnt{position:absolute;transform:translate(14px,-4px);background:var(--accent);
+    color:var(--accent-ink);font-size:9.5px;font-weight:700;border-radius:20px;padding:0 5px}
+  .subnav{display:flex;gap:7px;overflow-x:auto;margin:0 -16px 16px;padding:0 16px 4px;scrollbar-width:none}
+  .subnav::-webkit-scrollbar{display:none}
+  .subnav button{flex:0 0 auto;padding:8px 14px;border-radius:20px;background:var(--panel2);
+    border:1px solid var(--line);font-size:13px;color:var(--dim);white-space:nowrap}
+  .subnav button.on{background:var(--accent);color:var(--accent-ink);border-color:transparent;font-weight:620}
+  h1{font-size:23px}
+  .hero{padding:32px 20px;border-radius:16px}
+  .hero .big{font-size:23px}
+  .btn.xl{padding:16px 30px;width:100%;justify-content:center}
+  .btn,.seg button,.chk{min-height:38px}
+  .chk{width:24px;height:24px}
+  .acts{opacity:1}
+  .g2,.g3{grid-template-columns:1fr}
+  .frames{grid-template-columns:1fr 1fr;gap:10px}
+  body.shoot .shot .chk{width:34px;height:34px}
+}
+@media(max-width:860px) and (min-width:761px){
+  #app{flex-direction:column}
+  #side{width:100%;flex:none;height:auto;position:static;border-right:none;border-bottom:1px solid var(--line)}
+  nav{flex-direction:row;overflow-x:auto;padding:0 10px 10px}
+  nav button{width:auto;white-space:nowrap}
+  .navlbl,nav .cnt{display:none}
+  #sidefoot,#navfoot{display:none}
+  #tabbar,#topmore{display:none}
+#topmore{flex:0 0 auto;width:38px;height:38px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);color:var(--dim);font-size:19px;line-height:1}
+  #main{padding:24px 18px 130px}
+  #cap{left:16px;bottom:16px}
+}
+@media print{
+  #side,#cap,#focus,#toast,.btnrow,.acts,.drop{display:none!important}
+  #main{padding:0;max-width:none}
+  .frame,.card{break-inside:avoid;border-color:#999}
+  body{background:#fff;color:#000}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <aside id="side">
+    <div class="brand"><div class="clap"></div><b>SLATE</b></div>
+    <div class="projpick"><select id="projsel"></select></div>
+    <button id="topmore" data-act="topmore" aria-label="More">⋯</button>
+    <nav id="nav"></nav>
+    <div id="navfoot"></div>
+    <div id="sidefoot">
+      <div class="ind"><span class="dot" id="savedot"></span><span id="savetxt">All changes saved</span></div>
+      <div class="ind"><span class="dot" id="clouddot" style="background:var(--dimmer)"></span><span id="cloudtxt">iCloud not connected</span></div>
+      <div class="ind"><span class="dot" id="syncdot" style="background:var(--dimmer)"></span><span id="synctxt">Sync not set up</span></div>
+      <div class="brow">
+        <button data-act="topmore" style="font-size:12.5px;padding:8px">⚙︎  Backup &amp; sync</button>
+      </div>
+    </div>
+  </aside>
+  <main id="main"></main>
+</div>
+<div id="tabbar"></div>
+<button id="cap" data-act="capture">＋ Brain dump</button>
+<div id="focus">
+  <div class="t mono" id="ftime">25:00</div>
+  <div style="flex:1;min-width:0"><div class="w" id="fwhat">Focus session</div>
+  <div class="tiny muted">One thing, nothing else</div></div>
+  <button class="btn sm" data-act="focus-stop">Stop</button>
+</div>
+<div id="toast"><span id="toasttxt"></span><button id="toastbtn"></button></div>
+<div id="veil"><div id="modal"></div></div>
+<script>
+/* ===== SLATE v3 — pre-production HQ. Starts the day the script is locked. ===== */
+const TIERS=[
+ {name:'Micro-budget short',blurb:'5-15 people. Favours, friends, borrowed kit. Roles double up.'},
+ {name:'Funded short',blurb:'20-40 people. Real day rates, proper departments, insurance.'},
+ {name:'Indie feature',blurb:'50+ people. Full hierarchy, possibly union, weeks of shooting.'}];
+const LEVELS={3:{lbl:'Essential',cls:'ess'},2:{lbl:'Recommended',cls:'rec'},1:{lbl:'If you can',cls:'opt'},
+ 4:{lbl:'Required if applicable',cls:'cond'},0:{lbl:'Not yet',cls:'opt'}};
+
+const CREW=[
+{dept:'Production',roles:[
+ {id:'producer',n:'Producer',t:[3,3,3],why:'Owns money, schedule, paperwork, and every promise made to anyone outside the set. Your partner, not your assistant.',skip:'You end up producing and directing at once, and the directing loses.'},
+ {id:'lineprod',n:'Line Producer',t:[1,2,3],why:'Turns the script into a realistic budget and defends it daily.',skip:'You find out you cannot afford day 4 on day 4.'},
+ {id:'upm',n:'Production Manager (UPM)',t:[1,2,3],why:'Runs the machine: bookings, hires, rentals, logistics.',skip:'The producer drowns and stops answering anyone.'},
+ {id:'coord',n:'Production Coordinator',t:[0,2,3],why:'The office spine - call sheets out, everyone knows where to be.',skip:'People show up at the wrong place at the wrong time.'},
+ {id:'accountant',n:'Production Accountant',t:[0,1,3],why:'Tracks every pound so the film can be audited, insured and delivered.',skip:'Funders and tax credits become impossible to satisfy.'},
+ {id:'locmgr',n:'Location Manager',t:[1,3,3],why:'Finds, negotiates, permits and polices locations, and hands them back clean.',skip:'You get shut down mid-scene by an owner, council or police.'},
+ {id:'casting',n:'Casting Director',t:[2,3,3],why:'Access to actors you cannot reach yourself, and an honest filter on your taste.',skip:'You cast from your friends list and the performances cap your film.'},
+ {id:'pa',n:'Production Assistants',t:[2,3,3],why:'Lock-offs, runs, holding the public back, feeding people.',skip:'Heads of department do errands instead of their jobs.'}]},
+{dept:'Direction',roles:[
+ {id:'director',n:'Director',t:[3,3,3],why:'You. The only job that cannot be delegated or doubled up.',skip:'-'},
+ {id:'ad1',n:'1st Assistant Director',t:[3,3,3],why:'The single most valuable hire on a small film. Builds the schedule, runs the floor, protects your focus, calls the day.',skip:'You run the clock yourself, which means you stop directing actors. The classic first-film mistake.'},
+ {id:'ad2',n:'2nd Assistant Director',t:[0,2,3],why:'Cast wrangling, call sheets, background, paperwork.',skip:'The 1st AD is stuck in a van doing admin instead of on the floor.'},
+ {id:'scriptsup',n:'Script Supervisor',t:[3,3,3],why:'Continuity, coverage, screen direction, and the notes your editor lives on. Wildly undervalued at this level.',skip:'You lose scenes in the edit that were never shot to cut together.'},
+ {id:'dirasst',n:'Director’s Assistant',t:[0,1,2],why:'Holds your paper, your day, your reminders - external working memory on set.',skip:'You carry the whole day in your head and burn out by lunch.'}]},
+{dept:'Camera',roles:[
+ {id:'dp',n:'Director of Photography',t:[3,3,3],why:'Your closest creative collaborator. Owns image, lighting design and camera strategy.',skip:'There is no film. This is the one department you never economise on.'},
+ {id:'camop',n:'Camera Operator',t:[1,2,3],why:'Operates so the DP can watch light and the whole frame.',skip:'On small jobs the DP operates - fine, but slower and more tiring.'},
+ {id:'ac1',n:'1st AC / Focus Puller',t:[2,3,3],why:'Keeps it sharp, builds and maintains the camera.',skip:'Shooting wide open, half your takes are soft and you find out in post.'},
+ {id:'ac2',n:'2nd AC / Clapper Loader',t:[1,2,3],why:'Slates, marks, media, camera reports.',skip:'Sync and labelling chaos for the editor.'},
+ {id:'dit',n:'DIT / Data Wrangler',t:[2,3,3],why:'Two backups of every card before anyone sleeps. Non-negotiable in practice.',skip:'One dropped card and the day is gone forever. This has ended films.'},
+ {id:'gimbal',n:'Gimbal / Steadicam Op',t:[0,1,2],why:'Specialist movement.',skip:'Rewrite the move or go handheld.'},
+ {id:'stills',n:'Stills Photographer',t:[1,2,2],why:'Every poster, festival submission and press piece needs real stills.',skip:'You market the film with blurry video grabs.'}]},
+{dept:'Lighting & Grip',roles:[
+ {id:'gaffer',n:'Gaffer',t:[3,3,3],why:'Executes the DP’s lighting, owns power and electrical safety.',skip:'The DP lights alone and you lose hours per setup.'},
+ {id:'bestboy',n:'Best Boy Electric',t:[0,2,3],why:'Runs the electrical crew and the truck.',skip:'The gaffer is doing two jobs.'},
+ {id:'keygrip',n:'Key Grip',t:[2,3,3],why:'Rigging, flags, negative fill, and anything the camera sits on. Also the safety brain.',skip:'Camera support and rigging get improvised, which is how people get hurt.'},
+ {id:'grips',n:'Grips / Dolly Grip',t:[1,2,3],why:'Moves and stabilises everything, executes dolly moves.',skip:'Your movement vocabulary shrinks to handheld and sticks.'}]},
+{dept:'Sound',roles:[
+ {id:'mixer',n:'Production Sound Mixer',t:[3,3,3],why:'Bad sound reads as amateur faster than bad image. Audiences forgive grain; they never forgive mud.',skip:'Unusable dialogue and an ADR bill you cannot pay.'},
+ {id:'boom',n:'Boom Operator',t:[2,3,3],why:'Frees the mixer to actually mix and monitor.',skip:'A one-person sound department that is always compromising something.'},
+ {id:'sndutil',n:'Sound Utility',t:[0,1,2],why:'Radio mics, cable, second boom.',skip:'Slower turnarounds on complex scenes.'}]},
+{dept:'Art Department',roles:[
+ {id:'pd',n:'Production Designer',t:[3,3,3],why:'The world of the film. On a small budget this is where perceived value is won or lost.',skip:'Your film looks like the rooms you happened to have access to.'},
+ {id:'artdir',n:'Art Director',t:[0,2,3],why:'Turns the design into buildable, budgeted reality.',skip:'The designer cannot both design and deliver.'},
+ {id:'setdec',n:'Set Decorator',t:[1,2,3],why:'Everything in the space that is not built.',skip:'Sets read as empty or generic.'},
+ {id:'props',n:'Props Master',t:[2,3,3],why:'Every object an actor touches, plus continuity on all of them.',skip:'Scenes stall while someone hunts for the letter the character reads.'},
+ {id:'dresser',n:'Set Dresser / Art PA',t:[1,2,3],why:'Muscle and speed for the art department.',skip:'Turnarounds between setups get very long.'}]},
+{dept:'Costume, Hair & Make-up',roles:[
+ {id:'costume',n:'Costume Designer',t:[2,3,3],why:'Character told through clothing, plus continuity and doubles.',skip:'Actors wear their own clothes and the characters blur together.'},
+ {id:'wardrobe',n:'Wardrobe Supervisor',t:[0,2,3],why:'On-set continuity, repairs, laundry, changes.',skip:'Continuity errors appear in half your cuts.'},
+ {id:'hmu',n:'Hair & Make-up Artist',t:[3,3,3],why:'Even a no-make-up look needs someone managing sweat, shine and continuity across days.',skip:'Faces shift between shots and skin blows out under lights.'},
+ {id:'sfxmu',n:'SFX Make-up Artist',t:[4,4,4],why:'Any blood, wounds, ageing or prosthetics.',skip:'It looks fake, and that is the shot people remember.'}]},
+{dept:'Post-production (book them now, not later)',roles:[
+ {id:'editor',n:'Editor',t:[3,3,3],why:'The final rewrite. Attach them in prep so they can flag the coverage they will need before you shoot it.',skip:'You cut your own film and cannot see it any more. Especially dangerous for a perfectionist.'},
+ {id:'assted',n:'Assistant Editor',t:[0,2,3],why:'Ingest, sync, organise, conform, deliverables.',skip:'The editor spends the first week filing instead of cutting.'},
+ {id:'colorist',n:'Colourist',t:[2,3,3],why:'Where a small film starts looking like a real one. Talk to them in prep about LUTs and camera settings.',skip:'Inconsistent, flat images across scenes.'},
+ {id:'snddes',n:'Sound Designer',t:[2,3,3],why:'Builds the world you did not have the budget to shoot.',skip:'The film feels thin and small.'},
+ {id:'mixer2',n:'Re-recording Mixer',t:[2,3,3],why:'The final mix that meets festival and broadcast spec.',skip:'Rejected on technical delivery, or dialogue nobody can hear.'},
+ {id:'composer',n:'Composer',t:[2,3,3],why:'Original score. Also the cheapest way to avoid music clearance hell.',skip:'Temp-track love, then licensing costs that dwarf your budget.'},
+ {id:'vfx',n:'VFX Artist',t:[4,4,4],why:'Clean-up, comps, set extension - even “no VFX” films need rig removal. They must brief you before you shoot.',skip:'Visible mistakes you cannot reshoot.'},
+ {id:'titles',n:'Titles & Graphics',t:[1,2,2],why:'Titles are the first and last thing an audience reads.',skip:'Default fonts undercut everything else you made.'}]},
+{dept:'Safety, Legal & Support',roles:[
+ {id:'intimacy',n:'Intimacy Coordinator',t:[4,4,4],why:'Any intimacy, nudity or simulated sex. Protects your cast and you. Standard practice now, at every budget.',skip:'You are personally liable and your cast is unprotected. Never improvise this.'},
+ {id:'stunts',n:'Stunt Coordinator',t:[4,4,4],why:'Any fight, fall, chase or vehicle work.',skip:'Someone gets hurt. There is no version of this that is worth the saving.'},
+ {id:'armorer',n:'Armourer / Weapons Master',t:[4,4,4],why:'Any weapon, real or replica. Legally required in most places.',skip:'Absolutely non-negotiable. Do not shoot the scene without one.'},
+ {id:'medic',n:'Set Medic',t:[1,2,3],why:'On site for anything physical, remote, wet, hot or long-houred.',skip:'A twisted ankle becomes a shut-down day.'},
+ {id:'lawyer',n:'Entertainment Lawyer / Clearances',t:[2,3,3],why:'Chain of title, releases, music and brand clearance. Festivals and distributors will ask.',skip:'A finished film you legally cannot show.'},
+ {id:'crafty',n:'Craft Services / Catering',t:[2,3,3],why:'On an unpaid crew, food IS the pay. The highest-return money you will spend.',skip:'Morale collapses after lunch on day one and people do not come back.'},
+ {id:'transport',n:'Transport Captain',t:[0,1,3],why:'Vehicles, unit moves, parking.',skip:'Company moves eat hours you scheduled for shooting.'},
+ {id:'childchap',n:'Child Chaperone / Tutor',t:[4,4,4],why:'Legally required for minors on set.',skip:'Illegal, and insurance is void.'}]}];
+const ROLE_BY_ID={};CREW.forEach(g=>g.roles.forEach(r=>ROLE_BY_ID[r.id]={...r,dept:g.dept}));
+const ALL_ROLE_NAMES=CREW.flatMap(g=>g.roles.map(r=>r.n)).sort();
+const PEOPLE_ROLES=['Actor','Extra / background'].concat(ALL_ROLE_NAMES).concat(['Writer','Funder / investor','Festival contact','Other']);
+
+const PREP=[
+{key:'script-lock-breakdown',area:'Script lock & breakdown',items:[
+ 'Script is locked, dated and version-numbered — no more rewrites',
+ 'Scene numbers assigned and never changed again',
+ 'Every scene broken down: cast, props, wardrobe, vehicles, effects, extras',
+ 'Page count logged for every scene',
+ 'Table read done with the cast',
+ 'Editor has read it and flagged the coverage they will need',
+ 'Every scene needing a specialist is flagged in the breakdown']},
+{key:'shot-list-storyboards',area:'Shot list & storyboards',items:[
+ 'Shot list written for every scene, not just the ones you boarded',
+ 'Every shot marked must-have, should-have or if-there-is-time',
+ 'Shots grouped into setups, and the setups counted per day',
+ 'Estimated shooting time checked against the actual length of each day',
+ 'Storyboards drawn for every complex, action, VFX or emotionally critical scene',
+ 'Boards and shot list shared with DP, 1st AD and production designer',
+ 'Overheads or floor plans for the tightest locations',
+ 'You have decided, in writing, what gets dropped first when you run out of day']},
+{key:'money-paperwork',area:'Money & paperwork',items:[
+ 'Budget written and someone other than you has checked it',
+ 'Contingency held back (10% minimum) and not spent yet',
+ 'Production insurance quoted and bound',
+ 'Float set up, and who is allowed to spend it agreed',
+ 'Everyone knows whether they are paid, deferred or credit-only — in writing',
+ 'Receipt system exists and one person owns it']},
+{key:'casting',area:'Casting',items:[
+ 'Breakdown sent out, or casting director briefed',
+ 'Auditions held and self-tapes reviewed',
+ 'Callbacks and chemistry reads done for the leads',
+ 'Offers made and accepted in writing',
+ 'Cast contracts and image releases signed by everyone',
+ 'Day out of days circulated so every actor knows exactly which days they work',
+ 'Rehearsals scheduled',
+ 'Wardrobe sizes, allergies and access needs collected']},
+{key:'crew',area:'Crew',items:[
+ 'Every essential role on the crew board is Pencilled or Confirmed',
+ 'Every specialist the script demands is booked, not hoped for',
+ 'Rates, hours and turnaround agreed in writing with each head of department',
+ 'Deal memos or crew agreements signed',
+ 'Contact list circulated with everyone on it',
+ 'Heads of department have read the script and seen the boards',
+ 'Someone is explicitly responsible for backing up the cards each night']},
+{key:'locations',area:'Locations',items:[
+ 'Every scene has a real location, not an assumption',
+ 'Written permission or a signed location agreement for each one',
+ 'Permits and road closures applied for where needed',
+ 'Tech recce done with DP, gaffer, sound and 1st AD present',
+ 'Recce photos taken and filed against each location',
+ 'Power, parking, toilets and unit base sorted for each',
+ 'Noise checked at the actual time of day you will be shooting',
+ 'Wet-weather cover or a rain plan for every exterior',
+ 'Neighbours warned, and someone is the point of contact on the day']},
+{key:'design-props-set',area:'Design, props & set',items:[
+ 'Mood boards and references agreed with the production designer',
+ 'Every prop sourced, bought or made — no "we will find one"',
+ 'Hero props have a backup or a double',
+ 'Set builds and dressing scheduled with time to spare before the shoot',
+ 'Anything with a brand logo cleared or covered',
+ 'Continuity photographs taken of every dressed set']},
+{key:'costume-hair-make-up',area:'Costume, hair & make-up',items:[
+ 'Every character has a costume designed or chosen, and you have approved it',
+ 'Sizes collected from every actor',
+ 'Fittings booked, done, and photographed for continuity',
+ 'Doubles and repeats for anything that gets wet, torn, burned or bloodied',
+ 'Hair and make-up looks agreed and tested, not described',
+ 'Continuity notes for every look, scene by scene',
+ 'Somewhere to change, and somewhere to hang and dry costume on the day',
+ 'SFX make-up artist booked if there is blood, injury, ageing or prosthetics']},
+{key:'camera-lighting-sound',area:'Camera, lighting & sound kit',items:[
+ 'Kit list finalised with DP, gaffer and sound',
+ 'Rental booked, with collection and return times confirmed',
+ 'Camera test shot and viewed on a proper screen',
+ 'Look, LUT and codec agreed with the colourist before day one',
+ 'Enough media cards and drives for the whole shoot, plus spares',
+ 'Batteries, distro, extension and stingers counted',
+ 'Radios or comms sorted',
+ 'Everything power-hungry has a plan that is not "the wall socket"']},
+{key:'safety-legal',area:'Safety & legal',items:[
+ 'Written risk assessment for every location and every stunt',
+ 'Intimacy coordinator booked if there is any intimacy — no exceptions',
+ 'Stunt coordinator booked if there is any fight, fall or vehicle work',
+ 'Armourer booked if any weapon appears, real or replica',
+ 'Chaperone and tutor arranged if a minor is on set',
+ 'First aid kit, medic and nearest hospital identified for every location',
+ 'Music clearance sorted, or an original score confirmed',
+ 'Chain of title clean — every writer, contributor and rights holder signed']},
+{key:'schedule-call-sheets',area:'Schedule & call sheets',items:[
+ 'Shooting schedule built by the 1st AD, not by you',
+ 'Scenes assigned to specific shoot days',
+ 'Day out of days done so cast know exactly which days they work',
+ 'Company moves minimised and timed honestly',
+ 'Turnaround between days respected — ten hours minimum, really',
+ 'Call sheets go out the night before, every night, no exceptions',
+ 'A contingency day or pick-up day identified']},
+{key:'logistics-comfort',area:'Logistics & comfort',items:[
+ 'Catering booked, with dietary requirements collected in advance',
+ 'Water, snacks and hot drinks on every single day',
+ 'Parking arranged for crew and unit vehicles',
+ 'Transport for anyone who cannot drive themselves',
+ 'Somewhere warm and dry for cast and crew between setups',
+ 'Toilets confirmed at every location',
+ 'Accommodation booked if anyone is travelling']},
+{key:'the-week-before',area:'The week before',items:[
+ 'Production book assembled: script, boards, shot list, schedule, contacts, risk assessments',
+ 'Everything charged, formatted and packed the night before',
+ 'Kit checked piece by piece against the list',
+ 'Every single person confirmed by phone, not just email',
+ 'You have looked at the boards enough that you do not need them on the day',
+ 'You have slept, eaten, and told the person you promised that it is happening',
+ 'You have accepted, out loud, that the film will not be the one in your head — and that is what finishing costs']}];
+
+const PHASES=['Script locked','Breakdown & boards','Casting','Crew & kit','Locations & logistics','Final week','Shooting'];
+const LOC_STATUS=['Idea','Scouted','Requested','Approved','Locked','Rejected'];
+const CREW_STATUS={needed:'Not started',asked:'Reached out',held:'Pencilled',confirmed:'Confirmed',passed:'Passed'};
+const LOC_CHECKS=['Power','Parking','Quiet enough','Toilets','Permission in writing','Good light','Wet-weather cover','Step-free access'];
+const ENERGY={low:'Low fuel',mid:'Normal',high:'Full brain'};
+const SHOT_SIZE=['—','ELS','WS','MS','MCU','CU','ECU','OTS','POV','Two-shot','Insert'];
+const SHOT_ANGLE=['Eye level','High','Low','Overhead','Dutch','Ground'];
+const SHOT_MOVE=['Static','Pan','Tilt','Track','Dolly in','Dolly out','Crane','Handheld','Steadicam','Gimbal','Zoom','Whip'];
+const PRIORITY={must:{lbl:'Must have',cls:'ess'},should:{lbl:'Should have',cls:'rec'},spare:{lbl:'If there is time',cls:'opt'}};
+const CAST_STATUS={idea:'Idea',audition:'Auditioning',callback:'Callback',offered:'Offered',confirmed:'Confirmed',passed:'Passed'};
+const DAY_TYPE=['Shoot','Recce','Rehearsal','Fitting','Read-through','Prep','Pick-ups'];
+const INT_EXT=['INT','EXT','INT/EXT'];
+const DAY_NIGHT=['DAY','NIGHT','DAWN','DUSK','CONTINUOUS'];
+const SCENE_FLAGS=['Intimacy','Stunt / fight','Weapon','Minor on set','Animal','Vehicle','VFX','Night shoot','Water','Fire'];
+const FLAG_ROLES={'Intimacy':['intimacy'],'Stunt / fight':['stunts','medic'],'Weapon':['armorer'],
+ 'Minor on set':['childchap'],'Vehicle':['stunts'],'VFX':['vfx'],'Water':['medic'],'Fire':['medic','sfxmu'],
+ 'Animal':[],'Night shoot':[]};
+const AREA_KEYS=PREP.map(a=>a.key);
+const AREA_BY_KEY={};PREP.forEach(a=>AREA_BY_KEY[a.key]=a);
+const DEPT_AREA={'Production':'money-paperwork','Direction':'schedule-call-sheets',
+ 'Camera':'camera-lighting-sound','Lighting & Grip':'camera-lighting-sound','Sound':'camera-lighting-sound',
+ 'Art Department':'design-props-set','Costume, Hair & Make-up':'costume-hair-make-up',
+ 'Post-production (book them now, not later)':'crew','Safety, Legal & Support':'safety-legal'};
+const OWNERSHIP={mine:'Mine',shared:'Shared',delegated:'Handed over'};
+const BUDGET_CATS=['Cast','Crew','Camera','Lighting & grip','Sound','Art & props','Costume, hair & make-up',
+ 'Locations','Transport','Food','Insurance & legal','Post','Other'];
+
+/* ---------------- state ---------------- */
+const KEY='slate.v3';
+let S,view='now',crewTier=0,crewFilter='all',boardScene='all',shotScene='all',shootMode=false,memOnly=false;
+let showMore=false,prepOpen=null,showAllArea=false;
+const uid=()=>Math.random().toString(36).slice(2,10);
+const today=()=>new Date().toISOString().slice(0,10);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nowISO=()=>new Date().toISOString();
+
+function blank(){return{v:3,activeProject:null,projects:[],people:[],inbox:[],theme:'dark',
+  streak:0,lastActive:null,sessions:[],savedAt:null,lastManualBackup:null}}
+function newProject(t){return{id:uid(),title:t||'Untitled film',logline:'',tier:0,phase:0,
+  promise:{to:'',what:'',why:'',told:''},tasks:[],crew:{},characters:[],scenes:[],shots:[],
+  locations:[],days:[],budget:[],budgetTotal:'',contingencyPct:10,minPerSetup:30,prep:{},needsMe:{},owners:{},created:today()}}
+
+function migrate(p){
+  p.characters=p.characters||[];p.scenes=p.scenes||[];p.locations=p.locations||[];
+  p.days=p.days||[];p.budget=p.budget||[];p.crew=p.crew||{};p.tasks=p.tasks||[];p.prep=p.prep||{};p.owners=p.owners||{};p.needsMe=p.needsMe||{};
+  if(p.minPerSetup==null)p.minPerSetup=30;
+  if(p.contingencyPct==null)p.contingencyPct=10;
+  if(p.budgetTotal==null)p.budgetTotal='';
+  if(!p.shots){                                   /* v2 board -> v3 shots */
+    p.shots=(p.board||[]).map((f,i)=>({id:f.id||uid(),scene:f.scene||'',setup:'',size:f.size||'—',
+      angle:'',move:f.move||'Static',lens:f.lens||'',subject:'',desc:f.desc||'',
+      priority:'should',img:f.img||'',got:false,order:i}));
+  }
+  delete p.board; delete p.writing;
+  p.scenes.forEach(s=>{ s.flags=s.flags||[]; if(!Array.isArray(s.cast)) { s.castNotes=s.cast||s.castNotes||''; s.cast=[]; } });
+  p.locations.forEach(l=>{ l.checks=l.checks||[]; l.photos=l.photos||[]; });
+  p.days.forEach(d=>{ d.sceneIds=d.sceneIds||[]; d.type=d.type||'Shoot'; });
+  p.shots.forEach((s,i)=>{ if(s.order==null)s.order=i; if(!s.priority)s.priority='should'; });
+  return p;
+}
+function load(){
+  try{const raw=localStorage.getItem(KEY)||localStorage.getItem('slate.v2');S=raw?JSON.parse(raw):blank();}
+  catch(e){S=blank();memOnly=true;}
+  if(!S||!S.projects)S=blank();
+  S.projects=S.projects.map(migrate);
+  if(!S.projects.length){
+    const p=newProject('My first film');
+    p.tasks=[{id:uid(),title:'Break the script down scene by scene',energy:'high',done:false,created:today()},
+      {id:uid(),title:'Tell the person you promised that the script is locked',energy:'low',done:false,created:today()},
+      {id:uid(),title:'Connect the iCloud backup folder',energy:'low',done:false,created:today()}];
+    S.projects.push(p);S.activeProject=p.id;
+  }
+  if(!S.projects.find(p=>p.id===S.activeProject))S.activeProject=S.projects[0].id;
+  streakCheck();
+}
+let saveTimer=null;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    S.savedAt=nowISO();
+    if(!memOnly){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){memOnly=true;}}
+    const el=document.getElementById('savetxt');
+    if(el)el.textContent=memOnly?'In memory only — back up!':'Saved '+new Date().toTimeString().slice(0,8);
+    const d=document.getElementById('savedot');
+    if(d)d.style.background=memOnly?'var(--bad)':'var(--good)';
+    queueCloud();sbQueue();
+  },160);
+}
+function streakCheck(){
+  const t=today();if(S.lastActive===t)return;
+  const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
+  S.streak=(S.lastActive===y)?(S.streak||0)+1:1;S.lastActive=t;
+}
+const P=()=>S.projects.find(p=>p.id===S.activeProject)||S.projects[0];
+
+/* ---------------- local image store (IndexedDB, memory fallback) ---------------- */
+let _db=null,_mem=new Map(),_idbOK=true;
+function idb(){return new Promise((res,rej)=>{
+  if(_db)return res(_db);
+  if(!_idbOK||!window.indexedDB)return rej();
+  let r;try{r=indexedDB.open('slate-media',1);}catch(e){_idbOK=false;return rej();}
+  r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains('img'))r.result.createObjectStore('img');};
+  r.onsuccess=()=>{_db=r.result;res(_db);};r.onerror=()=>{_idbOK=false;rej();};});}
+async function imgPut(k,v){try{const d=await idb();return new Promise((res,rej)=>{
+  const t=d.transaction('img','readwrite');t.objectStore('img').put(v,k);
+  t.oncomplete=()=>res();t.onerror=()=>rej(t.error);});}catch(e){_mem.set(k,v);}}
+async function imgGet(k){try{const d=await idb();return await new Promise((res,rej)=>{
+  const q=d.transaction('img','readonly').objectStore('img').get(k);
+  q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}catch(e){return _mem.get(k);}}
+async function imgDel(k){try{const d=await idb();return new Promise(res=>{
+  const t=d.transaction('img','readwrite');t.objectStore('img').delete(k);t.oncomplete=()=>res();});}
+  catch(e){_mem.delete(k);}}
+async function imgKeys(){try{const d=await idb();return await new Promise((res,rej)=>{
+  const q=d.transaction('img','readonly').objectStore('img').getAllKeys();
+  q.onsuccess=()=>res(q.result||[]);q.onerror=()=>rej(q.error);});}catch(e){return [..._mem.keys()];}}
+
+function liveKeys(){
+  const set=new Set();
+  S.projects.forEach(p=>{
+    (p.shots||[]).forEach(f=>{if(f.img)set.add(f.img);});
+    (p.locations||[]).forEach(l=>(l.photos||[]).forEach(k=>set.add(k)));
+  });
+  return set;
+}
+async function prune(){
+  const live=liveKeys();let n=0;
+  for(const k of await imgKeys()) if(String(k).startsWith('img_') && !live.has(k)){await imgDel(k);n++;}
+  return n;
+}
+function shrink(file,max,q){return new Promise((res,rej)=>{
+  const fr=new FileReader();fr.onerror=rej;
+  fr.onload=()=>{const im=new Image();im.onerror=rej;
+    im.onload=()=>{const s=Math.min(1,max/Math.max(im.width,im.height));
+      const c=document.createElement('canvas');
+      c.width=Math.max(1,Math.round(im.width*s));c.height=Math.max(1,Math.round(im.height*s));
+      const cx=c.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,c.width,c.height);
+      cx.drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',q));};
+    im.src=fr.result;};
+  fr.readAsDataURL(file);});}
+function hydrateImages(){
+  document.querySelectorAll('img[data-img]').forEach(async el=>{
+    if(el.dataset.loaded)return;
+    let d=await imgGet(el.dataset.img);
+    if(!d){d=await sbGetImage(el.dataset.img);if(d)await imgPut(el.dataset.img,d);}
+    if(d){el.src=d;el.dataset.loaded='1';}});}
+
+/* ---------------- iCloud folder sync (File System Access API) ---------------- */
+const HANDLE_KEY='__cloudHandle';
+let dirHandle=null,cloudState='off',cloudAt=null,cloudTimer=null,cloudBusy=false;
+const cloudSupported=()=>typeof window.showDirectoryPicker==='function';
+
+async function ensurePerm(h,ask){
+  try{
+    const o={mode:'readwrite'};
+    if(await h.queryPermission(o)==='granted')return true;
+    if(ask&&await h.requestPermission(o)==='granted')return true;
+  }catch(e){}
+  return false;
+}
+async function cloudConnect(){
+  if(!cloudSupported())
+    return toast('This browser cannot write to a folder. Use Chrome, and open Slate through "Start Slate.command".');
+  try{
+    const h=await window.showDirectoryPicker({mode:'readwrite',id:'slate-icloud'});
+    dirHandle=h; await imgPut(HANDLE_KEY,h);
+    cloudState='on'; updateCloudUI();
+    const remote=await cloudRead();
+    if(remote&&remote.savedAt&&(!S.savedAt||remote.savedAt>S.savedAt)){
+      toast('That folder has a newer copy of your work.','Load it',async()=>{await cloudLoad(remote);});
+    }else{ await cloudWrite(); }
+    render();
+  }catch(e){ if(e&&e.name!=='AbortError') toast('Could not connect that folder.'); }
+}
+async function cloudRestore(){
+  if(!cloudSupported())return;
+  try{
+    const h=await imgGet(HANDLE_KEY);
+    if(!h)return;
+    dirHandle=h;
+    cloudState=await ensurePerm(h,false)?'on':'needperm';
+    updateCloudUI();
+    if(cloudState==='on'){
+      const remote=await cloudRead();
+      if(remote&&remote.savedAt&&(!S.savedAt||remote.savedAt>S.savedAt))
+        toast('The iCloud copy is newer than this device.','Load it',async()=>{await cloudLoad(remote);});
+    }
+  }catch(e){}
+}
+async function dataDir(){ return dirHandle.getDirectoryHandle('data',{create:true}); }
+async function cloudRead(){
+  try{
+    const d=await dataDir();
+    const f=await(await d.getFileHandle('slate.json')).getFile();
+    return JSON.parse(await f.text());
+  }catch(e){ return null; }
+}
+async function cloudLoad(remote){
+  try{
+    const d=await dataDir();
+    const imgs=await d.getDirectoryHandle('images',{create:true});
+    for await(const [name,h] of imgs.entries()){
+      if(!name.endsWith('.jpg'))continue;
+      const key=name.slice(0,-4);
+      if(await imgGet(key))continue;
+      const blob=await(await h.getFile()).arrayBuffer();
+      const b64=btoa(String.fromCharCode(...new Uint8Array(blob)));
+      await imgPut(key,'data:image/jpeg;base64,'+b64);
+    }
+    S=remote; S.projects=S.projects.map(migrate); save(); render();
+    toast('Loaded from iCloud.');
+  }catch(e){ toast('Could not read the iCloud copy.'); }
+}
+function queueCloud(){
+  if(!dirHandle||cloudState==='off')return;
+  clearTimeout(cloudTimer);
+  cloudTimer=setTimeout(cloudWrite,12000);
+}
+async function cloudWrite(){
+  if(!dirHandle||cloudBusy)return;
+  cloudBusy=true;
+  try{
+    if(!await ensurePerm(dirHandle,false)){cloudState='needperm';updateCloudUI();cloudBusy=false;return;}
+    const d=await dataDir();
+    const fh=await d.getFileHandle('slate.json',{create:true});
+    const w=await fh.createWritable(); await w.write(JSON.stringify(S)); await w.close();
+    const imgs=await d.getDirectoryHandle('images',{create:true});
+    const live=liveKeys(), have=new Set();
+    for await(const [name] of imgs.entries()) have.add(name);
+    for(const k of live){
+      if(have.has(k+'.jpg'))continue;
+      const data=await imgGet(k); if(!data)continue;
+      const blob=await(await fetch(data)).blob();
+      const f=await imgs.getFileHandle(k+'.jpg',{create:true});
+      const ww=await f.createWritable(); await ww.write(blob); await ww.close();
+    }
+    for(const name of have){
+      if(!name.endsWith('.jpg'))continue;
+      if(!live.has(name.slice(0,-4))) await imgs.removeEntry(name).catch(()=>{});
+    }
+    cloudAt=new Date(); cloudState='on';
+  }catch(e){ cloudState='error'; }
+  cloudBusy=false; updateCloudUI();
+}
+function updateCloudUI(){
+  const t=document.getElementById('cloudtxt'),d=document.getElementById('clouddot');
+  if(!t)return;
+  const map={off:['iCloud not connected','var(--dimmer)'],
+    on:[cloudAt?'iCloud · '+cloudAt.toTimeString().slice(0,5):'iCloud connected','var(--good)'],
+    needperm:['iCloud · click to re-allow','var(--warn)'],
+    error:['iCloud · write failed','var(--bad)']};
+  const [txt,col]=map[cloudState]||map.off;
+  t.textContent=txt; d.style.background=col;
+}
+
+/* ---------------- toast / undo ---------------- */
+let toastT=null;
+function toast(msg,btn,fn){
+  const t=document.getElementById('toast');
+  document.getElementById('toasttxt').textContent=msg;
+  const b=document.getElementById('toastbtn');
+  b.textContent=btn||'';b.style.display=btn?'':'none';
+  b.onclick=()=>{if(fn)fn();t.classList.remove('on');};
+  t.classList.add('on');clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove('on'),8000);
+}
+function softDelete(label,arr,idx){
+  if(idx<0)return;
+  const removed=arr.splice(idx,1)[0];save();render();
+  toast(label+' removed','Undo',()=>{arr.splice(idx,0,removed);save();render();});
+}
+
+/* ---------------- modal ---------------- */
+let modalSave=null;
+function openForm(title,fields,values,onSave,extra){
+  values=values||{};
+  let h='<h2>'+esc(title)+'</h2>';
+  if(extra)h+='<div class="tiny muted" style="margin:-10px 0 16px;line-height:1.6">'+extra+'</div>';
+  fields.forEach(f=>{
+    const v=values[f.k]!==undefined?values[f.k]:(f.def!==undefined?f.def:'');
+    h+='<div class="f"><label>'+esc(f.label)+'</label>';
+    if(f.type==='textarea')h+='<textarea data-k="'+f.k+'" placeholder="'+esc(f.ph||'')+'">'+esc(v)+'</textarea>';
+    else if(f.type==='select')h+='<select data-k="'+f.k+'">'+f.opts.map(o=>{
+      const val=Array.isArray(o)?o[0]:o,lbl=Array.isArray(o)?o[1]:o;
+      return '<option value="'+esc(val)+'"'+(String(val)===String(v)?' selected':'')+'>'+esc(lbl)+'</option>';}).join('')+'</select>';
+    else if(f.type==='checkgroup'){
+      const on=Array.isArray(v)?v:[];
+      h+='<div class="cg" data-k="'+f.k+'">'+f.opts.map(o=>{
+        const val=Array.isArray(o)?o[0]:o,lbl=Array.isArray(o)?o[1]:o;
+        return '<label><input type="checkbox" value="'+esc(val)+'"'+(on.includes(val)?' checked':'')+'>'+esc(lbl)+'</label>';}).join('')+'</div>';
+    }
+    else h+='<input type="'+(f.type||'text')+'" data-k="'+f.k+'" value="'+esc(v)+'" placeholder="'+esc(f.ph||'')+'">';
+    if(f.hint)h+='<div class="hint">'+esc(f.hint)+'</div>';
+    h+='</div>';
+  });
+  h+='<div class="modfoot"><button class="btn" data-act="modal-close">Cancel</button>'
+   +'<button class="btn pri" data-act="modal-save">Save</button></div>';
+  const m=document.getElementById('modal');m.innerHTML=h;
+  document.getElementById('veil').classList.add('on');
+  modalSave=()=>{
+    const out={};
+    m.querySelectorAll('[data-k]').forEach(el=>{
+      const k=el.dataset.k;
+      if(el.classList.contains('cg'))out[k]=[...el.querySelectorAll('input:checked')].map(i=>i.value);
+      else out[k]=el.value;});
+    closeModal();onSave(out);
+  };
+  const first=m.querySelector('input,textarea,select');if(first)setTimeout(()=>first.focus(),40);
+}
+function actionSheet(title,acts){
+  const m=document.getElementById('modal');
+  m.innerHTML='<h2>'+esc(title)+'</h2>'+acts.map(a=>
+    '<button class="btn" style="width:100%;justify-content:flex-start;margin-bottom:8px" data-act="'+a.act+'"'
+    +(a.d?' data-t="'+a.d+'"':'')+(a.m?' data-m="'+a.m+'"':'')+'>'+esc(a.n)+'</button>').join('')
+   +'<div class="modfoot"><button class="btn" data-act="modal-close">Close</button></div>';
+  document.getElementById('veil').classList.add('on');modalSave=null;
+}
+function closeModal(){document.getElementById('veil').classList.remove('on');modalSave=null;}
+
+/* ---------------- focus timer ---------------- */
+let fTimer=null,fEnd=0,fLabel='';
+function startFocus(mins,label){
+  fEnd=Date.now()+mins*60000;fLabel=label||'Focus';
+  document.getElementById('fwhat').textContent=fLabel;
+  document.getElementById('focus').classList.add('on');
+  clearInterval(fTimer);tickFocus();fTimer=setInterval(tickFocus,500);
+}
+function tickFocus(){
+  const left=Math.max(0,fEnd-Date.now());
+  document.getElementById('ftime').textContent=Math.floor(left/60000)+':'+String(Math.floor(left%60000/1000)).padStart(2,'0');
+  if(left<=0)stopFocus(true);
+}
+function stopFocus(finished){
+  clearInterval(fTimer);fTimer=null;
+  document.getElementById('focus').classList.remove('on');
+  if(finished){S.sessions.push({d:today(),label:fLabel});save();
+    toast('Session done. That counts. Stop here if you want to.','OK',()=>{});}
+  render();
+}
+
+/* ---------------- delegation ---------------- */
+function owner(p,key){return p.owners[key]||{status:'mine',person:'',note:''};}
+function delegated(p,key){return owner(p,key).status==='delegated';}
+function ownerName(p,key){
+  const o=owner(p,key);const per=S.people.find(x=>x.id===o.person);
+  return per?per.name:(o.person?'someone':'');
+}
+function areaOfDept(dept){return DEPT_AREA[dept]||'crew';}
+function needsMe(p,k){return !!p.needsMe[k];}
+
+/* ---------------- derived ---------------- */
+function prepStats(p){
+  let mine=0,mineDone=0,handed=0,handedDone=0;
+  PREP.forEach(a=>{
+    const off=delegated(p,a.key);
+    a.items.forEach((it,ii)=>{
+      const k=a.key+'.'+ii,done=!!p.prep[k];
+      if(off&&!needsMe(p,k)){handed++;if(done)handedDone++;}
+      else{mine++;if(done)mineDone++;}
+    });
+  });
+  return {done:mineDone,total:mine,handed,handedDone};
+}
+function myOpenItems(p){
+  const out=[];
+  PREP.forEach(a=>{
+    const off=delegated(p,a.key);
+    a.items.forEach((it,ii)=>{
+      const k=a.key+'.'+ii;
+      if(p.prep[k])return;
+      if(off&&!needsMe(p,k))return;
+      out.push({k,text:it,area:a.area,areaKey:a.key,starred:needsMe(p,k),handed:off});
+    });
+  });
+  return out;
+}
+function crewFor(tier){const out=[];
+  CREW.forEach(g=>{const roles=g.roles.filter(r=>r.t[tier]>0);if(roles.length)out.push({dept:g.dept,roles});});
+  return out;}
+function essentialStats(p){
+  const need=[],have=[];
+  CREW.forEach(g=>g.roles.forEach(r=>{
+    if(r.t[p.tier]===3&&r.id!=='director'){need.push(r);
+      const c=p.crew[r.id];if(c&&(c.status==='confirmed'||c.status==='held'))have.push(r);}}));
+  return {need:need.length,have:have.length,missing:need.filter(r=>!have.includes(r))};
+}
+function setupCount(shots){
+  const s=new Set();
+  shots.forEach(x=>s.add(x.setup&&x.setup.trim()?x.scene+'|'+x.setup.trim().toLowerCase():'solo|'+x.id));
+  return s.size;
+}
+const hhmm=t=>{const m=/^(\d{1,2}):(\d{2})$/.exec((t||'').trim());return m?(+m[1])*60+(+m[2]):null;};
+function dayLoad(p,d){
+  const ids=d.sceneIds||[];
+  const scenes=ids.map(id=>p.scenes.find(s=>s.id===id)).filter(Boolean);
+  const shots=p.shots.filter(sh=>ids.includes(sh.scene));
+  const setups=setupCount(shots);
+  const pages=scenes.reduce((a,s)=>a+(parseFloat(s.pages)||0),0);
+  const mins=setups*(p.minPerSetup||30);
+  const cast=[...new Set(scenes.flatMap(s=>s.cast||[]))];
+  const locs=[...new Set(scenes.map(s=>s.location).filter(Boolean))];
+  const flags=[...new Set(scenes.flatMap(s=>s.flags||[]))];
+  let dayMins=null;const c=hhmm(d.call),w=hhmm(d.wrap);
+  if(c!=null&&w!=null)dayMins=(w>c?w-c:w+1440-c);
+  return {scenes,shots,setups,pages,mins,cast,locs,flags,dayMins,
+    over:dayMins!=null&&mins>dayMins*0.7};
+}
+function requiredSpecialists(p){
+  const map={};
+  p.scenes.forEach(s=>(s.flags||[]).forEach(f=>(FLAG_ROLES[f]||[]).forEach(rid=>{
+    map[rid]=map[rid]||{role:ROLE_BY_ID[rid],scenes:[],flags:new Set()};
+    map[rid].scenes.push(s.no||s.heading||'?');map[rid].flags.add(f);})));
+  return Object.entries(map).map(([rid,v])=>({rid,...v,flags:[...v.flags],
+    held:['confirmed','held'].includes((p.crew[rid]||{}).status)}));
+}
+function warnings(p){
+  const w=[],add=(t,area,v,act)=>{if(!area||!delegated(p,area))w.push({t,v,act});};
+  requiredSpecialists(p).filter(x=>!x.held).forEach(x=>
+    w.push({t:x.role.n+' is required — scenes '+x.scenes.slice(0,4).join(', ')+' are flagged '+x.flags.join(', '),
+      v:'bad',act:'crew'}));               /* safety never hides, delegated or not */
+  const noLoc=p.scenes.filter(s=>!s.location).length;
+  if(noLoc)add(noLoc+' scene'+(noLoc>1?'s have':' has')+' no location',
+    'locations','warn','scenes');
+  const noShots=p.scenes.filter(s=>!p.shots.some(x=>x.scene===s.id)).length;
+  if(noShots)add(noShots+' scene'+(noShots>1?'s have':' has')+' no shots listed',
+    'shot-list-storyboards','warn','shots');
+  const unconf=p.characters.filter(c=>c.status!=='confirmed'&&c.status!=='passed').length;
+  if(unconf)add(unconf+' character'+(unconf>1?'s are':' is')+' not cast yet','casting','warn','cast');
+  const noContract=p.characters.filter(c=>c.status==='confirmed'&&!c.contract).length;
+  if(noContract)add(noContract+' confirmed actor'+(noContract>1?'s have':' has')+' no contract signed',
+    'casting','warn','cast');
+  const noFit=p.characters.filter(c=>c.status==='confirmed'&&!c.fitting).length;
+  if(noFit)add(noFit+' actor'+(noFit>1?'s have':' has')+' had no costume fitting',
+    'costume-hair-make-up','warn','cast');
+  p.days.filter(d=>d.type==='Shoot').forEach(d=>{
+    const L=dayLoad(p,d);
+    if(L.over)add(d.date+' has '+L.setups+' setups — roughly '+Math.round(L.mins/60)+'h of shooting in a '
+      +Math.round(L.dayMins/60)+'h day','schedule-call-sheets','warn','sched');
+  });
+  const unlocked=p.locations.filter(l=>l.status!=='Locked'&&l.status!=='Rejected'
+    &&p.scenes.some(s=>s.location===l.id)).length;
+  if(unlocked)add(unlocked+' location'+(unlocked>1?'s are':' is')+' in use but not locked',
+    'locations','warn','places');
+  const days=S.lastManualBackup?Math.round((Date.now()-new Date(S.lastManualBackup))/864e5):null;
+  if(cloudState!=='on'&&(days===null||days>7))
+    w.push({t:cloudState==='needperm'?'iCloud backup needs re-allowing':(sbOn()?'iCloud backup not connected on this device':'Nothing is backed up yet — set up sync'),
+      v:'warn',act:'guide'});
+  return w;
+}
+
+const stat=(n,l)=>'<div class="stat"><div class="n mono">'+n+'</div><div class="l">'+esc(l)+'</div></div>';
+const greeting=()=>{const h=new Date().getHours();
+  return h<5?'Still up.':h<12?'Morning.':h<18?'Afternoon.':h<23?'Evening.':'Late one.';};
+const daysAgo=d=>Math.round((Date.now()-new Date(d))/864e5);
+const sceneLabel=s=>(s.no?s.no+'. ':'')+[s.intext,s.heading,s.dayNight].filter(Boolean).join(' — ');
+const charName=(p,id)=>{const c=p.characters.find(x=>x.id===id);return c?c.name:'?';};
+
+/* ---------------- RIGHT NOW — one job, nothing else ---------------- */
+function qline(v,txt,act,go){
+  return '<button class="qline" data-act="'+act+'"'+(go?' data-v="'+go+'"':'')+'>'
+   +'<span class="pill '+v+'">'+(v==='bad'?'must fix':v==='cond'?'you':'check')+'</span>'
+   +'<span style="flex:1">'+esc(txt)+'</span><span class="arrow">›</span></button>';
+}
+function vNow(){
+  const p=P();
+  const open=p.tasks.filter(t=>!t.done);
+  const one=open.find(t=>t.pinned)||open[0];
+  const mine=myOpenItems(p);
+  const starred=mine.filter(x=>x.starred&&x.handed);
+  const warn=warnings(p),must=warn.filter(w=>w.v==='bad'),check=warn.filter(w=>w.v!=='bad');
+  const pr=p.promise;
+  let h='';
+
+  h+=pr.to
+   ? '<button class="pline" data-act="promise">For <b>'+esc(pr.to)+'</b>'
+     +(pr.told?' · last told them '+daysAgo(pr.told)+' days ago':'')+'</button>'
+   : '<button class="pline" data-act="promise">Who are you making this for? →</button>';
+
+  h+='<div class="hero">';
+  if(one){
+    h+='<div class="lbl">The one thing</div><div class="big">'+esc(one.title)+'</div>'
+     +'<button class="btn pri xl" data-act="focus" data-m="25" data-t="'+one.id+'">Start 25 minutes</button>'
+     +'<div class="mini"><button data-act="toggle-task" data-t="'+one.id+'">Done</button>'
+     +'<button data-act="skip-one" data-t="'+one.id+'">Not this</button>'
+     +'<button data-act="onemore" data-t="'+one.id+'">More</button></div>';
+  }else if(mine.length){
+    h+='<div class="lbl">Next on your list</div><div class="big">'+esc(mine[0].text)+'</div>'
+     +'<button class="btn pri xl" data-act="prep-task" data-k="'+mine[0].k+'">Make it a task</button>'
+     +'<div class="mini"><button data-act="prep-tick" data-k="'+mine[0].k+'">Already done</button>'
+     +'<button data-act="go" data-v="prep">See the list</button></div>';
+  }else{
+    h+='<div class="lbl">Nothing left</div><div class="big">You are clear.</div>'
+     +'<button class="btn pri xl" data-act="task-new">Add something</button>';
+  }
+  h+='</div>';
+
+  if(must.length) h+=qline('bad',must[0].t,'go',must[0].act);
+  if(must.length>1) h+=qline('bad',(must.length-1)+' more that must be fixed','go','crew');
+  if(starred.length) h+=qline('cond',starred.length===1?starred[0].text:starred.length+' decisions still need you','go','prep');
+  const inb=S.inbox.filter(i=>!i.done);
+  if(inb.length) h+=qline('','Sort '+inb.length+' brain dump note'+(inb.length>1?'s':''),'triage');
+  if(check.length) h+=qline('warn',check.length===1?check[0].t:check.length+' things worth a look','more');
+
+  h+='<div class="morebar"><button class="btn gh" data-act="more">'+(showMore?'Show less':'Show me everything')+'</button></div>';
+  if(!showMore) return h;
+
+  const es=essentialStats(p),ps=prepStats(p);
+  const next=p.days.filter(d=>d.date>=today()).sort((a,b)=>a.date.localeCompare(b.date))[0];
+  if(check.length){
+    h+='<div class="sect"><h2>Worth a look</h2><div class="line"></div></div><div class="card">'
+     +check.map(x=>'<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:5px 0">'
+       +'<span style="flex:1;min-width:200px;font-size:13.5px">'+esc(x.t)+'</span>'
+       +'<button class="btn sm gh" data-act="go" data-v="'+x.act+'">Open</button></div>').join('')+'</div>';
+  }
+  if(inb.length){
+    h+='<div class="sect"><h2>Brain dump</h2><div class="line"></div></div>'
+     +inb.slice(0,8).map(i=>'<div class="item"><div class="grow"><div class="ttl">'+esc(i.text)+'</div></div>'
+      +'<div class="acts"><button class="btn sm" data-act="inbox-task" data-i="'+i.id+'">→ Task</button>'
+      +'<button class="btn sm" data-act="inbox-person" data-i="'+i.id+'">→ Person</button>'
+      +'<button class="btn sm" data-act="inbox-place" data-i="'+i.id+'">→ Location</button>'
+      +'<button class="btn sm gh danger" data-act="inbox-del" data-i="'+i.id+'">✕</button></div></div>').join('');
+  }
+  const handed=AREA_KEYS.filter(k=>delegated(p,k));
+  if(handed.length) h+='<div class="sect"><h2>Not your problem</h2><div class="line"></div></div>'
+   +'<div class="card"><div class="chips">'+handed.map(k=>{const nm=ownerName(p,k);
+     return '<span class="pill good">'+esc(AREA_BY_KEY[k].area)+(nm?' · '+esc(nm):'')+'</span>';}).join('')+'</div></div>';
+
+  h+='<div class="sect"><h2>Where things are</h2><div class="line"></div></div>'
+   +'<div class="grid g3">'+stat(ps.done+'/'+ps.total,'your prep items')
+   +stat(es.have+'/'+es.need,'essential crew')
+   +stat(p.characters.filter(c=>c.status==='confirmed').length+'/'+p.characters.length,'roles cast')+'</div>';
+  if(next) h+='<div class="card" style="margin-top:14px"><h3>Next: '+esc(next.type||'Shoot')+' '+esc(next.date)+'</h3>'
+   +'<div class="btnrow" style="margin-top:11px">'
+   +(next.type==='Shoot'?'<button class="btn sm pri" data-act="callsheet" data-d="'+next.id+'">Call sheet</button>':'')
+   +'<button class="btn sm" data-act="go" data-v="sched">Schedule</button></div></div>';
+  h+='<div class="card" style="margin-top:14px"><h3>'+esc(PHASES[p.phase])+'</h3>'
+   +'<div class="btnrow" style="margin-top:11px">'+PHASES.map((ph,i)=>
+     '<button class="btn sm'+(i===p.phase?' pri':' gh')+'" data-act="phase" data-p="'+i+'">'+esc(ph)+'</button>').join('')+'</div></div>';
+  return h;
+}
+
+/* ---------------- PREP — one list ---------------- */
+function vPrep(){
+  const p=P(),ps=prepStats(p);
+  if(prepOpen){
+    const a=AREA_BY_KEY[prepOpen],off=delegated(p,prepOpen),nm=ownerName(p,prepOpen);
+    const items=a.items.map((t,i)=>({t,k:prepOpen+'.'+i}));
+    const shown=(off&&!showAllArea)?items.filter(x=>needsMe(p,x.k)):items;
+    let h='<div class="head"><button class="btn sm gh" data-act="prep-close" style="margin-bottom:12px">‹ All areas</button>'
+     +'<h1>'+esc(a.area)+'</h1>'
+     +'<div class="chips" style="margin-top:8px">'
+     +'<span class="pill '+(off?'good':'')+'">'+esc(OWNERSHIP[owner(p,prepOpen).status])+(nm?' · '+esc(nm):'')+'</span>'
+     +'<button class="btn sm gh" data-act="own" data-a="'+prepOpen+'">Change who owns this</button></div></div>';
+    if(off&&!shown.length) h+='<div class="empty">All of this is '+esc(nm||'someone else')+'’s. Nothing here needs you.'
+     +'<div class="btnrow" style="margin-top:14px;justify-content:center"><button class="btn sm" data-act="showarea">Show it anyway</button></div></div>';
+    else{
+      h+='<div class="arealist">'+shown.map(x=>{
+        const on=!!p.prep[x.k],star=needsMe(p,x.k);
+        return '<div class="prepitem'+(on?' on':'')+'">'
+         +'<button class="chk'+(on?' on':'')+'" data-act="prep-tick" data-k="'+x.k+'">✓</button>'
+         +'<div class="t">'+esc(x.t)+(star?' <span class="pill cond">needs you</span>':'')+'</div>'
+         +'<div class="acts"><button class="btn sm gh" data-act="prep-star" data-k="'+x.k+'">'+(star?'★':'☆')+'</button>'
+         +'<button class="btn sm gh" data-act="prep-task" data-k="'+x.k+'">→ Task</button></div></div>';}).join('')+'</div>';
+      if(off) h+='<div class="tiny muted" style="margin-top:12px">Starred items stay on your home screen. '
+       +'<button class="btn sm gh" data-act="showarea">'+(showAllArea?'Show only starred':'Show everything')+'</button></div>';
+    }
+    return h;
+  }
+  let h='<div class="head"><h1>Prep</h1><div class="sub">Hand an area over and it stops counting against you.</div></div>'
+   +'<div class="card" style="display:flex;gap:16px;align-items:center;margin-bottom:20px">'
+   /* was a completion ring. Prep is exactly where being behind is felt, and a
+      percentage makes an ordinary Tuesday look like a shortfall. The count of
+      what still needs you goes down as you work and never implies a target. */
+   +'<div class="mono" style="font-size:34px;font-weight:660;letter-spacing:-1px;line-height:1;min-width:1.6ch;text-align:right">'+(ps.total-ps.done)+'</div>'
+   +'<div style="flex:1"><h3>'+(ps.total-ps.done===0?'nothing needs you':ps.total-ps.done===1?'thing needs you':'things need you')+'</h3>'
+   +'<div class="tiny muted" style="margin-top:3px">'
+   +(ps.handed?ps.handed+' handed over':'nothing handed over yet')
+   +(ps.done?' · '+ps.done+' done':'')+'</div></div></div>'
+   +'<div class="arealist">'+PREP.map(a=>{
+    const o=owner(p,a.key),nm=ownerName(p,a.key),off=o.status==='delegated';
+    const items=a.items.map((_,i)=>a.key+'.'+i);
+    const shown=off?items.filter(k=>needsMe(p,k)):items;
+    const done=shown.filter(k=>p.prep[k]).length;
+    return '<button class="arearow" data-act="prep-open" data-a="'+a.key+'"'+(off?' style="opacity:.6"':'')+'>'
+     +'<span class="nm">'+esc(a.area)+(off?' <span class="pill good">'+esc(nm||'handed over')+'</span>':'')+'</span>'
+     +(shown.length?'<span class="tiny muted mono">'+(shown.length-done||'clear')+(shown.length-done?' left':'')+'</span>':'<span class="tiny muted">—</span>')
+     +'<span class="arrow">›</span></button>';}).join('')+'</div>';
+  return h;
+}
+
+/* ---------------- TASKS ---------------- */
+function vTasks(){
+  const p=P();
+  const open=p.tasks.filter(t=>!t.done),done=p.tasks.filter(t=>t.done);
+  const b={high:[],mid:[],low:[],none:[]};
+  open.forEach(t=>(b[t.energy]||b.none).push(t));
+  let h='<div class="head"><h1>Tasks</h1><div class="sub">Sorted by the fuel they need, not by importance.</div></div>'
+   +'<div class="btnrow" style="margin-bottom:20px"><button class="btn pri" data-act="task-new">＋ Add task</button></div>';
+  [['high','Full brain — do these when you are sharp'],['mid','Normal'],['low','Low fuel — still counts'],['none','Unsorted']]
+   .forEach(([k,l])=>{if(!b[k].length)return;
+    h+='<div class="sect"><h2>'+esc(l)+'</h2><div class="line"></div><span class="tiny muted">'+b[k].length+'</span></div>'
+     +b[k].map(taskRow).join('');});
+  if(!open.length)h+='<div class="empty">Nothing open. Genuinely nothing. Enjoy it, or pull something off the prep checklist.</div>';
+  if(done.length)h+='<details style="margin-top:28px"><summary class="muted" style="cursor:pointer;padding:8px 0">Finished — '
+   +done.length+'</summary><div style="margin-top:10px">'+done.slice().reverse().slice(0,60).map(taskRow).join('')+'</div></details>';
+  return h;
+}
+function taskRow(t){
+  return '<div class="item'+(t.done?' done':'')+'">'
+   +'<button class="chk'+(t.done?' on':'')+'" data-act="toggle-task" data-t="'+t.id+'">✓</button>'
+   +'<div class="grow"><div class="ttl">'+esc(t.title)+(t.enough?' <span class="pill good">good enough</span>':'')+'</div>'
+   +(t.notes?'<div class="tiny muted" style="margin-top:2px;white-space:pre-wrap">'+esc(t.notes)+'</div>':'')
+   +(t.due?'<div class="tiny" style="margin-top:3px;color:'+(t.due<today()&&!t.done?'var(--warn)':'var(--dim)')+'">'
+     +(t.due<today()&&!t.done?'was due ':'due ')+esc(t.due)+'</div>':'')
+   +'</div><div class="acts">'
+   +(t.done?'':'<button class="btn sm gh" data-act="pin" data-t="'+t.id+'">'+(t.pinned?'★':'☆')+'</button>')
+   +'<button class="btn sm gh" data-act="task-edit" data-t="'+t.id+'">Edit</button>'
+   +'<button class="btn sm gh danger" data-act="task-del" data-t="'+t.id+'">✕</button></div></div>';
+}
+
+/* ---------------- SCENES ---------------- */
+function vScenes(){
+  const p=P();
+  let h='<div class="head"><h1>Scenes</h1>'
+   +'<div class="sub">One row per scene. The flags force the safety hires.</div></div>'
+   +'<div class="btnrow" style="margin-bottom:20px"><button class="btn pri" data-act="scene-new">＋ Add scene</button>'
+   +(p.scenes.length?'<button class="btn" data-act="go" data-v="shots">Shot list</button>':'')+'</div>';
+  if(!p.scenes.length)return h+'<div class="empty">No scenes yet. Add them in script order — number, slugline, one line of what happens. Detail can come later.</div>';
+
+  const pages=p.scenes.reduce((a,s)=>a+(parseFloat(s.pages)||0),0);
+  h+='<div class="grid g3" style="margin-bottom:20px">'+stat(p.scenes.length,'scenes')+stat(pages.toFixed(1),'pages')
+   +stat(p.scenes.filter(s=>s.location).length+'/'+p.scenes.length,'have a location')
+   +stat(p.scenes.filter(s=>p.shots.some(x=>x.scene===s.id)).length+'/'+p.scenes.length,'have shots')+'</div>';
+
+  h+=p.scenes.map(s=>{
+    const loc=p.locations.find(l=>l.id===s.location);
+    const nsh=p.shots.filter(f=>f.scene===s.id).length;
+    return '<div class="card" style="margin-top:10px"><div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">'
+     +'<div style="flex:1;min-width:240px"><h2>'+esc(sceneLabel(s)||'Untitled scene')+'</h2>'
+     +(s.synopsis?'<div class="tiny muted" style="margin-top:4px">'+esc(s.synopsis)+'</div>':'')+'</div>'
+     +'<div class="acts" style="opacity:1">'
+     +'<button class="btn sm" data-act="shots-scene" data-s="'+s.id+'">Shots ('+nsh+')</button>'
+     +'<button class="btn sm gh" data-act="scene-edit" data-s="'+s.id+'">Edit</button>'
+     +'<button class="btn sm gh danger" data-act="scene-del" data-s="'+s.id+'">✕</button></div></div>'
+     +'<div class="chips" style="margin-top:11px">'
+       +(s.pages?'<span class="pill">'+esc(s.pages)+' pages</span>':'')
+       +(loc?'<span class="pill good">'+esc(loc.name)+'</span>':'<span class="pill warn">no location</span>')
+       +(s.cast||[]).map(id=>'<span class="pill">'+esc(charName(p,id))+'</span>').join('')
+       +(s.flags||[]).map(f=>'<span class="pill cond">'+esc(f)+'</span>').join('')+'</div>'
+     +[['props','Props'],['wardrobe','Wardrobe'],['extras','Extras'],['sfx','Effects'],['castNotes','Cast notes']]
+       .filter(([k])=>s[k]).map(([k,l])=>'<div class="tiny" style="margin-top:8px"><span class="muted">'+l+':</span> '+esc(s[k])+'</div>').join('')
+     +(s.notes?'<div class="tiny muted" style="margin-top:9px;white-space:pre-wrap">'+esc(s.notes)+'</div>':'')+'</div>';
+  }).join('');
+  return h;
+}
+
+/* ---------------- SHOT LIST ---------------- */
+function shotNo(p,f){
+  const sc=p.scenes.find(s=>s.id===f.scene);
+  const n=p.shots.filter(x=>x.scene===f.scene).indexOf(f);
+  const i=n<0?0:n;
+  return (sc&&sc.no?sc.no:'')+String.fromCharCode(65+i%26)+(i>=26?String(Math.floor(i/26)+1):'');
+}
+function vShots(){
+  const p=P();
+  const list=p.shots.filter(f=>shotScene==='all'||f.scene===shotScene);
+  const got=list.filter(f=>f.got).length;
+  const byP=k=>list.filter(f=>f.priority===k).length;
+
+  let h='<div class="head"><h1>Shot list</h1>'
+   +'<div class="sub">Every shot. Mark what gets dropped first, calmly, now.</div></div>';
+
+  h+='<div class="btnrow hideshoot" style="margin-bottom:14px">'
+   +'<button class="btn pri" data-act="shot-new">＋ Add shot</button>'
+   +'<button class="btn" data-act="shot-print">Printable shot list</button>'
+   +'<button class="btn'+(shootMode?' pri':'')+'" data-act="shootmode">Shoot mode</button></div>';
+  if(shootMode)h+='<div class="btnrow" style="margin-bottom:14px"><button class="btn pri" data-act="shootmode">Leave shoot mode</button></div>';
+
+  if(p.scenes.length)h+='<div class="seg" style="margin-bottom:16px">'
+   +'<button data-act="shots-scene" data-s="all" class="'+(shotScene==='all'?'on':'')+'">All</button>'
+   +p.scenes.map(s=>'<button data-act="shots-scene" data-s="'+s.id+'" class="'+(shotScene===s.id?'on':'')+'">'
+     +esc(s.no?'Sc '+s.no:(s.heading||'Scene'))+'</button>').join('')+'</div>';
+
+  if(!p.shots.length)return h+'<div class="empty">No shots yet. Add them scene by scene, or upload storyboard frames — those become shots automatically.</div>';
+
+  const setups=setupCount(list),mins=setups*(p.minPerSetup||30);
+  h+='<div class="grid g3 hideshoot" style="margin-bottom:18px">'
+   +stat(list.length,'shots')+stat(setups,'setups')
+   +stat(Math.floor(mins/60)+'h '+(mins%60)+'m','rough shooting time')
+   +stat(byP('must')+' / '+byP('should')+' / '+byP('spare'),'must / should / spare')+'</div>';
+  if(shootMode)h+='<div class="card" style="margin-bottom:14px"><h3>Got '+got+' of '+list.length+'</h3>'
+   +'<div class="bar" style="margin-top:8px"><i style="width:'+(list.length?got/list.length*100:0)+'%"></i></div></div>';
+
+  const groups=(shotScene==='all'?p.scenes.map(s=>s.id):[shotScene]).concat(['']);
+  groups.forEach(sid=>{
+    const sc=p.scenes.find(s=>s.id===sid);
+    const items=list.filter(f=>f.scene===sid);
+    if(!items.length)return;
+    const su=setupCount(items),mn=su*(p.minPerSetup||30);
+    h+='<details class="grp" open><summary>'+esc(sc?sceneLabel(sc):'Not assigned to a scene')
+     +'<span class="n">'+items.length+' shots · '+su+' setups · ~'+Math.floor(mn/60)+'h'+(mn%60?' '+(mn%60)+'m':'')+'</span></summary>';
+    items.forEach(f=>{
+      h+='<div class="shot'+(f.got?' got':'')+'">'
+       +'<button class="chk'+(f.got?' on':'')+'" data-act="shot-got" data-f="'+f.id+'">✓</button>'
+       +'<div class="no mono">'+esc(shotNo(p,f))+'</div>'
+       +'<div class="body"><div class="d">'+esc(f.desc||f.subject||'No description')+'</div>'
+       +'<div class="chips hideshoot" style="margin-top:6px">'
+         +(f.size&&f.size!=='—'?'<span class="pill ess">'+esc(f.size)+'</span>':'')
+         +(f.angle?'<span class="pill">'+esc(f.angle)+'</span>':'')
+         +(f.move&&f.move!=='Static'?'<span class="pill">'+esc(f.move)+'</span>':'')
+         +(f.lens?'<span class="pill">'+esc(f.lens)+'</span>':'')
+         +(f.setup?'<span class="pill">setup: '+esc(f.setup)+'</span>':'')
+         +(f.img?'<span class="pill good">boarded</span>':'')+'</div></div>'
+       +'<div class="side"><span class="pill '+PRIORITY[f.priority].cls+'">'+PRIORITY[f.priority].lbl+'</span>'
+       +'<div class="acts hideshoot"><button class="btn sm gh" data-act="shot-edit" data-f="'+f.id+'">Edit</button>'
+       +'<button class="btn sm gh danger" data-act="shot-del" data-f="'+f.id+'">✕</button></div></div></div>';
+    });
+    h+='</details>';
+  });
+  h+='<div class="muted tiny hideshoot" style="margin-top:18px;max-width:66ch">Setups, not shots, are what eat a day — four shots from one camera position cost far less than one shot from four. If the estimate is over about seventy per cent of your day length, the schedule is lying to you.</div>';
+  return h;
+}
+
+/* ---------------- STORYBOARD ---------------- */
+function vBoard(){
+  const p=P();
+  const frames=p.shots.filter(f=>(boardScene==='all'||f.scene===boardScene));
+  let h='<div class="head"><h1>Storyboard</h1>'
+   +'<div class="sub">The same shots as the shot list, with pictures.</div></div>';
+  h+='<div class="btnrow" style="margin-bottom:14px">'
+   +'<button class="btn pri" data-act="frame-upload">＋ Upload frames</button>'
+   +'<button class="btn" data-act="shot-new">＋ Add shot without a picture</button>'
+   +(p.shots.length?'<button class="btn" data-act="board-print">Printable board</button>':'')+'</div>';
+  if(p.scenes.length)h+='<div class="seg" style="margin-bottom:16px">'
+   +'<button data-act="board-scene" data-s="all" class="'+(boardScene==='all'?'on':'')+'">All</button>'
+   +p.scenes.map(s=>'<button data-act="board-scene" data-s="'+s.id+'" class="'+(boardScene===s.id?'on':'')+'">'
+     +esc(s.no?'Sc '+s.no:(s.heading||'Scene'))+'</button>').join('')+'</div>';
+
+  h+='<div class="drop" id="drop" data-act="frame-upload">Drop images here, or click to choose files.<br>'
+   +'<span class="tiny">Multiple at once is fine. Resized to 1400px. Each becomes a shot on the shot list.</span></div>';
+  if(!frames.length)return h+'<div class="empty" style="margin-top:14px">No shots'+(boardScene==='all'?'':' in this scene')+' yet.</div>';
+
+  h+='<div class="frames" style="margin-top:18px">'+frames.map(f=>{
+    const sc=p.scenes.find(s=>s.id===f.scene);
+    return '<div class="frame"><div class="im"><span class="no">'+esc(shotNo(p,f)||'—')+'</span>'
+     +(f.img?'<img data-img="'+f.img+'" alt="">':'<span class="ph">no image</span>')+'</div>'
+     +'<div class="meta"><div class="chips">'
+       +(f.size&&f.size!=='—'?'<span class="pill ess">'+esc(f.size)+'</span>':'')
+       +(f.move&&f.move!=='Static'?'<span class="pill">'+esc(f.move)+'</span>':'')
+       +'<span class="pill '+PRIORITY[f.priority].cls+'">'+PRIORITY[f.priority].lbl+'</span></div>'
+     +'<div class="desc'+(f.desc?'':' muted')+'">'+esc(f.desc||'No description')+'</div>'
+     +(sc&&boardScene==='all'?'<div class="tiny muted">'+esc(sceneLabel(sc))+'</div>':'')
+     +'<div class="foot"><div class="acts" style="opacity:1">'
+       +'<button class="btn sm gh" data-act="frame-move" data-f="'+f.id+'" data-d="-1">←</button>'
+       +'<button class="btn sm gh" data-act="frame-move" data-f="'+f.id+'" data-d="1">→</button></div>'
+     +'<div class="acts" style="opacity:1"><button class="btn sm gh" data-act="shot-edit" data-f="'+f.id+'">Edit</button>'
+       +'<button class="btn sm gh danger" data-act="shot-del" data-f="'+f.id+'">✕</button></div></div></div></div>';
+  }).join('')+'</div>';
+  return h;
+}
+
+/* ---------------- CAST ---------------- */
+function vCast(){
+  const p=P();
+  const castOff=delegated(p,'casting'),cosOff=delegated(p,'costume-hair-make-up');
+  const conf=p.characters.filter(c=>c.status==='confirmed').length;
+  let h='<div class="head"><h1>Cast</h1>'
+   +'<div class="sub">Who is playing who, and the paperwork that must exist.</div></div>'
+   +'<div class="btnrow" style="margin-bottom:16px"><button class="btn pri" data-act="char-new">＋ Add character</button>'
+   +(p.characters.length&&p.days.filter(d=>d.type==='Shoot').length?'<button class="btn" data-act="dod-print">Printable day out of days</button>':'')
+   +'</div>';
+
+  if(castOff||cosOff){
+    h+='<div class="card" style="margin-bottom:16px"><div class="chips">'
+     +(castOff?'<span class="pill good">Casting handed to '+esc(ownerName(p,'casting')||'someone')+'</span>':'')
+     +(cosOff?'<span class="pill good">Costume, hair &amp; make-up handed to '+esc(ownerName(p,'costume-hair-make-up')||'someone')+'</span>':'')
+     +'</div><div class="tiny muted" style="margin-top:9px">Still shown here so you stay aware. You are not expected to chase it.</div></div>';
+  }
+  if(!p.characters.length)return h+'<div class="empty">No characters yet. Add them straight from the script — every speaking part, plus anyone who needs a costume.</div>';
+
+  h+='<div class="grid g3" style="margin-bottom:18px">'
+   +stat(conf+'/'+p.characters.length,'cast confirmed')
+   +stat(p.characters.filter(c=>c.contract).length+'/'+p.characters.length,'contracts signed')
+   +stat(p.characters.filter(c=>c.fitting).length+'/'+p.characters.length,'fittings done')+'</div>';
+
+  h+='<div class="grid g2">'+p.characters.map(c=>{
+    const act=S.people.find(x=>x.id===c.actor);
+    const scenes=p.scenes.filter(s=>(s.cast||[]).includes(c.id));
+    const days=p.days.filter(d=>d.type==='Shoot'&&(d.sceneIds||[]).some(id=>scenes.some(s=>s.id===id)));
+    return '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">'
+     +'<div><h2>'+esc(c.name)+'</h2><div class="muted tiny">'+(act?esc(act.name):'not cast')
+     +(act&&act.phone?' · '+esc(act.phone):'')+'</div></div>'
+     +'<div class="acts" style="opacity:1"><button class="btn sm gh" data-act="char-edit" data-c="'+c.id+'">Edit</button>'
+     +'<button class="btn sm gh danger" data-act="char-del" data-c="'+c.id+'">✕</button></div></div>'
+     +'<div class="chips" style="margin-top:11px">'
+       +'<span class="pill '+(c.status==='confirmed'?'good':c.status==='passed'?'':'warn')+'">'+esc(CAST_STATUS[c.status]||'Idea')+'</span>'
+       +'<span class="pill">'+scenes.length+' scene'+(scenes.length===1?'':'s')+'</span>'
+       +(days.length?'<span class="pill">'+days.length+' shoot day'+(days.length===1?'':'s')+'</span>':'')
+       +(c.contract?'<span class="pill good">contract</span>':'<span class="pill warn">no contract</span>')
+       +(c.release?'<span class="pill good">release</span>':'')
+       +(c.fitting?'<span class="pill good">fitted</span>':'<span class="pill'+(cosOff?'':' warn')+'">no fitting</span>')+'</div>'
+     +(c.sizes?'<div class="tiny" style="margin-top:9px"><span class="muted">Sizes:</span> '+esc(c.sizes)+'</div>':'')
+     +(c.costume?'<div class="tiny" style="margin-top:5px"><span class="muted">Costume:</span> '+esc(c.costume)+'</div>':'')
+     +(c.notes?'<div class="tiny muted" style="margin-top:9px;white-space:pre-wrap">'+esc(c.notes)+'</div>':'')
+     +'</div>';}).join('')+'</div>';
+
+  const sd=p.days.filter(d=>d.type==='Shoot').sort((a,b)=>a.date.localeCompare(b.date));
+  if(sd.length){
+    h+='<div class="sect"><h2>Day out of days</h2><div class="line"></div>'
+     +'<span class="tiny muted">who is needed when</span></div>'
+     +'<div class="card" style="padding:0"><div class="scrollx"><table class="dod"><thead><tr><th>Character</th>'
+     +sd.map(d=>'<th>'+esc(d.date.slice(5))+'</th>').join('')+'<th>Days</th></tr></thead><tbody>'
+     +p.characters.map(c=>{
+       const scenes=p.scenes.filter(s=>(s.cast||[]).includes(c.id)).map(s=>s.id);
+       const cells=sd.map(d=>(d.sceneIds||[]).some(id=>scenes.includes(id)));
+       return '<tr><td>'+esc(c.name)+'</td>'+cells.map(x=>'<td class="'+(x?'x':'')+'">'+(x?'X':'')+'</td>').join('')
+        +'<td>'+cells.filter(Boolean).length+'</td></tr>';}).join('')
+     +'</tbody></table></div></div>';
+  }
+  return h;
+}
+
+/* ---------------- CREW ---------------- */
+function vCrew(){
+  const p=P(),t=crewTier,groups=crewFor(t),es=essentialStats(p);
+  const spec=requiredSpecialists(p);
+  let h='<div class="head"><h1>Crew</h1><div class="sub">What breaks if the chair is empty.</div></div>';
+  h+='<div class="seg" style="margin-bottom:8px">'+TIERS.map((x,i)=>
+    '<button data-act="tier" data-i="'+i+'" class="'+(i===t?'on':'')+'">'+esc(x.name)+'</button>').join('')+'</div>'
+   +'<div class="muted tiny" style="margin-bottom:16px">'+esc(TIERS[t].blurb)
+   +(t===p.tier?' · your project’s scale':' · <button class="btn sm gh" data-act="settier" data-i="'+t+'">Make this the project scale</button>')+'</div>';
+
+  if(spec.length){
+    const bad=spec.filter(x=>!x.held);
+    h+='<div class="card" style="margin-bottom:16px'+(bad.length?';border-color:color-mix(in srgb,var(--bad) 45%,var(--line))':'')+'">'
+     +'<h3>Your script demands these</h3>'
+     +'<div class="muted tiny" style="margin:5px 0 11px">Taken straight from the flags on your scenes. Not a budget question — if the scene exists, the hire exists.</div>'
+     +'<div class="chips">'+spec.map(x=>'<span class="pill '+(x.held?'good':'bad')+'">'+esc(x.role.n)
+       +' · sc '+esc(x.scenes.slice(0,3).join(', '))+'</span>').join('')+'</div></div>';
+  }
+
+  h+='<div class="card" style="margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">'
+   +'<div class="ring" style="--p:'+(es.need?Math.round(es.have/es.need*100):0)+'"><span>'+(es.need?Math.round(es.have/es.need*100):0)+'</span></div>'
+   +'<div style="flex:1;min-width:200px"><h3>'+es.have+' of '+es.need+' essential roles filled</h3>'
+   +'<div class="muted tiny" style="margin-top:3px">Pencilled and Confirmed count. Scale: '+esc(TIERS[p.tier].name)+'.</div></div>'
+   +'<div class="seg">'+[['all','All'],['ess','Essential'],['gaps','Gaps']].map(([k,l])=>
+     '<button data-act="crewfilter" data-f="'+k+'" class="'+(crewFilter===k?'on':'')+'">'+l+'</button>').join('')+'</div></div>';
+
+  let opened=false;
+  groups.forEach(g=>{
+    let roles=g.roles;
+    if(crewFilter==='ess')roles=roles.filter(r=>r.t[t]>=3);
+    if(crewFilter==='gaps')roles=roles.filter(r=>r.t[t]>=3&&!['confirmed','held'].includes((p.crew[r.id]||{}).status));
+    if(!roles.length)return;
+    const filled=g.roles.filter(r=>['confirmed','held'].includes((p.crew[r.id]||{}).status)).length;
+    const area=areaOfDept(g.dept),off=delegated(p,area),nm=ownerName(p,area);
+    const gaps=g.roles.filter(r=>r.t[t]>=3).length-filled;
+    const open=!off&&!opened&&gaps>0;if(open)opened=true;
+    h+='<details class="grp"'+(open?' open':'')+'><summary>'+esc(g.dept)
+     +(off?' <span class="pill good">'+esc(nm||'handed over')+'</span>':'')
+     +'<span class="n">'+filled+'/'+g.roles.length+' filled</span></summary>';
+    roles.forEach(r=>{
+      const lv=LEVELS[r.t[t]],c=p.crew[r.id]||{status:'needed',person:''};
+      const per=S.people.find(x=>x.id===c.person);
+      const req=spec.find(x=>x.rid===r.id);
+      h+='<div class="crole"><div class="main"><div class="nm">'+esc(r.n)
+       +' <span class="pill '+lv.cls+'">'+lv.lbl+'</span>'
+       +(req?'<span class="pill bad">your script needs this</span>':'')
+       +(r.id==='director'?'<span class="pill">you</span>':'')+'</div>'
+       +'<div class="why">'+esc(r.why)+'</div>'
+       +(r.skip==='-'?'':'<div class="skip">Without them: '+esc(r.skip)+'</div>')
+       +'</div><div class="assign">'
+       +'<select data-act="crew-person" data-r="'+r.id+'"><option value="">— nobody yet —</option>'
+         +S.people.map(pp=>'<option value="'+pp.id+'"'+(pp.id===c.person?' selected':'')+'>'+esc(pp.name)+'</option>').join('')+'</select>'
+       +'<select data-act="crew-status" data-r="'+r.id+'">'+Object.entries(CREW_STATUS).map(([k,l])=>
+         '<option value="'+k+'"'+(k===c.status?' selected':'')+'>'+esc(l)+'</option>').join('')+'</select>'
+       +(per&&per.phone?'<span class="pill">'+esc(per.phone)+'</span>':'')+'</div></div>';
+    });
+    h+='</details>';
+  });
+  h+='<div class="muted tiny" style="margin-top:20px;max-width:66ch"><b>Never economise on three, at any size:</b> the 1st AD (so you can direct instead of clock-watch), the sound mixer (audiences forgive grain, never mud), and whoever backs up the cards twice a night.</div>';
+  return h;
+}
+
+/* ---------------- LOCATIONS ---------------- */
+function vPlaces(){
+  const p=P(),off=delegated(p,'locations');
+  let h='<div class="head"><h1>Locations</h1><div class="sub">The boring practical questions, asked for you.</div></div>'
+   +'<div class="btnrow" style="margin-bottom:16px"><button class="btn pri" data-act="place-new">＋ Add location</button></div>';
+  if(off)h+='<div class="card" style="margin-bottom:16px"><div class="chips"><span class="pill good">Handed to '
+   +esc(ownerName(p,'locations')||'someone')+'</span></div>'
+   +'<div class="tiny muted" style="margin-top:8px">Here so you can see it, not so you can chase it.</div></div>';
+  if(!p.locations.length)return h+'<div class="empty">No locations yet. Add the one you already have in mind.</div>';
+
+  const by={};LOC_STATUS.forEach(s=>by[s]=[]);
+  p.locations.forEach(l=>(by[l.status]||by.Idea).push(l));
+  LOC_STATUS.forEach(s=>{
+    if(!by[s].length)return;
+    h+='<div class="sect"><h2>'+esc(s)+'</h2><div class="line"></div><span class="tiny muted">'+by[s].length+'</span></div>'
+     +'<div class="grid g2">'+by[s].map(l=>{
+      const done=(l.checks||[]).length,used=p.scenes.filter(x=>x.location===l.id).length;
+      return '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">'
+       +'<div><h2>'+esc(l.name)+'</h2><div class="muted tiny">'+esc(l.address||'no address')+'</div></div>'
+       +'<div class="acts" style="opacity:1"><button class="btn sm gh" data-act="place-photo" data-l="'+l.id+'">＋ Photo</button>'
+       +'<button class="btn sm gh" data-act="place-edit" data-l="'+l.id+'">Edit</button>'
+       +'<button class="btn sm gh danger" data-act="place-del" data-l="'+l.id+'">✕</button></div></div>'
+       +'<div class="chips" style="margin-top:11px">'
+         +'<span class="pill '+(s==='Locked'?'good':s==='Rejected'?'bad':'')+'">'+esc(s)+'</span>'
+         +(l.cost?'<span class="pill">'+esc(l.cost)+'</span>':'')
+         +(used?'<span class="pill">'+used+' scene'+(used>1?'s':'')+'</span>':'')
+         +'<span class="pill '+(done===LOC_CHECKS.length?'good':done>=4?'':'warn')+'">'+done+'/'+LOC_CHECKS.length+' checks</span></div>'
+       +'<div class="bar" style="margin-top:11px"><i style="width:'+(done/LOC_CHECKS.length*100)+'%"></i></div>'
+       +(done<LOC_CHECKS.length?'<div class="tiny muted" style="margin-top:8px">Still to confirm: '
+         +esc(LOC_CHECKS.filter(c=>!(l.checks||[]).includes(c)).join(', '))+'</div>':'')
+       +((l.photos||[]).length?'<div class="thumbs">'+l.photos.map(k=>'<div class="thumb"><img data-img="'+k+'" alt="">'
+         +'<div class="acts"><button data-act="photo-del" data-l="'+l.id+'" data-k="'+k+'">✕</button></div></div>').join('')+'</div>':'')
+       +(l.notes?'<div class="tiny" style="margin-top:10px;white-space:pre-wrap">'+esc(l.notes)+'</div>':'')+'</div>';
+    }).join('')+'</div>';
+  });
+  return h;
+}
+
+/* ---------------- SCHEDULE ---------------- */
+function vSched(){
+  const p=P();
+  const up=[];
+  p.days.forEach(d=>up.push({date:d.date,type:'day',o:d}));
+  p.tasks.filter(t=>!t.done&&t.due).forEach(t=>up.push({date:t.due,type:'task',o:t}));
+  up.sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+  const future=up.filter(x=>x.date>=today()),past=up.filter(x=>x.date<today());
+
+  let h='<div class="head"><h1>Schedule</h1><div class="sub">Assign scenes to a day; the rest is worked out.</div></div>'
+   +'<div class="btnrow" style="margin-bottom:16px"><button class="btn pri" data-act="day-new">＋ Add day</button>'
+   +'<button class="btn" data-act="task-new">＋ Dated task</button></div>';
+
+  if(past.length)h+='<div class="card" style="margin-bottom:16px"><h3>'+past.length+' date'+(past.length>1?'s have':' has')+' passed</h3>'
+   +'<div class="muted tiny" style="margin:5px 0 11px">Move them or bin them. Leaving them there just makes the list lie to you.</div>'
+   +past.slice(0,8).map(x=>'<div style="display:flex;gap:10px;align-items:center;padding:5px 0;flex-wrap:wrap">'
+     +'<span class="pill warn">'+esc(x.date)+'</span><span style="flex:1;min-width:160px">'
+     +esc(x.type==='day'?(x.o.type||'Shoot')+' day':x.o.title)+'</span>'
+     +(x.type==='task'?'<button class="btn sm" data-act="resched" data-t="'+x.o.id+'">Move to today</button>':'')+'</div>').join('')+'</div>';
+
+  if(!future.length)return h+'<div class="empty">Nothing dated ahead. Add your shoot days once the 1st AD has built the schedule.</div>';
+
+  h+=future.map(x=>{
+    const inD=Math.round((new Date(x.date)-new Date(today()))/864e5);
+    const when=inD===0?'today':inD===1?'tomorrow':'in '+inD+' days';
+    if(x.type!=='day')return '<div class="item"><div class="grow"><div class="ttl">'+esc(x.o.title)+'</div>'
+      +'<div class="tiny muted">'+esc(x.date)+' · '+when+'</div></div>'
+      +'<div class="acts"><button class="btn sm gh" data-act="task-edit" data-t="'+x.o.id+'">Edit</button></div></div>';
+    const d=x.o,L=dayLoad(p,d);
+    const locs=L.locs.map(id=>(p.locations.find(l=>l.id===id)||{}).name).filter(Boolean);
+    return '<div class="card" style="margin-top:10px"><div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">'
+     +'<div style="flex:1;min-width:220px"><h2>'+esc(d.type||'Shoot')+' · '+esc(d.date)+'</h2>'
+     +'<div class="muted tiny" style="margin-top:3px">'+when+' · call '+esc(d.call||'TBC')
+     +(d.wrap?' · wrap '+esc(d.wrap):'')+(locs.length?' · '+esc(locs.join(', ')):'')+'</div></div>'
+     +'<div class="acts" style="opacity:1">'
+     +(d.type==='Shoot'?'<button class="btn sm" data-act="callsheet" data-d="'+d.id+'">Call sheet</button>':'')
+     +'<button class="btn sm gh" data-act="day-edit" data-d="'+d.id+'">Edit</button>'
+     +'<button class="btn sm gh danger" data-act="day-del" data-d="'+d.id+'">✕</button></div></div>'
+     +(L.scenes.length?'<div class="chips" style="margin-top:11px">'
+       +L.scenes.map(s=>'<span class="pill">'+esc(s.no?'Sc '+s.no:s.heading)+'</span>').join('')
+       +'<span class="pill ess">'+L.setups+' setups</span>'
+       +'<span class="pill">'+L.pages.toFixed(1)+' pages</span>'
+       +'<span class="pill'+(L.over?' warn':'')+'">~'+Math.floor(L.mins/60)+'h'+(L.mins%60?' '+(L.mins%60)+'m':'')+' shooting</span>'
+       +L.cast.map(id=>'<span class="pill">'+esc(charName(p,id))+'</span>').join('')
+       +L.flags.map(f=>'<span class="pill cond">'+esc(f)+'</span>').join('')
+       +'</div>':'<div class="tiny muted" style="margin-top:10px">No scenes assigned yet.</div>')
+     +(L.over?'<div class="tiny" style="margin-top:10px;color:var(--warn)">That is more shooting than this day length allows once you account for lunch, resets and moves. Cut, or add a day.</div>':'')
+     +(d.notes?'<div class="tiny muted" style="margin-top:9px;white-space:pre-wrap">'+esc(d.notes)+'</div>':'')+'</div>';
+  }).join('');
+  return h;
+}
+
+/* ---------------- BUDGET & KIT ---------------- */
+function vBudget(){
+  const p=P(),off=delegated(p,'money-paperwork');
+  const total=parseFloat(p.budgetTotal)||0;
+  const planned=p.budget.reduce((a,b)=>a+(parseFloat(b.planned)||0),0);
+  const actual=p.budget.reduce((a,b)=>a+(parseFloat(b.actual)||0),0);
+  const cont=total*(p.contingencyPct||0)/100;
+  const spendable=total-cont;
+  const money=n=>(n||0).toLocaleString(undefined,{maximumFractionDigits:0});
+
+  let h='<div class="head"><h1>Budget &amp; kit</h1>'
+   +'<div class="sub">Enough to stop money being a background hum.</div></div>';
+  if(off)h+='<div class="card" style="margin-bottom:16px"><div class="chips"><span class="pill good">Handed to '
+   +esc(ownerName(p,'money-paperwork')||'someone')+'</span></div>'
+   +'<div class="tiny muted" style="margin-top:8px">Kept visible so you know roughly where you are.</div></div>';
+
+  h+='<div class="btnrow" style="margin-bottom:16px"><button class="btn pri" data-act="line-new">＋ Add line</button>'
+   +'<button class="btn" data-act="budget-set">Set the total</button></div>';
+
+  if(total)h+='<div class="card" style="margin-bottom:16px">'
+   +'<div class="grid g3">'+stat(money(total),'total you have')+stat(money(spendable),'spendable after contingency')
+   +stat(money(planned),'planned')+stat(money(actual),'actually spent')+'</div>'
+   +'<div class="bar" style="margin-top:14px"><i class="'+(planned>spendable?'over':'')+'" style="width:'
+   +Math.min(100,spendable?planned/spendable*100:0)+'%"></i></div>'
+   +'<div class="tiny muted" style="margin-top:8px">'
+   +(planned>spendable?'You are planning to spend more than you have once contingency is held back.':
+     'Contingency of '+money(cont)+' is held back and is not yours to spend.')+'</div></div>';
+
+  if(!p.budget.length)return h+'<div class="empty">Nothing budgeted yet. Start with the four that always cost more than you think: food, transport, insurance, and giving people petrol money.</div>';
+
+  const cats=[...new Set(p.budget.map(b=>b.cat))];
+  cats.forEach(c=>{
+    const rows=p.budget.filter(b=>b.cat===c);
+    const sub=rows.reduce((a,b)=>a+(parseFloat(b.actual)||parseFloat(b.planned)||0),0);
+    h+='<details class="grp"><summary>'+esc(c||'Other')+'<span class="n">'+money(sub)+' · '+rows.length+' lines</span></summary>'
+     +rows.map(b=>'<div class="prepitem"><div class="t"><b>'+esc(b.item)+'</b>'
+       +(b.who?' <span class="muted">· '+esc(b.who)+'</span>':'')
+       +'<div class="chips" style="margin-top:5px">'
+       +(b.planned?'<span class="pill">planned '+money(parseFloat(b.planned))+'</span>':'')
+       +(b.actual?'<span class="pill good">spent '+money(parseFloat(b.actual))+'</span>':'')
+       +(b.collect?'<span class="pill">collect '+esc(b.collect)+'</span>':'')
+       +(b.ret?'<span class="pill warn">return '+esc(b.ret)+'</span>':'')+'</div></div>'
+       +'<div class="acts"><button class="btn sm gh" data-act="line-edit" data-b="'+b.id+'">Edit</button>'
+       +'<button class="btn sm gh danger" data-act="line-del" data-b="'+b.id+'">✕</button></div></div>').join('')
+     +'</details>';
+  });
+  const ret=p.budget.filter(b=>b.collect||b.ret);
+  if(ret.length)h+='<div class="sect"><h2>Collections &amp; returns</h2><div class="line"></div></div>'
+   +'<div class="card" style="padding:0">'+ret.sort((a,b)=>String(a.collect||a.ret).localeCompare(String(b.collect||b.ret)))
+   .map(b=>'<div class="row"><div style="flex:1">'+esc(b.item)+(b.who?' <span class="muted tiny">· '+esc(b.who)+'</span>':'')+'</div>'
+     +(b.collect?'<span class="pill">out '+esc(b.collect)+'</span>':'')
+     +(b.ret?'<span class="pill warn">back '+esc(b.ret)+'</span>':'')+'</div>').join('')+'</div>';
+  return h;
+}
+
+/* ---------------- hub pages ---------------- */
+function hubCard(v,title,big,sub,ownerKey){
+  const p=P(),off=ownerKey&&delegated(p,ownerKey),nm=ownerKey?ownerName(p,ownerKey):'';
+  return '<button class="card" data-act="go" data-v="'+v+'" style="text-align:left;width:100%;cursor:pointer'
+   +(off?';opacity:.72':'')+'">'
+   +'<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">'
+   +'<h2>'+esc(title)+'</h2>'+(off?'<span class="pill good">'+esc(nm||'handed over')+'</span>':'')+'</div>'
+   +'<div class="n mono" style="font-size:26px;font-weight:660;margin-top:8px">'+big+'</div>'
+   +'<div class="tiny muted" style="margin-top:3px">'+esc(sub)+'</div></button>';
+}
+function vFilm(){
+  const p=P(),es=essentialStats(p);
+  const noLoc=p.scenes.filter(s=>!s.location).length;
+  const noShots=p.scenes.filter(s=>!p.shots.some(x=>x.scene===s.id)).length;
+  return '<div class="head"><h1>The film</h1></div>'
+  +'<div class="grid g2">'
+  +hubCard('scenes','Scenes',p.scenes.length,
+    noLoc?noLoc+' with no location yet':(p.scenes.length?'all have a location':'nothing broken down yet'),'script-lock-breakdown')
+  +hubCard('shots','Shot list',p.shots.length,
+    noShots?noShots+' scenes have no shots':setupCount(p.shots)+' setups planned','shot-list-storyboards')
+  +hubCard('board','Storyboard',p.shots.filter(s=>s.img).length,
+    'frames with a picture on them','shot-list-storyboards')
+  +hubCard('cast','Cast',p.characters.filter(c=>c.status==='confirmed').length+'/'+p.characters.length,
+    p.characters.filter(c=>c.status==='confirmed'&&!c.contract).length+' confirmed without a contract','casting')
+  +hubCard('crew','Crew',es.have+'/'+es.need,'essential roles filled','crew')
+  +hubCard('places','Locations',p.locations.filter(l=>l.status==='Locked').length+'/'+p.locations.length,
+    'locked and signed off','locations')
+  +'</div>';
+}
+function vShoot(){
+  const p=P();
+  const sd=p.days.filter(d=>d.type==='Shoot');
+  const next=p.days.filter(d=>d.date>=today()).sort((a,b)=>a.date.localeCompare(b.date))[0];
+  const over=sd.filter(d=>dayLoad(p,d).over).length;
+  const total=parseFloat(p.budgetTotal)||0;
+  const actual=p.budget.reduce((a,b)=>a+(parseFloat(b.actual)||0),0);
+  let h='<div class="head"><h1>The shoot</h1></div>'
+  +'<div class="grid g2">'
+  +hubCard('sched','Schedule',sd.length,
+    over?over+' day'+(over>1?'s look':' looks')+' overloaded':(sd.length?'days planned':'no shoot days yet'),'schedule-call-sheets')
+  +hubCard('budget','Budget & kit',(total?Math.round(actual/total*100)+'%':p.budget.length),
+    total?'of the budget spent':'lines tracked','money-paperwork')
+  +'</div>';
+  if(next){
+    const L=dayLoad(p,next);
+    h+='<div class="card" style="margin-top:14px"><h2>Next up · '+esc(next.type||'Shoot')+' '+esc(next.date)+'</h2>'
+     +'<div class="chips" style="margin-top:10px">'
+     +'<span class="pill">call '+esc(next.call||'TBC')+'</span>'
+     +'<span class="pill">'+L.scenes.length+' scenes</span><span class="pill">'+L.setups+' setups</span>'
+     +L.cast.map(id=>'<span class="pill">'+esc(charName(p,id))+'</span>').join('')+'</div>'
+     +'<div class="btnrow" style="margin-top:13px">'
+     +(next.type==='Shoot'?'<button class="btn pri" data-act="callsheet" data-d="'+next.id+'">Make the call sheet</button>':'')
+     +'<button class="btn" data-act="go" data-v="sched">Open schedule</button></div></div>';
+  }
+  return h;
+}
+
+/* ---------------- NETWORK ---------------- */
+function vPeople(){
+  let h='<div class="head"><h1>Network</h1><div class="sub">So you never have to remember any of it.</div></div>'
+   +'<div class="btnrow" style="margin-bottom:20px"><button class="btn pri" data-act="person-new">＋ Add person</button></div>';
+  if(!S.people.length)return h+'<div class="empty">Nobody yet. Start with three people you already know — even if they are not film people.</div>';
+  const stale=S.people.filter(p=>p.lastContact&&daysAgo(p.lastContact)>60);
+  if(stale.length)h+='<div class="card" style="margin-bottom:18px"><h3>Gone quiet</h3>'
+   +'<div class="muted tiny" style="margin:5px 0 11px">Two months or more. Not a guilt list — just names you probably meant to keep hold of.</div>'
+   +'<div class="chips">'+stale.map(p=>'<span class="pill warn">'+esc(p.name)+' · '+daysAgo(p.lastContact)+'d</span>').join('')+'</div></div>';
+  h+='<div class="grid g2">'+S.people.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(p=>{
+    const used=S.projects.filter(pr=>Object.values(pr.crew||{}).some(c=>c.person===p.id)
+      ||(pr.characters||[]).some(c=>c.actor===p.id)).length;
+    return '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">'
+     +'<div><h2>'+esc(p.name)+'</h2><div class="muted tiny">'+esc((p.roles||[]).join(' · ')||'role not set')
+     +(p.city?' · '+esc(p.city):'')+'</div></div>'
+     +'<div class="acts" style="opacity:1"><button class="btn sm gh" data-act="person-edit" data-p="'+p.id+'">Edit</button>'
+     +'<button class="btn sm gh danger" data-act="person-del" data-p="'+p.id+'">✕</button></div></div>'
+     +'<div class="chips" style="margin-top:11px">'+(p.rate?'<span class="pill">'+esc(p.rate)+'</span>':'')
+       +(used?'<span class="pill good">on '+used+' project'+(used>1?'s':'')+'</span>':'')
+       +(p.tags||'').split(',').filter(x=>x.trim()).map(x=>'<span class="pill">'+esc(x.trim())+'</span>').join('')+'</div>'
+     +(p.notes?'<div class="tiny muted" style="margin-top:10px;white-space:pre-wrap">'+esc(p.notes)+'</div>':'')
+     +'<div class="tiny muted" style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap">'
+       +(p.email?'<span>'+esc(p.email)+'</span>':'')+(p.phone?'<span>'+esc(p.phone)+'</span>':'')+'</div>'
+     +'<div class="btnrow" style="margin-top:12px"><button class="btn sm" data-act="contacted" data-p="'+p.id+'">Spoke today</button>'
+     +'<span class="tiny muted" style="align-self:center">'+(p.lastContact?daysAgo(p.lastContact)+' days ago':'never logged')+'</span></div></div>';
+  }).join('')+'</div>';
+  return h;
+}
+
+/* ---------------- PROJECTS ---------------- */
+function vProjects(){
+  let h='<div class="head"><h1>Projects</h1><div class="sub">Only one is ever on screen.</div></div>'
+   +'<div class="btnrow" style="margin-bottom:20px"><button class="btn pri" data-act="proj-new">＋ New project</button></div>'
+   +'<div class="grid g2">'+S.projects.map(p=>{
+    const es=essentialStats(p),ps=prepStats(p);
+    return '<div class="card"'+(p.id===S.activeProject?' style="border-color:color-mix(in srgb,var(--accent) 45%,var(--line))"':'')+'>'
+     +'<div style="display:flex;gap:14px;align-items:flex-start">'
+     +'<div style="text-align:center;min-width:3.2ch"><div class="mono" style="font-size:24px;font-weight:660;line-height:1.05">'+(ps.total-ps.done)+'</div>'
+     +'<div class="tiny muted" style="font-size:9.5px;letter-spacing:.5px">NEEDS YOU</div></div>'
+     +'<div style="flex:1;min-width:0"><h2>'+esc(p.title)+'</h2>'
+     +'<div class="muted tiny">'+esc(PHASES[p.phase]||PHASES[0])+' · '+esc(TIERS[p.tier].name)+'</div></div></div>'
+     +(p.logline?'<div class="tiny" style="margin-top:11px">'+esc(p.logline)+'</div>':'')
+     +(p.promise.to?'<div class="tiny muted" style="margin-top:8px">Promised to '+esc(p.promise.to)+'</div>':'')
+     +'<div class="chips" style="margin-top:11px"><span class="pill">'+p.scenes.length+' scenes</span>'
+     +'<span class="pill">'+p.shots.length+' shots</span><span class="pill">'+es.have+'/'+es.need+' crew</span></div>'
+     +'<div class="btnrow" style="margin-top:14px">'
+     +(p.id===S.activeProject?'<span class="pill good">open now</span>':'<button class="btn sm pri" data-act="proj-open" data-p="'+p.id+'">Open</button>')
+     +'<button class="btn sm gh" data-act="proj-edit" data-p="'+p.id+'">Edit</button>'
+     +(S.projects.length>1?'<button class="btn sm gh danger" data-act="proj-del" data-p="'+p.id+'">Delete</button>':'')
+     +'</div></div>';}).join('')+'</div>';
+  return h;
+}
+
+/* ---------------- GUIDE ---------------- */
+const card=(t,b)=>'<div class="card"><h2>'+t+'</h2><div style="margin-top:9px;font-size:13.5px;line-height:1.65;color:var(--dim)">'+b+'</div></div>';
+function vGuide(){
+  const p=P();
+  return '<div class="head"><h1>How to use this</h1><div class="sub">Why it is shaped like this, so the shape does not feel arbitrary.</div></div>'
+  +card('If you only do one thing','Open <b>Now</b>, press <b>Start 25 minutes</b>, and do the one task on the card. That is the entire app. Everything else exists so that card is always correct.')
+  +card('Handing things over','This is the important one. On <b>Prep</b>, every area has an owner. Set one to <b>Handed over</b> and its items stop counting against you, its department folds shut on the crew board, and its warnings go quiet.<br><br>'
+   +'Before you hand it over, <b>star</b> the two or three items that are genuinely your decision — approving a costume, signing off a hero prop. Starred items keep surfacing on your home screen under <b>Still needs you</b>, no matter who owns the area.<br><br>'
+   +'That is the whole trick: <b>delegate the area, keep the decisions.</b> Safety hires are the one exception — anything your scene flags demand stays visible whoever owns it, because that is not a workload question.')
+  +card('This app starts where the script ends','There is deliberately no writing tool. The script is locked — that is the assumption the whole app rests on. Re-opening it is a decision you make outside this app, not a mood you drift into inside it.')
+  +card('Shot list and storyboard are one list','Two views of the same shots. Add a shot in either and it appears in both. The list carries the fields the board cannot: setup grouping, and the priority that decides what gets dropped.<br><br>'
+   +'<b>Setups, not shots, eat the day.</b> Four shots from one camera position cost far less than one shot from four. If the estimate exceeds about seventy per cent of your day length, the schedule is lying to you.<br><br>'
+   +'<b>Shoot mode</b> strips the shot list to tick boxes and shot numbers for use on set, one-handed, standing up.')
+  +card('Built for how you actually work','<b>One thing at a time.</b> The home screen shows a single task — a list is a decision, and decisions are where the time goes.<br><br>'
+   +'<b>Brain dump</b> bottom-left, or press <b>C</b>. Type it, close it, carry on. Sorting happens later.<br><br>'
+   +'<b>Tasks sorted by fuel, not priority.</b> Match the task to the brain you have.<br><br>'
+   +'<b>Everything starts closed.</b> Departments, prep areas and budget categories are collapsed until you open one. You should never see more than one open thing at a time.')
+  +card('Built for the checking and the perfectionism','<b>Saving is stated, not implied</b> — the exact time sits bottom-left. Nothing to re-check.<br><br>'
+   +'<b>Nothing deletes instantly.</b> Everything offers Undo.<br><br>'
+   +'<b>Every list is finite and shows n of total.</b> They close.<br><br>'
+   +'<b>"Good enough — stop here"</b> marks a task deliberately finished rather than abandoned.<br><br>'
+   +'<b>No red badges.</b> A missed date is amber with a one-click reschedule.<br><br>'
+   +'<b>The last prep item</b> is the one that matters most for you: accepting out loud that the film will not be the one in your head. That is the entry fee for finishing.')
+  +card('iCloud backup','Click <b>iCloud</b> in the sidebar and choose <b>iCloud Drive → Slate</b>. Chrome remembers that folder and from then on Slate writes <code>data/slate.json</code> and every storyboard image into it automatically, a few seconds after each change. iCloud syncs it from there.<br><br>'
+   +'If you open Slate on another Mac pointed at the same folder and that copy is newer, it offers to load it. Safari cannot do this — use Chrome.'
+   +'<div class="btnrow" style="margin-top:12px"><button class="btn sm pri" data-act="cloud">Connect the folder</button>'
+   +'<button class="btn sm" data-act="storage">How much space am I using?</button></div>')
+  +card('Keyboard','<b>C</b> brain dump · <b>Esc</b> close anything · <b>⌘S</b> force a save · <b>⌘Enter</b> save the open form')
+  +card('Honest limits','No screenplay formatting, no automated stripboard, no real film budget, no multi-user sync. On a funded shoot your 1st AD will use proper scheduling software and you should let them. This is the layer that keeps your head straight.'
+   +'<div class="tiny" style="margin-top:10px;color:var(--dimmer)">'+esc(p.title)+' · '+p.scenes.length+' scenes · '
+   +p.shots.length+' shots · '+p.characters.length+' characters · '+prepStats(p).done+'/'+prepStats(p).total+' of your prep done.</div>');
+}
+
+/* ---------------- navigation (grouped, progressive) ---------------- */
+const NAVTREE=[
+ {k:'now',ic:'◉',n:'Now'},
+ {k:'tasks',ic:'☑',n:'Tasks'},
+ {k:'prep',ic:'✔',n:'Prep'},
+ {k:'film',ic:'▤',n:'The film',kids:[
+   {k:'scenes',n:'Scenes'},{k:'shots',n:'Shot list'},{k:'board',n:'Storyboard'},
+   {k:'cast',n:'Cast'},{k:'crew',n:'Crew'},{k:'places',n:'Locations'}]},
+ {k:'shoot',ic:'▦',n:'The shoot',kids:[
+   {k:'sched',n:'Schedule'},{k:'budget',n:'Budget & kit'}]}];
+const FOOT=[{k:'people',n:'Network'},{k:'projects',n:'Projects'},{k:'guide',n:'Help'}];
+
+function renderNav(){
+  const p=P(),ps=prepStats(p);
+  const counts={tasks:p.tasks.filter(t=>!t.done).length,prep:ps.total-ps.done};
+  let h='';
+  NAVTREE.forEach(n=>{
+    const inside=n.kids&&n.kids.some(k=>k.k===view);
+    const on=view===n.k||inside;
+    h+='<button data-act="go" data-v="'+n.k+'" class="'+(on?'on':'')+'">'
+      +'<span class="ic">'+n.ic+'</span>'+esc(n.n)
+      +(counts[n.k]?'<span class="cnt">'+counts[n.k]+'</span>':'')+'</button>';
+    if(on&&n.kids) h+=n.kids.map(k=>'<button data-act="go" data-v="'+k.k+'" class="'+(view===k.k?'on':'')+'"'
+      +' style="padding-left:38px;font-size:13.5px">'+esc(k.n)+'</button>').join('');
+  });
+  document.getElementById('nav').innerHTML=h;
+  document.getElementById('tabbar').innerHTML=NAVTREE.map(n=>{
+    const inside=n.kids&&n.kids.some(k=>k.k===view),on=view===n.k||inside;
+    return '<button data-act="go" data-v="'+n.k+'" class="'+(on?'on':'')+'">'
+      +'<span class="ic">'+n.ic+'</span>'+esc(n.n)
+      +(counts[n.k]?'<span class="cnt">'+counts[n.k]+'</span>':'')+'</button>';}).join('');
+  document.getElementById('navfoot').innerHTML=FOOT.map(f=>
+    '<button data-act="go" data-v="'+f.k+'" class="'+(view===f.k?'on':'')+'">'+esc(f.n)+'</button>').join('');
+  document.getElementById('projsel').innerHTML=
+    S.projects.map(x=>'<option value="'+x.id+'"'+(x.id===S.activeProject?' selected':'')+'>'+esc(x.title)+'</option>').join('')
+    +'<option value="__new">+ New project…</option>';
+}
+
+/* ---------------- render ---------------- */
+const VIEWS={now:vNow,prep:vPrep,tasks:vTasks,film:vFilm,shoot:vShoot,scenes:vScenes,shots:vShots,
+  board:vBoard,cast:vCast,crew:vCrew,places:vPlaces,sched:vSched,budget:vBudget,
+  people:vPeople,projects:vProjects,guide:vGuide};
+function render(){
+  if(!P()){S.projects.push(newProject());S.activeProject=S.projects[0].id;}
+  document.documentElement.dataset.theme=S.theme||'dark';
+  document.body.classList.toggle('shoot',shootMode&&view==='shots');
+  renderNav();
+  const parent=NAVTREE.find(n=>n.kids&&n.kids.some(k=>k.k===view));
+  const sub=parent?'<div class="subnav">'+parent.kids.map(k=>
+    '<button data-act="go" data-v="'+k.k+'" class="'+(view===k.k?'on':'')+'">'+esc(k.n)+'</button>').join('')+'</div>':'';
+  document.getElementById('main').innerHTML=sub+(VIEWS[view]||vNow)();
+  hydrateImages();updateCloudUI();updateSyncUI();
+  if(view==='board')wireDrop();
+}
+function go(v){view=v;window.scrollTo(0,0);render();}
+
+/* ---------------- forms ---------------- */
+function taskForm(t){
+  openForm(t?'Edit task':'New task',[
+    {k:'title',label:'What is the task?',ph:'Small enough to start in the next five minutes'},
+    {k:'notes',label:'Notes',type:'textarea',ph:'Optional. Leave it blank.'},
+    {k:'energy',label:'What does it take?',type:'select',opts:[['none','Not sure'],['low','Low fuel'],['mid','Normal'],['high','Full brain']]},
+    {k:'due',label:'Date (optional)',type:'date'}],t||{energy:'none'},o=>{
+    if(!o.title.trim())return;
+    if(t)Object.assign(t,o);else P().tasks.unshift({id:uid(),...o,done:false,created:today()});
+    save();render();},
+    t?null:'One task, one verb. If it needs more than one sitting it is a project, not a task — break it now while it is cheap.');
+}
+function ownerForm(key){
+  const p=P(),o=owner(p,key);
+  openForm('Who owns '+AREA_BY_KEY[key].area+'?',[
+    {k:'status',label:'Whose job is this?',type:'select',
+      opts:[['mine','Mine — I am doing this'],['shared','Shared — we both touch it'],['delegated','Handed over — not my problem']]},
+    {k:'person',label:'Who has it?',type:'select',opts:[['','— nobody yet —'],...S.people.map(x=>[x.id,x.name])]},
+    {k:'note',label:'What did you agree?',type:'textarea',ph:'They source and fit everything. I approve the final look for the last scene only.'}
+  ],o,v=>{p.owners[key]={...v};save();render();
+    if(v.status==='delegated')toast('Handed over. Star anything in that area you still want to see.');},
+  'Handing an area over removes its items from your checklist and quietens its warnings. Star individual items first if you still want them on your radar — that is how you stay generally aware without carrying it.');
+}
+function sceneForm(s){
+  const p=P();
+  openForm(s?'Edit scene':'New scene',[
+    {k:'no',label:'Scene number',ph:'12'},
+    {k:'intext',label:'Interior or exterior',type:'select',opts:['',...INT_EXT]},
+    {k:'heading',label:'Slugline',ph:'KITCHEN — MARIA’S FLAT'},
+    {k:'dayNight',label:'Time',type:'select',opts:['',...DAY_NIGHT]},
+    {k:'pages',label:'Page count',ph:'1.5'},
+    {k:'location',label:'Location',type:'select',opts:[['','— not set —'],...p.locations.map(l=>[l.id,l.name])]},
+    {k:'synopsis',label:'What happens',ph:'One line. What changes in this scene.'},
+    {k:'cast',label:'Who is in it',type:'checkgroup',opts:p.characters.map(c=>[c.id,c.name])},
+    {k:'props',label:'Props',ph:'the letter, a chipped mug, car keys'},
+    {k:'wardrobe',label:'Wardrobe notes',ph:'Maria still in yesterday’s coat'},
+    {k:'extras',label:'Extras / background',ph:'4 in the background'},
+    {k:'sfx',label:'Effects & specials',ph:'rain machine, practical blood'},
+    {k:'flags',label:'Needs a specialist',type:'checkgroup',opts:SCENE_FLAGS},
+    {k:'notes',label:'Notes',type:'textarea'}],s||{cast:[],flags:[]},o=>{
+    if(!(o.heading||o.no))return;
+    if(s)Object.assign(s,o);else p.scenes.push({id:uid(),...o});
+    p.scenes.sort((a,b)=>(parseFloat(a.no)||999)-(parseFloat(b.no)||999));
+    save();render();},
+    'The flags at the bottom turn into legal and safety requirements. Tick them honestly — the crew board will tell you who you now have to hire, and that warning never hides, even for areas you have handed over.');
+}
+function shotForm(f){
+  const p=P(),isNew=!f;
+  openForm(isNew?'New shot':'Shot '+shotNo(p,f),[
+    {k:'scene',label:'Scene',type:'select',opts:[['','— unassigned —'],...p.scenes.map(s=>[s.id,sceneLabel(s)])]},
+    {k:'desc',label:'What happens in the shot',type:'textarea',ph:'Maria puts the letter down. We stay on her hands.'},
+    {k:'size',label:'Shot size',type:'select',opts:SHOT_SIZE},
+    {k:'angle',label:'Angle',type:'select',opts:['',...SHOT_ANGLE]},
+    {k:'move',label:'Movement',type:'select',opts:SHOT_MOVE},
+    {k:'lens',label:'Lens / note',ph:'35mm'},
+    {k:'setup',label:'Setup',ph:'A — wide from the doorway',
+      hint:'Shots sharing a setup label share a camera position and lighting. This is what the day is actually costed in.'},
+    {k:'priority',label:'If the day runs out',type:'select',
+      opts:[['must','Must have — the scene does not work without it'],['should','Should have'],['spare','If there is time']]}
+  ],f||{scene:(shotScene!=='all'?shotScene:(boardScene!=='all'?boardScene:'')),size:'—',move:'Static',priority:'should'},o=>{
+    if(f)Object.assign(f,o);
+    else p.shots.push({id:uid(),...o,img:'',got:false,order:p.shots.length});
+    save();render();},
+    isNew?'Deciding the priority now, calmly, is the whole point. At nine at night on set you will not be in a state to choose.':null);
+}
+function charForm(c){
+  openForm(c?'Edit character':'New character',[
+    {k:'name',label:'Character name',ph:'MARIA'},
+    {k:'actor',label:'Played by',type:'select',opts:[['','— not cast —'],...S.people.map(x=>[x.id,x.name])]},
+    {k:'status',label:'Where is it up to?',type:'select',opts:Object.entries(CAST_STATUS)},
+    {k:'sizes',label:'Sizes',ph:'UK 10, shoe 6, 5ft 6'},
+    {k:'costume',label:'Costume',ph:'Green coat throughout, changes for sc 12'},
+    {k:'paperwork',label:'Paperwork done',type:'checkgroup',opts:[['contract','Contract signed'],['release','Image release signed'],['fitting','Costume fitting done']]},
+    {k:'notes',label:'Notes',type:'textarea',ph:'Availability, agent, what they were like in the room.'}
+  ],c?{...c,paperwork:[c.contract&&'contract',c.release&&'release',c.fitting&&'fitting'].filter(Boolean)}:{status:'idea',paperwork:[]},o=>{
+    const pw=o.paperwork||[];delete o.paperwork;
+    const rec={...o,contract:pw.includes('contract'),release:pw.includes('release'),fitting:pw.includes('fitting')};
+    if(c)Object.assign(c,rec);else P().characters.push({id:uid(),...rec});
+    save();render();});
+}
+function personForm(p){
+  openForm(p?'Edit person':'Add to network',[
+    {k:'name',label:'Name'},
+    {k:'roles',label:'What do they do?',type:'checkgroup',opts:PEOPLE_ROLES},
+    {k:'city',label:'Where are they based?'},{k:'email',label:'Email'},{k:'phone',label:'Phone'},
+    {k:'rate',label:'Rate / arrangement',ph:'£250/day, or "deferred"'},
+    {k:'tags',label:'Tags',ph:'reliable, owns kit, met at LSFF'},
+    {k:'notes',label:'Notes',type:'textarea',ph:'How you met. What they were like on the day.'}
+  ],p||{roles:[]},o=>{
+    if(!o.name.trim())return;
+    if(p)Object.assign(p,o);else S.people.push({id:uid(),...o,lastContact:today()});
+    save();render();});
+}
+function placeForm(l){
+  openForm(l?'Edit location':'New location',[
+    {k:'name',label:'Name it',ph:'The flat with the yellow kitchen'},
+    {k:'address',label:'Address / how to find it'},
+    {k:'status',label:'Status',type:'select',opts:LOC_STATUS},
+    {k:'cost',label:'Cost',ph:'free / £200 a day / bottle of wine'},
+    {k:'contact',label:'Who holds the keys',ph:'Name and number'},
+    {k:'hospital',label:'Nearest hospital',ph:'Goes straight onto the call sheet'},
+    {k:'checks',label:'Practically confirmed',type:'checkgroup',opts:LOC_CHECKS},
+    {k:'notes',label:'Notes',type:'textarea',ph:'What it gives you. What it costs you. What time the light is right.'}
+  ],l||{status:'Idea',checks:[]},o=>{
+    if(!o.name.trim())return;
+    if(l)Object.assign(l,o);else P().locations.push({id:uid(),...o,photos:[]});
+    save();render();},
+    l?null:'Ask the boring questions on the recce, not on the shoot day.');
+}
+function dayForm(d){
+  const p=P();
+  openForm(d?'Edit day':'New day',[
+    {k:'date',label:'Date',type:'date',def:today()},
+    {k:'type',label:'What kind of day',type:'select',opts:DAY_TYPE},
+    {k:'call',label:'Call time',ph:'07:00'},{k:'wrap',label:'Estimated wrap',ph:'19:00'},
+    {k:'sceneIds',label:'Scenes on this day',type:'checkgroup',opts:p.scenes.map(s=>[s.id,sceneLabel(s)])},
+    {k:'weather',label:'Weather note',ph:'Filled in the night before'},
+    {k:'notes',label:'Notes',type:'textarea',ph:'Anything that would ruin the day if forgotten.'}
+  ],d||{type:'Shoot',sceneIds:[]},o=>{
+    if(d)Object.assign(d,o);else p.days.push({id:uid(),...o});
+    save();render();},
+    d?null:'Tick the scenes and the app works out the setups, the pages, who is needed and whether the day is honest.');
+}
+function lineForm(b){
+  openForm(b?'Edit line':'New budget line',[
+    {k:'cat',label:'Category',type:'select',opts:BUDGET_CATS},
+    {k:'item',label:'What is it?',ph:'Camera package, 3 days'},
+    {k:'who',label:'Who is providing it?',ph:'Ade / Wex rental / borrowed from film school'},
+    {k:'planned',label:'Planned cost',type:'number'},
+    {k:'actual',label:'Actually spent',type:'number'},
+    {k:'collect',label:'Collect on',type:'date'},{k:'ret',label:'Return by',type:'date'},
+    {k:'notes',label:'Notes',type:'textarea'}],b||{cat:'Camera'},o=>{
+    if(!o.item.trim())return;
+    if(b)Object.assign(b,o);else P().budget.push({id:uid(),...o});
+    save();render();});
+}
+function projForm(p){
+  openForm(p?'Edit project':'New project',[
+    {k:'title',label:'Title'},{k:'logline',label:'Logline',type:'textarea',ph:'One sentence.'},
+    {k:'tier',label:'Scale',type:'select',opts:TIERS.map((t,i)=>[i,t.name])},
+    {k:'phase',label:'Phase',type:'select',opts:PHASES.map((x,i)=>[i,x])}],p||{tier:0,phase:0},o=>{
+    o.tier=+o.tier;o.phase=+o.phase;
+    if(p)Object.assign(p,o);
+    else{const np={...newProject(o.title),...o};S.projects.push(np);S.activeProject=np.id;crewTier=np.tier;}
+    save();render();});
+}
+function promiseForm(){
+  const p=P();
+  openForm('The promise',[
+    {k:'to',label:'Who did you promise?'},
+    {k:'what',label:'What did you tell them?',ph:'that I would make this and put them in it'},
+    {k:'why',label:'Why it matters that it was them',type:'textarea',ph:'They rearranged their life around it. They said yes before anyone else did.'}
+  ],p.promise,o=>{Object.assign(p.promise,o);save();render();},
+  'This is what has historically got you to the end. It is not sentimental to put it on the screen — it is the most reliable mechanism you have, so treat it like infrastructure.');
+}
+function stuckFlow(t){
+  const q=['What is the smallest version of this that would still count?',
+   'What would you do first if you only had ten minutes?',
+   'Is this actually one task, or three pretending to be one?',
+   'What is the bit you are avoiding? Name it in the box.',
+   'Who could answer this in one message instead of you solving it alone?',
+   'Is this actually yours, or should it be handed to somebody?'];
+  openForm('Stuck',[{k:'small',label:q[Math.floor(Math.random()*q.length)],type:'textarea',
+    ph:'Write the smaller thing. It becomes your next task.'}],{},o=>{
+    if(!o.small.trim())return;
+    P().tasks.unshift({id:uid(),title:o.small.trim(),energy:'low',done:false,created:today(),pinned:true});
+    if(t)t.pinned=false;save();render();
+    toast('That is the new one thing. Start it.','Start 10 min',()=>startFocus(10,o.small.trim()));},
+  'Stuck is almost always "the task is too big to see the first move". Shrink it until the first move is obvious. Shrinking is not failing.');
+}
+
+/* ---------------- images ---------------- */
+function pickFiles(fn){
+  const i=document.createElement('input');i.type='file';i.accept='image/*';i.multiple=true;
+  i.onchange=()=>fn([...i.files]);i.click();
+}
+async function addFrames(files){
+  files=files.filter(f=>f.type.startsWith('image/'));if(!files.length)return;
+  const p=P();toast('Processing '+files.length+' image'+(files.length>1?'s':'')+'…');
+  let n=0;
+  for(const f of files){
+    try{
+      const key='img_'+uid();await imgPut(key,await shrink(f,1400,0.72));
+      p.shots.push({id:uid(),scene:(boardScene==='all'?'':boardScene),setup:'',size:'—',angle:'',
+        move:'Static',lens:'',subject:'',desc:'',priority:'should',img:key,got:false,order:p.shots.length});
+      n++;
+    }catch(e){}
+  }
+  save();render();
+  toast(n+' shot'+(n===1?'':'s')+' added to the shot list. Give them a size and a priority when you have a minute.');
+}
+async function addPhotos(locId,files){
+  files=files.filter(f=>f.type.startsWith('image/'));if(!files.length)return;
+  const l=P().locations.find(x=>x.id===locId);if(!l)return;
+  l.photos=l.photos||[];
+  for(const f of files){try{const key='img_'+uid();await imgPut(key,await shrink(f,1400,0.72));l.photos.push(key);}catch(e){}}
+  save();render();toast('Recce photos added.');
+}
+function wireDrop(){
+  const d=document.getElementById('drop');if(!d)return;
+  ['dragenter','dragover'].forEach(e=>d.addEventListener(e,ev=>{ev.preventDefault();d.classList.add('hot');}));
+  ['dragleave','drop'].forEach(e=>d.addEventListener(e,ev=>{ev.preventDefault();d.classList.remove('hot');}));
+  d.addEventListener('drop',ev=>{if(ev.dataTransfer&&ev.dataTransfer.files)addFrames([...ev.dataTransfer.files]);});
+}
+
+/* ---------------- printing ---------------- */
+const PCSS='body{font:12.5px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;margin:24px;color:#111}'
+ +'h1{font-size:19px;margin:0 0 3px}h2{font-size:14px;margin:20px 0 7px;border-bottom:1px solid #bbb;padding-bottom:3px}'
+ +'.meta{color:#666;margin-bottom:16px;font-size:11.5px}table{width:100%;border-collapse:collapse;margin-bottom:10px}'
+ +'th,td{border:1px solid #ccc;padding:5px 7px;text-align:left;font-size:11.5px;vertical-align:top}'
+ +'th{background:#f0f0f0}.warnbox{border:2px solid #000;padding:9px 11px;margin:12px 0;font-size:12px}'
+ +'@media print{@page{margin:11mm}}';
+function popup(title,body,extraCss){
+  const w=window.open('','_blank');
+  if(!w)return toast('Your browser blocked the pop-up. Allow pop-ups for this page and try again.');
+  w.document.write('<!doctype html><meta charset="utf-8"><title>'+esc(title)+'</title><style>'
+   +PCSS+(extraCss||'')+'</style>'+body);
+  w.document.close();setTimeout(()=>w.print(),600);
+}
+async function printBoard(){
+  const p=P(),frames=p.shots.filter(f=>boardScene==='all'||f.scene===boardScene);
+  if(!frames.length)return toast('No shots to print.');
+  const imgs=await Promise.all(frames.map(f=>f.img?imgGet(f.img):Promise.resolve(null)));
+  const body='<h1>'+esc(p.title)+' — storyboard</h1><div class="meta">'+frames.length+' frames · '
+   +esc(new Date().toDateString())+'</div><div class="g">'
+   +frames.map((f,i)=>{const sc=p.scenes.find(s=>s.id===f.scene);
+     return '<figure><div class="n">'+esc(shotNo(p,f))+(sc?' · '+esc(sc.heading||''):'')+'</div>'
+      +(imgs[i]?'<img src="'+imgs[i]+'">':'<div class="blank">no image</div>')
+      +'<figcaption><b>'+esc([f.size!=='—'?f.size:'',f.angle,f.move,f.lens].filter(Boolean).join(' · '))+'</b><br>'
+      +esc(f.desc||'')+'</figcaption></figure>';}).join('')+'</div>';
+  popup(p.title+' storyboard',body,
+   '.g{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}figure{margin:0;break-inside:avoid;border:1px solid #ccc;border-radius:5px;overflow:hidden}'
+   +'figure .n{background:#eee;padding:4px 8px;font-weight:700;font-size:11px}figure img{width:100%;display:block}'
+   +'.blank{aspect-ratio:16/9;background:#eee;display:grid;place-items:center;color:#999;font-size:11px}'
+   +'figcaption{padding:6px 8px;font-size:11px;line-height:1.4}');
+}
+function printShots(){
+  const p=P(),list=p.shots.filter(f=>shotScene==='all'||f.scene===shotScene);
+  if(!list.length)return toast('No shots to print.');
+  const groups=p.scenes.map(s=>s.id).concat(['']);
+  const body='<h1>'+esc(p.title)+' — shot list</h1><div class="meta">'+list.length+' shots · '
+   +setupCount(list)+' setups · '+esc(new Date().toDateString())+'</div>'
+   +groups.map(sid=>{
+     const items=list.filter(f=>f.scene===sid);if(!items.length)return '';
+     const sc=p.scenes.find(s=>s.id===sid);
+     return '<h2>'+esc(sc?sceneLabel(sc):'Unassigned')+' — '+setupCount(items)+' setups</h2>'
+      +'<table><tr><th style="width:42px">Shot</th><th style="width:52px">Size</th><th style="width:70px">Move</th>'
+      +'<th style="width:70px">Setup</th><th>Description</th><th style="width:66px">Priority</th><th style="width:26px">✓</th></tr>'
+      +items.map(f=>'<tr><td><b>'+esc(shotNo(p,f))+'</b></td><td>'+esc(f.size==='—'?'':f.size)+'</td>'
+        +'<td>'+esc(f.move||'')+'</td><td>'+esc(f.setup||'')+'</td><td>'+esc(f.desc||'')+'</td>'
+        +'<td>'+esc(PRIORITY[f.priority].lbl)+'</td><td></td></tr>').join('')+'</table>';}).join('');
+  popup(p.title+' shot list',body);
+}
+function printDOD(){
+  const p=P(),sd=p.days.filter(d=>d.type==='Shoot').sort((a,b)=>a.date.localeCompare(b.date));
+  if(!sd.length||!p.characters.length)return toast('Add shoot days and characters first.');
+  const body='<h1>'+esc(p.title)+' — day out of days</h1><div class="meta">'+esc(new Date().toDateString())+'</div>'
+   +'<table><tr><th>Character</th><th>Played by</th>'+sd.map(d=>'<th>'+esc(d.date.slice(5))+'</th>').join('')+'<th>Days</th></tr>'
+   +p.characters.map(c=>{
+     const act=S.people.find(x=>x.id===c.actor);
+     const mine=p.scenes.filter(s=>(s.cast||[]).includes(c.id)).map(s=>s.id);
+     const cells=sd.map(d=>(d.sceneIds||[]).some(id=>mine.includes(id)));
+     return '<tr><td><b>'+esc(c.name)+'</b></td><td>'+esc(act?act.name:'')+'</td>'
+      +cells.map(x=>'<td style="text-align:center">'+(x?'<b>X</b>':'')+'</td>').join('')
+      +'<td style="text-align:center">'+cells.filter(Boolean).length+'</td></tr>';}).join('')+'</table>';
+  popup(p.title+' day out of days',body);
+}
+function printCallSheet(dayId){
+  const p=P(),d=p.days.find(x=>x.id===dayId);if(!d)return;
+  const L=dayLoad(p,d);
+  const sd=p.days.filter(x=>x.type==='Shoot').sort((a,b)=>a.date.localeCompare(b.date));
+  const dayNo=sd.findIndex(x=>x.id===d.id)+1;
+  const locs=L.locs.map(id=>p.locations.find(l=>l.id===id)).filter(Boolean);
+  const crewRows=Object.entries(p.crew).filter(([,c])=>c.person&&['confirmed','held'].includes(c.status))
+    .map(([rid,c])=>{const per=S.people.find(x=>x.id===c.person);
+      return {role:(ROLE_BY_ID[rid]||{}).n||rid,name:per?per.name:'',phone:per?per.phone||'':''};});
+  const safety=[...new Set(L.flags)].map(f=>{
+    const roles=(FLAG_ROLES[f]||[]).map(r=>(ROLE_BY_ID[r]||{}).n).filter(Boolean);
+    return f+(roles.length?' — '+roles.join(' and ')+' must be present':'');});
+
+  const body='<h1>'+esc(p.title)+'</h1>'
+   +'<div class="meta">CALL SHEET · '+esc(d.type||'Shoot')+' day '+dayNo+' of '+sd.length+' · '+esc(d.date)
+   +' · issued '+esc(new Date().toDateString())+'</div>'
+   +'<table><tr><th style="width:110px">Unit call</th><td><b style="font-size:15px">'+esc(d.call||'TBC')+'</b></td>'
+   +'<th style="width:110px">Est. wrap</th><td>'+esc(d.wrap||'TBC')+'</td></tr>'
+   +'<tr><th>Location</th><td colspan="3">'+(locs.length?locs.map(l=>esc(l.name)+(l.address?' — '+esc(l.address):'')).join('<br>'):'TBC')+'</td></tr>'
+   +'<tr><th>Nearest hospital</th><td colspan="3">'+esc(locs.map(l=>l.hospital).filter(Boolean).join(' / ')||'TO BE CONFIRMED BEFORE CALL')+'</td></tr>'
+   +'<tr><th>Weather</th><td colspan="3">'+esc(d.weather||'—')+'</td></tr>'
+   +'<tr><th>Day totals</th><td colspan="3">'+L.scenes.length+' scenes · '+L.setups+' setups · '
+   +L.pages.toFixed(1)+' pages · roughly '+Math.floor(L.mins/60)+'h '+(L.mins%60)+'m of shooting</td></tr></table>'
+   +(safety.length?'<div class="warnbox"><b>SAFETY — this day includes:</b><br>'+safety.map(esc).join('<br>')+'</div>':'')
+   +(L.over?'<div class="warnbox"><b>NOTE:</b> the shot list for this day exceeds the scheduled hours. Agree with the 1st AD what drops before the call.</div>':'')
+   +'<h2>Scenes</h2><table><tr><th style="width:44px">Sc</th><th style="width:56px">I/E</th><th style="width:60px">D/N</th>'
+   +'<th>Synopsis</th><th style="width:46px">Pages</th><th>Cast</th></tr>'
+   +L.scenes.map(s=>'<tr><td><b>'+esc(s.no||'')+'</b></td><td>'+esc(s.intext||'')+'</td><td>'+esc(s.dayNight||'')+'</td>'
+     +'<td>'+esc(s.synopsis||s.heading||'')+'</td><td>'+esc(s.pages||'')+'</td>'
+     +'<td>'+esc((s.cast||[]).map(id=>charName(p,id)).join(', '))+'</td></tr>').join('')+'</table>'
+   +'<h2>Cast</h2><table><tr><th>Character</th><th>Played by</th><th style="width:80px">Phone</th>'
+   +'<th style="width:64px">Pick-up</th><th style="width:64px">On set</th></tr>'
+   +(L.cast.length?L.cast.map(id=>{const c=p.characters.find(x=>x.id===id)||{};
+     const act=S.people.find(x=>x.id===c.actor);
+     return '<tr><td><b>'+esc(c.name||'')+'</b></td><td>'+esc(act?act.name:'NOT CAST')+'</td>'
+      +'<td>'+esc(act?act.phone||'':'')+'</td><td></td><td>'+esc(d.call||'')+'</td></tr>';}).join('')
+     :'<tr><td colspan="5">No cast assigned to these scenes.</td></tr>')+'</table>'
+   +'<h2>Crew</h2><table><tr><th style="width:190px">Role</th><th>Name</th><th style="width:110px">Phone</th><th style="width:60px">Call</th></tr>'
+   +(crewRows.length?crewRows.map(c=>'<tr><td>'+esc(c.role)+'</td><td>'+esc(c.name)+'</td><td>'+esc(c.phone)+'</td><td>'
+     +esc(d.call||'')+'</td></tr>').join(''):'<tr><td colspan="4">No crew confirmed yet.</td></tr>')+'</table>'
+   +(d.notes?'<h2>Notes</h2><div>'+esc(d.notes).replace(/\n/g,'<br>')+'</div>':'')
+   +'<div class="meta" style="margin-top:18px">Everyone: confirm receipt. Any changes come from the 1st AD, not from anyone else.</div>';
+  popup(p.title+' call sheet '+d.date,body);
+}
+
+/* ---------------- backup ---------------- */
+function download(name,text){
+  const b=new Blob([text],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+}
+async function doExport(){
+  toast('Gathering storyboard images…');await prune();
+  const images={};for(const k of await imgKeys())if(String(k).startsWith('img_'))images[k]=await imgGet(k);
+  const json=JSON.stringify({...S,__images:images,__exported:nowISO()});
+  download('slate-backup-'+today()+'.json',json);
+  S.lastManualBackup=nowISO();save();
+  toast('Backup downloaded ('+(json.length/1048576).toFixed(1)+' MB). Keep it somewhere that is not this laptop.');
+}
+function doImport(){
+  const i=document.createElement('input');i.type='file';i.accept='.json,application/json';
+  i.onchange=()=>{const f=i.files[0];if(!f)return;const r=new FileReader();
+    r.onload=async()=>{try{
+      const d=JSON.parse(r.result);if(!d.projects)throw 0;
+      const imgs=d.__images||{};delete d.__images;delete d.__exported;
+      for(const k in imgs)await imgPut(k,imgs[k]);
+      const old=S;S=d;S.projects=S.projects.map(migrate);save();render();
+      toast('Restored from backup','Undo',()=>{S=old;save();render();});
+    }catch(e){toast('That file did not look like a Slate backup.');}};
+    r.readAsText(f);};
+  i.click();
+}
+async function storageReport(){
+  const dropped=await prune();const keys=(await imgKeys()).filter(k=>String(k).startsWith('img_'));
+  let bytes=0;for(const k of keys){const v=await imgGet(k);if(v)bytes+=v.length;}
+  let q='';try{if(navigator.storage&&navigator.storage.estimate){const e=await navigator.storage.estimate();
+    if(e.quota)q=' of about '+(e.quota/1073741824).toFixed(1)+' GB available';}}catch(e){}
+  toast(keys.length+' images using '+(bytes/1048576).toFixed(1)+' MB'+q
+    +(dropped?' · tidied away '+dropped+' from deleted shots':'')+'.');
+}
+
+
+/* ============ Supabase sync (plain REST — no library, works offline-first) ============ */
+const SB_KEY='slate.sb';
+let sb=null,sbState='off',sbTimer=null,sbBusy=false;
+function sbLoad(){try{sb=JSON.parse(localStorage.getItem(SB_KEY))||null;}catch(e){sb=null;}
+  if(sb&&sb.url&&sb.anon)sbState=sb.token?'on':'signedout';}
+function sbSave(){try{localStorage.setItem(SB_KEY,JSON.stringify(sb));}catch(e){}}
+function sbOn(){return sb&&sb.url&&sb.anon&&sb.token;}
+
+async function sbCall(path,opts,noAuth){
+  opts=opts||{};
+  const h=Object.assign({'apikey':sb.anon,'Content-Type':'application/json'},opts.headers||{});
+  if(!noAuth&&sb.token)h['Authorization']='Bearer '+sb.token;
+  let r=await fetch(sb.url+path,Object.assign({},opts,{headers:h}));
+  if(r.status===401&&!noAuth&&sb.refresh&&await sbRefresh()){
+    h['Authorization']='Bearer '+sb.token;
+    r=await fetch(sb.url+path,Object.assign({},opts,{headers:h}));
+  }
+  return r;
+}
+async function sbRefresh(){
+  try{
+    const r=await fetch(sb.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',
+      headers:{'apikey':sb.anon,'Content-Type':'application/json'},
+      body:JSON.stringify({refresh_token:sb.refresh})});
+    if(!r.ok)return false;
+    const d=await r.json();
+    sb.token=d.access_token;sb.refresh=d.refresh_token;sb.uid=(d.user||{}).id||sb.uid;sbSave();
+    return true;
+  }catch(e){return false;}
+}
+async function sbSendCode(email){
+  const r=await sbCall('/auth/v1/otp',{method:'POST',
+    body:JSON.stringify({email:email,create_user:true})},true);
+  if(!r.ok)throw new Error((await r.text()).slice(0,140));
+}
+async function sbVerify(email,code){
+  const r=await sbCall('/auth/v1/verify',{method:'POST',
+    body:JSON.stringify({email:email,token:code,type:'email'})},true);
+  if(!r.ok)throw new Error('That code was not accepted.');
+  const d=await r.json();
+  sb.token=d.access_token;sb.refresh=d.refresh_token;sb.email=email;
+  sb.uid=(d.user||{}).id;sbState='on';sbSave();
+}
+function sbSignOut(){if(sb){sb.token=sb.refresh=sb.uid=null;sbSave();}sbState='signedout';render();}
+
+async function sbPull(){
+  if(!sbOn())return null;
+  const r=await sbCall('/rest/v1/slate?select=data,rev,updated_at&limit=1');
+  if(!r.ok)return null;
+  const rows=await r.json();
+  return rows[0]||null;
+}
+async function sbPush(){
+  if(!sbOn()||sbBusy)return;
+  sbBusy=true;
+  try{
+    S.rev=(S.rev||0)+1;
+    const r=await sbCall('/rest/v1/slate',{method:'POST',
+      headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify({user_id:sb.uid,data:S,rev:S.rev,updated_at:nowISO()})});
+    if(r.ok){S.syncedRev=S.rev;S.syncedAt=nowISO();sbState='on';
+      try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
+      sbPushImages();}
+    else sbState='error';
+  }catch(e){sbState='error';}
+  sbBusy=false;updateSyncUI();
+}
+function sbQueue(){if(!sbOn())return;clearTimeout(sbTimer);sbTimer=setTimeout(sbPush,8000);}
+
+/* images ride in Supabase Storage, one object per key, uploaded once */
+async function sbPushImages(){
+  if(!sbOn())return;
+  S.sentImages=S.sentImages||[];
+  for(const k of liveKeys()){
+    if(S.sentImages.includes(k))continue;
+    const data=await imgGet(k);if(!data)continue;
+    try{
+      const blob=await(await fetch(data)).blob();
+      const r=await fetch(sb.url+'/storage/v1/object/slate-images/'+sb.uid+'/'+k+'.jpg',
+        {method:'POST',headers:{'apikey':sb.anon,'Authorization':'Bearer '+sb.token,
+          'Content-Type':'image/jpeg','x-upsert':'true'},body:blob});
+      if(r.ok||r.status===409)S.sentImages.push(k);
+    }catch(e){}
+  }
+  try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
+}
+async function sbGetImage(k){
+  if(!sbOn())return null;
+  try{
+    const r=await fetch(sb.url+'/storage/v1/object/authenticated/slate-images/'+sb.uid+'/'+k+'.jpg',
+      {headers:{'apikey':sb.anon,'Authorization':'Bearer '+sb.token}});
+    if(!r.ok)return null;
+    const b=await r.blob();
+    return await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(b);});
+  }catch(e){return null;}
+}
+async function sbSync(silent){
+  if(!sbOn())return;
+  const remote=await sbPull();
+  if(!remote){await sbPush();return;}
+  const localDirty=(S.rev||0)!==(S.syncedRev||0);
+  const remoteNewer=!S.syncedAt||remote.updated_at>S.syncedAt;
+  if(remoteNewer&&localDirty){
+    sbState='conflict';updateSyncUI();
+    toast('This device and the other one have both changed since they last agreed.','Choose',()=>{
+      actionSheet('Two versions exist',[
+        {n:'Keep what is on THIS device',act:'sync-keep-local'},
+        {n:'Take the other device’s version',act:'sync-take-remote'}]);
+    });
+    return;
+  }
+  if(remoteNewer){await sbAdopt(remote);if(!silent)toast('Updated from your other device.');}
+  else if(localDirty)await sbPush();
+  else{sbState='on';updateSyncUI();}
+}
+async function sbAdopt(remote){
+  const d=remote.data;if(!d||!d.projects)return;
+  S=d;S.projects=S.projects.map(migrate);
+  S.rev=remote.rev;S.syncedRev=remote.rev;S.syncedAt=remote.updated_at;
+  try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
+  sbState='on';render();
+}
+function updateSyncUI(){
+  const t=document.getElementById('synctxt'),d=document.getElementById('syncdot');
+  if(!t)return;
+  const m={off:['Sync not set up','var(--dimmer)'],signedout:['Sync · sign in','var(--warn)'],
+    on:[S.syncedAt?'Synced '+new Date(S.syncedAt).toTimeString().slice(0,5):'Synced','var(--good)'],
+    conflict:['Two versions — tap','var(--warn)'],error:['Sync failed','var(--bad)']};
+  const v=m[sbState]||m.off;t.textContent=v[0];d.style.background=v[1];
+}
+function syncSetup(){
+  openForm('Connect sync',[
+    {k:'url',label:'Supabase project URL',ph:'https://abcdefgh.supabase.co',
+      hint:'Supabase dashboard → Project Settings → Data API → Project URL'},
+    {k:'anon',label:'Anon public key',ph:'eyJhbGciOi…',
+      hint:'Same page, "anon public". It is safe in this file — your data is protected by row-level security, not by hiding this.'}
+  ],sb||{},o=>{
+    if(!o.url.trim()||!o.anon.trim())return;
+    sb=Object.assign(sb||{},{url:o.url.trim().replace(/\/+$/,''),anon:o.anon.trim()});
+    sbState='signedout';sbSave();render();syncSignIn();
+  },'One-off setup. Do this on the Mac first, then repeat the same two values on your phone and sign in with the same email — that is what ties the two together.');
+}
+function syncSignIn(){
+  openForm('Sign in',[{k:'email',label:'Your email',type:'email',ph:'you@example.com'}],
+    {email:(sb&&sb.email)||S.email||''},async o=>{
+    const em=o.email.trim();if(!em)return;
+    toast('Sending a code to '+em+'…');
+    try{await sbSendCode(em);}catch(e){return toast('Could not send the code. Check the URL and key.');}
+    openForm('Check your email',[{k:'code',label:'Six-digit code',ph:'123456'}],{},async v=>{
+      try{await sbVerify(em,v.code.trim());await sbSync(true);render();
+        toast('Signed in. This device is now in sync.');}
+      catch(e){toast(e.message||'That code was not accepted.');}
+    },'Codes expire after an hour. Use the same email on every device.');
+  },'You get a six-digit code by email — no password, and no link that would open in the wrong app.');
+}
+
+/* ---------------- events ---------------- */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const a=b.dataset.act,p=P();
+  const task=id=>p.tasks.find(t=>t.id===id),shot=id=>p.shots.find(f=>f.id===id);
+  switch(a){
+    case 'go':closeModal();go(b.dataset.v);break;
+    case 'more':showMore=!showMore;render();break;
+    case 'prep-open':prepOpen=b.dataset.a;showAllArea=false;render();break;
+    case 'prep-close':prepOpen=null;render();break;
+    case 'showarea':showAllArea=!showAllArea;render();break;
+    case 'triage':showMore=true;render();break;
+    case 'onemore':actionSheet('Other ways to start',[
+      {n:'Just 10 minutes',act:'focus',m:'10',d:b.dataset.t},
+      {n:'Good enough — stop here',act:'enough',d:b.dataset.t},
+      {n:'I am stuck',act:'stuck',d:b.dataset.t},
+      {n:'Edit this task',act:'task-edit',d:b.dataset.t}]);break;
+    case 'theme':S.theme=(S.theme==='dark'?'light':'dark');save();render();break;
+    case 'cloud':cloudState==='needperm'?ensurePerm(dirHandle,true).then(ok=>{if(ok){cloudState='on';cloudWrite();}updateCloudUI();}):cloudConnect();break;
+    case 'export':doExport();break;
+    case 'import':doImport();break;
+    case 'storage':storageReport();break;
+    case 'topmore':actionSheet('Backup, sync & settings',[
+      {n:(sbOn()?'✓ Sync is on — '+(sb.email||'signed in'):'Set up sync with my phone'),act:'sync'},
+      {n:(cloudState==='on'?'✓ iCloud folder connected':'Connect the iCloud backup folder'),act:'cloud'},
+      {n:'Back up to a file',act:'export'},{n:'Restore from a file',act:'import'},
+      {n:'Network',act:'go2',d:'people'},{n:'Projects',act:'go2',d:'projects'},
+      {n:'How to use this',act:'go2',d:'guide'},{n:'Light / dark',act:'theme'}]);break;
+    case 'go2':closeModal();go(b.dataset.t);break;
+    case 'sync':closeModal();(!sb||!sb.url)?syncSetup():(sbOn()?actionSheet('Sync',[
+      {n:'Sync now',act:'sync-now'},{n:'Change project details',act:'sync-setup'},
+      {n:'Sign out of sync',act:'sync-out'}]):syncSignIn());break;
+    case 'sync-now':closeModal();toast('Syncing…');sbSync();break;
+    case 'sync-setup':closeModal();syncSetup();break;
+    case 'sync-out':closeModal();sbSignOut();break;
+    case 'sync-keep-local':closeModal();S.syncedAt=nowISO();sbPush();toast('Kept this device. The other one will catch up.');break;
+    case 'sync-take-remote':closeModal();sbPull().then(r=>{if(r)sbAdopt(r);toast('Took the other version.');});break;
+    case 'capture':
+      openForm('Brain dump',[{k:'text',label:'Get it out of your head',type:'textarea',ph:'Anything. It does not have to be a task.'}],{},o=>{
+        if(!o.text.trim())return;
+        S.inbox.unshift({id:uid(),text:o.text.trim(),created:today(),done:false});save();render();toast('Caught. Sort it later.');},
+        'Do not tidy it. Do not decide what it is. Capture now, decide later when you have the bandwidth.');break;
+    case 'focus':closeModal();{const t=task(b.dataset.t);startFocus(+b.dataset.m,t?t.title:'Focus');break;}
+    case 'focus-stop':stopFocus(false);break;
+    case 'task-new':taskForm(null);break;
+    case 'task-edit':closeModal();taskForm(task(b.dataset.t));break;
+    case 'task-del':softDelete('Task',p.tasks,p.tasks.findIndex(t=>t.id===b.dataset.t));break;
+    case 'toggle-task':{const t=task(b.dataset.t);t.done=!t.done;t.doneAt=t.done?today():null;
+      if(t.done)t.pinned=false;streakCheck();save();render();break;}
+    case 'enough':closeModal();{const t=task(b.dataset.t);t.done=true;t.enough=true;t.doneAt=today();t.pinned=false;
+      save();render();toast('Marked finished on purpose. That is different from abandoned.');break;}
+    case 'pin':{const t=task(b.dataset.t);const was=t.pinned;p.tasks.forEach(x=>x.pinned=false);t.pinned=!was;save();render();break;}
+    case 'skip-one':{const t=task(b.dataset.t);const i=p.tasks.indexOf(t);
+      p.tasks.splice(i,1);p.tasks.push(t);p.tasks.forEach(x=>x.pinned=false);save();render();break;}
+    case 'stuck':closeModal();stuckFlow(task(b.dataset.t));break;
+    case 'resched':{const t=task(b.dataset.t);t.due=today();save();render();break;}
+    case 'inbox-task':{const it=S.inbox.find(x=>x.id===b.dataset.i);
+      p.tasks.unshift({id:uid(),title:it.text,energy:'none',done:false,created:today()});it.done=true;save();render();break;}
+    case 'inbox-person':{const it=S.inbox.find(x=>x.id===b.dataset.i);
+      S.people.push({id:uid(),name:it.text,roles:[],lastContact:today()});it.done=true;save();render();break;}
+    case 'inbox-place':{const it=S.inbox.find(x=>x.id===b.dataset.i);
+      p.locations.push({id:uid(),name:it.text,status:'Idea',checks:[],photos:[]});it.done=true;save();render();break;}
+    case 'inbox-del':softDelete('Note',S.inbox,S.inbox.findIndex(x=>x.id===b.dataset.i));break;
+    case 'prep-tick':{const k=b.dataset.k;if(p.prep[k])delete p.prep[k];else p.prep[k]=today();save();render();break;}
+    case 'prep-star':{const k=b.dataset.k;if(p.needsMe[k])delete p.needsMe[k];else p.needsMe[k]=1;save();render();break;}
+    case 'prep-task':{const [ak,ii]=b.dataset.k.split('.');const A=AREA_BY_KEY[ak];
+      p.tasks.unshift({id:uid(),title:A.items[ii],energy:'none',done:false,created:today(),notes:'From prep: '+A.area});
+      save();render();toast('Added to tasks.','Open tasks',()=>go('tasks'));break;}
+    case 'own':ownerForm(b.dataset.a);break;
+    case 'showall':{const k=b.dataset.a;AREA_BY_KEY[k].items.forEach((_,i)=>p.needsMe[k+'.'+i]=1);save();render();break;}
+    case 'scene-new':sceneForm(null);break;
+    case 'scene-edit':sceneForm(p.scenes.find(s=>s.id===b.dataset.s));break;
+    case 'scene-del':{const id=b.dataset.s;p.shots.forEach(f=>{if(f.scene===id)f.scene='';});
+      p.days.forEach(d=>d.sceneIds=(d.sceneIds||[]).filter(x=>x!==id));
+      softDelete('Scene',p.scenes,p.scenes.findIndex(s=>s.id===id));break;}
+    case 'shots-scene':shotScene=b.dataset.s;go('shots');break;
+    case 'board-scene':boardScene=b.dataset.s;go('board');break;
+    case 'shootmode':shootMode=!shootMode;render();break;
+    case 'shot-new':shotForm(null);break;
+    case 'shot-edit':shotForm(shot(b.dataset.f));break;
+    case 'shot-got':{const f=shot(b.dataset.f);f.got=!f.got;save();render();break;}
+    case 'shot-del':softDelete('Shot',p.shots,p.shots.findIndex(f=>f.id===b.dataset.f));break;
+    case 'shot-print':printShots();break;
+    case 'frame-upload':pickFiles(addFrames);break;
+    case 'frame-move':{const f=shot(b.dataset.f);const i=p.shots.indexOf(f),j=i+(+b.dataset.d);
+      if(j<0||j>=p.shots.length)break;p.shots.splice(i,1);p.shots.splice(j,0,f);save();render();break;}
+    case 'board-print':printBoard();break;
+    case 'char-new':charForm(null);break;
+    case 'char-edit':charForm(p.characters.find(c=>c.id===b.dataset.c));break;
+    case 'char-del':{const id=b.dataset.c;p.scenes.forEach(s=>s.cast=(s.cast||[]).filter(x=>x!==id));
+      softDelete('Character',p.characters,p.characters.findIndex(c=>c.id===id));break;}
+    case 'dod-print':printDOD();break;
+    case 'promise':promiseForm();break;
+    case 'told':p.promise.told=today();save();render();toast('Logged. That is the mechanism working.');break;
+    case 'phase':p.phase=+b.dataset.p;save();render();break;
+    case 'tier':crewTier=+b.dataset.i;render();break;
+    case 'settier':p.tier=+b.dataset.i;save();render();break;
+    case 'crewfilter':crewFilter=b.dataset.f;render();break;
+    case 'person-new':personForm(null);break;
+    case 'person-edit':personForm(S.people.find(x=>x.id===b.dataset.p));break;
+    case 'person-del':softDelete('Person',S.people,S.people.findIndex(x=>x.id===b.dataset.p));break;
+    case 'contacted':{const per=S.people.find(x=>x.id===b.dataset.p);per.lastContact=today();save();render();break;}
+    case 'place-new':placeForm(null);break;
+    case 'place-edit':placeForm(p.locations.find(x=>x.id===b.dataset.l));break;
+    case 'place-del':softDelete('Location',p.locations,p.locations.findIndex(x=>x.id===b.dataset.l));break;
+    case 'place-photo':{const id=b.dataset.l;pickFiles(fs=>addPhotos(id,fs));break;}
+    case 'photo-del':{const l=p.locations.find(x=>x.id===b.dataset.l);
+      l.photos=l.photos.filter(k=>k!==b.dataset.k);save();render();break;}
+    case 'day-new':dayForm(null);break;
+    case 'day-edit':dayForm(p.days.find(x=>x.id===b.dataset.d));break;
+    case 'day-del':softDelete('Day',p.days,p.days.findIndex(x=>x.id===b.dataset.d));break;
+    case 'callsheet':printCallSheet(b.dataset.d);break;
+    case 'line-new':lineForm(null);break;
+    case 'line-edit':lineForm(p.budget.find(x=>x.id===b.dataset.b));break;
+    case 'line-del':softDelete('Line',p.budget,p.budget.findIndex(x=>x.id===b.dataset.b));break;
+    case 'budget-set':openForm('The money',[
+      {k:'budgetTotal',label:'Total you actually have',type:'number'},
+      {k:'contingencyPct',label:'Contingency held back (%)',type:'number',hint:'Ten per cent minimum. This is not yours to spend.'},
+      {k:'minPerSetup',label:'Minutes per setup',type:'number',hint:'Used to estimate day length. 30 is honest for a small crew; 20 if you are fast and simple.'}
+      ],p,o=>{p.budgetTotal=o.budgetTotal;p.contingencyPct=+o.contingencyPct||0;p.minPerSetup=+o.minPerSetup||30;save();render();});break;
+    case 'proj-new':projForm(null);break;
+    case 'proj-edit':projForm(S.projects.find(x=>x.id===b.dataset.p));break;
+    case 'proj-open':S.activeProject=b.dataset.p;crewTier=P().tier;boardScene=shotScene='all';save();go('now');break;
+    case 'proj-del':{const i=S.projects.findIndex(x=>x.id===b.dataset.p);
+      if(S.projects[i].id===S.activeProject)S.activeProject=S.projects.find(x=>x.id!==b.dataset.p).id;
+      softDelete('Project',S.projects,i);break;}
+    case 'modal-close':closeModal();break;
+    case 'modal-save':if(modalSave)modalSave();break;
+  }
+});
+document.addEventListener('change',e=>{
+  const el=e.target.closest('[data-act]');if(!el)return;
+  const p=P();
+  if(el.dataset.act==='crew-person'||el.dataset.act==='crew-status'){
+    const r=el.dataset.r;p.crew[r]=p.crew[r]||{status:'needed',person:''};
+    if(el.dataset.act==='crew-person'){p.crew[r].person=el.value;
+      if(el.value&&p.crew[r].status==='needed')p.crew[r].status='asked';}
+    else p.crew[r].status=el.value;
+    save();render();
+  }
+});
+document.getElementById('projsel').addEventListener('change',e=>{
+  if(e.target.value==='__new'){e.target.value=S.activeProject;projForm(null);return;}
+  S.activeProject=e.target.value;crewTier=P().tier;boardScene=shotScene='all';save();go('now');
+});
+document.getElementById('veil').addEventListener('mousedown',e=>{if(e.target.id==='veil')closeModal();});
+document.addEventListener('keydown',e=>{
+  const typing=/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName);
+  if(e.key==='Escape'){if(document.getElementById('veil').classList.contains('on'))closeModal();
+    else if(shootMode){shootMode=false;render();}return;}
+  if((e.metaKey||e.ctrlKey)&&e.key==='s'){e.preventDefault();save();toast('Saved.');return;}
+  if((e.metaKey||e.ctrlKey)&&e.key==='Enter'&&modalSave){e.preventDefault();modalSave();return;}
+  if(typing)return;
+  if(e.key==='c'||e.key==='C'){e.preventDefault();document.getElementById('cap').click();}
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){cloudWrite();sbPush();}else if(sbOn())sbSync(true);});
+window.addEventListener('beforeunload',()=>{try{if(!memOnly)localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}});
+
+/* ---------------- go ---------------- */
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+sbLoad();load();crewTier=P().tier;render();save();cloudRestore();
+if(sbOn())sbSync(true);
+if(memOnly)toast('This browser is blocking local storage here. Open Slate through "Start Slate.command" so your work is kept.');
+</script>
+</body>
+</html>
