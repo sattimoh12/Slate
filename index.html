@@ -242,6 +242,40 @@ table.dod td.x{color:var(--accent);font-weight:700}
 .arearow .pr{width:56px;height:4px;border-radius:4px;background:var(--panel3);overflow:hidden;flex:0 0 auto}
 .arearow .pr i{display:block;height:100%;background:var(--accent)}
 
+/* timeline */
+.tl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px 6px}
+.tlg{display:grid;min-width:620px;align-items:stretch}
+.tl .mh{font-size:10.5px;letter-spacing:.7px;text-transform:uppercase;color:var(--dimmer);padding:0 0 8px 7px;border-left:1px solid var(--line)}
+.tl .mh.cur{color:var(--text);font-weight:640}
+.tl .lb{position:sticky;left:0;z-index:3;background:var(--bg);padding:10px 10px 10px 0;border-bottom:1px solid var(--line)}
+.tl .lb b{display:block;font-size:13.5px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl .lb button{font-size:11px;color:var(--dimmer);padding:2px 0}
+.tl .lb button:hover{color:var(--accent)}
+.tl .lane{position:relative;height:78px;border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/var(--cw) 100% repeat-x}
+.tl .ph{position:absolute;top:12px;height:24px;line-height:24px;border-radius:6px;font-size:11px;padding:0 8px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);
+  background:color-mix(in srgb,var(--c) 22%,transparent);border-left:3px solid var(--c)}
+.tl .ph.past{opacity:.55}
+.tl .ms{position:absolute;top:47px;width:11px;height:11px;transform:translate(-50%,0) rotate(45deg);
+  background:var(--accent);border-radius:2px;border:none;padding:0;z-index:2}
+.tl .ms.done{background:var(--dimmer)}
+.tl .dy{position:absolute;top:49px;width:8px;height:8px;border-radius:50%;background:var(--amber);transform:translateX(-50%);border:none;padding:0;z-index:2}
+.tl .dy.pk{background:var(--warn)}.tl .dy.rc{background:var(--violet)}
+.tl .now{position:absolute;top:0;bottom:0;width:1px;background:var(--bad);z-index:1}
+.tl .now:after{content:"";position:absolute;top:-1px;left:-3px;width:7px;height:7px;border-radius:50%;background:var(--bad)}
+.up .mo{margin:22px 0 8px;display:flex;align-items:center;gap:12px}
+.up .mo h3{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--dimmer)}
+.up .mo .line{flex:1;height:1px;background:var(--line)}
+.up .row{display:flex;gap:11px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.up .row .d{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--dim);width:58px;flex:0 0 auto}
+.up .row .d.today{color:var(--bad);font-weight:640}
+.up .row .k{width:14px;text-align:center;flex:0 0 auto;font-size:12px}
+.up .row .t{flex:1;min-width:0;font-size:14px}
+.up .row.done .t{text-decoration:line-through;color:var(--dimmer)}
+.up .row .pj{font-size:10.5px;padding:1px 7px;border-radius:20px;background:var(--panel2);color:var(--dim);border:1px solid var(--line);white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis}
+.up .row .chk{width:22px;height:22px;border-radius:6px;border:1px solid var(--line);color:transparent;font-size:12px;flex:0 0 auto}
+.up .row .chk.on{background:var(--accent);color:var(--accent-ink);border-color:transparent}
 #tabbar,#topmore{display:none}
 #topmore{flex:0 0 auto;width:38px;height:38px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);color:var(--dim);font-size:19px;line-height:1}
 @media(max-width:760px){
@@ -519,7 +553,8 @@ const PREP=[
  'You have slept, eaten, and told the person you promised that it is happening',
  'You have accepted, out loud, that the film will not be the one in your head — and that is what finishing costs']}];
 
-const PHASES=['Script locked','Breakdown & boards','Casting','Crew & kit','Locations & logistics','Final week','Shooting'];
+const PHASES=['Script locked','Breakdown & boards','Casting','Crew & kit','Locations & logistics','Final week','Shooting','Post','Deliverables','Festivals & release'];
+const PHASE_COL=['--dimmer','--violet','--violet','--amber','--amber','--warn','--bad','--accent','--good','--good'];
 const LOC_STATUS=['Idea','Scouted','Requested','Approved','Locked','Rejected'];
 const CREW_STATUS={needed:'Not started',asked:'Reached out',held:'Pencilled',confirmed:'Confirmed',passed:'Passed'};
 const LOC_CHECKS=['Power','Parking','Quiet enough','Toilets','Permission in writing','Good light','Wet-weather cover','Step-free access'];
@@ -559,7 +594,7 @@ function blank(){return{v:3,activeProject:null,projects:[],people:[],inbox:[],th
   streak:0,lastActive:null,sessions:[],savedAt:null,lastManualBackup:null}}
 function newProject(t){return{id:uid(),title:t||'Untitled film',logline:'',tier:0,phase:0,
   promise:{to:'',what:'',why:'',told:''},tasks:[],crew:{},characters:[],scenes:[],shots:[],
-  locations:[],days:[],budget:[],budgetTotal:'',contingencyPct:10,minPerSetup:30,prep:{},needsMe:{},owners:{},created:today()}}
+  locations:[],days:[],budget:[],budgetTotal:'',contingencyPct:10,minPerSetup:30,prep:{},needsMe:{},owners:{},phaseDates:{},created:today()}}
 
 function migrate(p){
   p.characters=p.characters||[];p.scenes=p.scenes||[];p.locations=p.locations||[];
@@ -577,6 +612,7 @@ function migrate(p){
   p.locations.forEach(l=>{ l.checks=l.checks||[]; l.photos=l.photos||[]; });
   p.days.forEach(d=>{ d.sceneIds=d.sceneIds||[]; d.type=d.type||'Shoot'; });
   p.shots.forEach((s,i)=>{ if(s.order==null)s.order=i; if(!s.priority)s.priority='should'; });
+  p.phaseDates=p.phaseDates||{};
   return p;
 }
 function load(){
@@ -592,7 +628,37 @@ function load(){
     S.projects.push(p);S.activeProject=p.id;
   }
   if(!S.projects.find(p=>p.id===S.activeProject))S.activeProject=S.projects[0].id;
+  seedPlan();
   streakCheck();
+}
+/* One-time seed: Sep 2026 → Feb 2027 plan for PlayTime + Neukölln. Runs once, never overwrites. */
+function seedPlan(){
+  if(S.seededPlan)return;
+  const find=(re,title,phase)=>{let p=S.projects.find(x=>re.test(x.title));
+    if(!p){p=newProject(title);p.phase=phase;S.projects.push(p);}return p;};
+  const ms=(p,due,title)=>{if(p.tasks.some(t=>t.milestone&&t.due===due))return;
+    p.tasks.push({id:uid(),title,energy:'none',done:false,created:today(),due,milestone:true});};
+  const day=(p,date,type,call,notes)=>{if(p.days.some(d=>d.date===date))return;
+    p.days.push({id:uid(),date,type,call:call||'',wrap:'',sceneIds:[],notes:notes||''});};
+  const pt=find(/play\s*time/i,'PlayTime',1), nk=find(/neuk/i,'Neukölln',7);
+  Object.assign(pt.phaseDates,{1:'2026-09-06',2:'2026-09-15',3:'2026-09-22',4:'2026-09-29',5:'2026-10-05',6:'2026-10-15',7:'2026-10-26',8:'2027-02-01'});
+  ms(pt,'2026-09-14','LEA appointment (residence permit)');
+  ms(pt,'2026-10-04','Pre-production locked — cast, crew, locations, gear');
+  ms(pt,'2026-10-25','Wrap — all footage backed up in 3 places');
+  ms(pt,'2026-12-31','Rough cut');
+  ms(pt,'2027-01-31','Picture lock');
+  day(pt,'2026-10-10','Recce','','Tech scout Selchower Str. / Hermannstr. / Briesestr.');
+  day(pt,'2026-10-15','Shoot','07:00','Street permit day 1 — Erlaubnis Film 08-2026-01765');
+  day(pt,'2026-10-16','Shoot','07:00','Street permit day 2');
+  day(pt,'2026-10-17','Pick-ups','','Buffer / non-street pickups (confirm whether permit covers the 17th)');
+  if(nk.phase<7)nk.phase=7;
+  Object.assign(nk.phaseDates,{7:'2026-09-06',8:'2026-11-09',9:'2026-12-01'});
+  ms(nk,'2026-10-04','Assembly complete (then frozen until Oct 26)');
+  ms(nk,'2026-11-08','Picture lock');
+  ms(nk,'2026-11-30','Deliverables + press kit done — master, stills, poster, trailer');
+  ms(nk,'2026-12-15','Festival submissions — wave 1');
+  ms(nk,'2027-01-15','Berlin screening (date TBD)');
+  S.seededPlan=today();
 }
 let saveTimer=null;
 function save(){
@@ -984,7 +1050,7 @@ function qline(v,txt,act,go){
 function vNow(){
   const p=P();
   const open=p.tasks.filter(t=>!t.done);
-  const one=open.find(t=>t.pinned)||open[0];
+  const one=open.find(t=>t.pinned)||open.find(t=>!t.milestone)||open[0];
   const mine=myOpenItems(p);
   const starred=mine.filter(x=>x.starred&&x.handed);
   const warn=warnings(p),must=warn.filter(w=>w.v==='bad'),check=warn.filter(w=>w.v!=='bad');
@@ -1128,7 +1194,7 @@ function vTasks(){
 function taskRow(t){
   return '<div class="item'+(t.done?' done':'')+'">'
    +'<button class="chk'+(t.done?' on':'')+'" data-act="toggle-task" data-t="'+t.id+'">✓</button>'
-   +'<div class="grow"><div class="ttl">'+esc(t.title)+(t.enough?' <span class="pill good">good enough</span>':'')+'</div>'
+   +'<div class="grow"><div class="ttl">'+(t.milestone?'<span style="color:var(--accent)">◆</span> ':'')+esc(t.title)+(t.enough?' <span class="pill good">good enough</span>':'')+'</div>'
    +(t.notes?'<div class="tiny muted" style="margin-top:2px;white-space:pre-wrap">'+esc(t.notes)+'</div>':'')
    +(t.due?'<div class="tiny" style="margin-top:3px;color:'+(t.due<today()&&!t.done?'var(--warn)':'var(--dim)')+'">'
      +(t.due<today()&&!t.done?'was due ':'due ')+esc(t.due)+'</div>':'')
@@ -1657,6 +1723,85 @@ function vProjects(){
   return h;
 }
 
+/* ---------------- TIMELINE (all projects, months at a glance) ---------------- */
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function vTimeline(){
+  const t0=today();
+  const [y0,m0]=t0.split('-').map(Number);
+  const addM=n=>new Date(Date.UTC(y0,m0-1+n,1)).toISOString().slice(0,10);
+  const items=[];
+  S.projects.forEach(p=>{
+    p.tasks.filter(t=>t.due).forEach(t=>items.push({date:t.due,kind:t.milestone?'ms':'task',o:t,p}));
+    p.days.forEach(d=>items.push({date:d.date,kind:'day',o:d,p}));
+  });
+  let last=t0;
+  items.forEach(x=>{if(x.date>last)last=x.date;});
+  S.projects.forEach(p=>Object.values(p.phaseDates||{}).forEach(d=>{if(d&&d>last)last=d;}));
+  const [yl,ml]=last.split('-').map(Number);
+  let n=Math.min(9,Math.max(4,(yl-y0)*12+(ml-m0)+2));
+  const start=addM(0),end=addM(n);
+  const span=new Date(end)-new Date(start);
+  const pct=d=>Math.max(0,Math.min(100,(new Date(d)-new Date(start))/span*100));
+  const fmt=d=>{const [y,m,dd]=d.split('-');return MON[+m-1]+' '+(+dd);};
+
+  let h='<div class="head"><h1>Months</h1><div class="sub">Every film, every date, one screen. Bars are phases; diamonds are milestones; dots are days on set.</div></div>'
+   +'<div class="btnrow" style="margin-bottom:18px"><button class="btn pri" data-act="ms-new">◆ Add milestone</button>'
+   +'<button class="btn" data-act="day-new">＋ Add day</button>'
+   +'<button class="btn gh" data-act="tl-phases" data-p="'+P().id+'">Phase dates for '+esc(P().title)+'</button></div>';
+
+  h+='<div class="card" style="padding:14px 14px 4px"><div class="tl"><div class="tlg" style="grid-template-columns:118px repeat('+n+',minmax(92px,1fr))">';
+  h+='<div></div>'+[...Array(n)].map((_,i)=>{const d=addM(i);const [y,m]=d.split('-');
+    return '<div class="mh'+(i===0?' cur':'')+'">'+MON[+m-1]+(i===0||m==='01'?' ’'+y.slice(2):'')+'</div>';}).join('');
+  S.projects.forEach(p=>{
+    const ph=Object.entries(p.phaseDates||{}).filter(([i,d])=>d).map(([i,d])=>({i:+i,d})).sort((a,b)=>a.d.localeCompare(b.d));
+    h+='<div class="lb"><b title="'+esc(p.title)+'">'+esc(p.title)+'</b>'
+     +'<button data-act="tl-phases" data-p="'+p.id+'">'+(ph.length?esc(PHASES[p.phase]||''):'set phase dates →')+'</button></div>';
+    h+='<div class="lane" style="--cw:calc(100%/'+n+')">';
+    ph.forEach((x,k)=>{
+      const l=pct(x.d),r=ph[k+1]?pct(ph[k+1].d):100;
+      if(r-l<0.4)return;
+      h+='<div class="ph'+(ph[k+1]&&ph[k+1].d<=t0?' past':'')+'" style="left:'+l.toFixed(2)+'%;width:'+(r-l).toFixed(2)+'%;--c:var('+(PHASE_COL[x.i]||'--accent')+')" title="'+esc(PHASES[x.i])+' from '+fmt(x.d)+'">'+esc(PHASES[x.i])+'</div>';
+    });
+    p.days.forEach(d=>{if(d.date<start||d.date>=end)return;
+      const c=d.type==='Pick-ups'?' pk':(d.type==='Recce'||d.type==='Rehearsal')?' rc':'';
+      h+='<button class="dy'+c+'" style="left:'+pct(d.date).toFixed(2)+'%" title="'+esc((d.type||'Shoot')+' · '+fmt(d.date))+'" data-act="tl-day" data-p="'+p.id+'" data-d="'+d.id+'"></button>';});
+    p.tasks.filter(t=>t.milestone&&t.due&&t.due>=start&&t.due<end).forEach(t=>{
+      h+='<button class="ms'+(t.done?' done':'')+'" style="left:'+pct(t.due).toFixed(2)+'%" title="'+esc(fmt(t.due)+' · '+t.title)+'" data-act="tl-task" data-p="'+p.id+'" data-t="'+t.id+'"></button>';});
+    h+='<div class="now" style="left:'+pct(t0).toFixed(2)+'%"></div></div>';
+  });
+  h+='</div></div></div>';
+
+  const up=items.filter(x=>x.date>=t0||(x.kind==='ms'&&!x.o.done)).sort((a,b)=>a.date.localeCompare(b.date)||(a.kind==='ms'?-1:1));
+  if(!up.length)return h+'<div class="empty" style="margin-top:18px">Nothing dated yet. Add a milestone — the date the whole plan hinges on.</div>';
+  h+='<div class="up">';let cur='';
+  up.forEach(x=>{
+    const m=x.date.slice(0,7);
+    if(m!==cur){cur=m;const [y,mm]=m.split('-');h+='<div class="mo"><h3>'+MON[+mm-1]+' '+y+'</h3><div class="line"></div></div>';}
+    const late=x.date<t0;
+    if(x.kind==='day'){
+      h+='<div class="row"><span class="d">'+fmt(x.date)+'</span><span class="k" style="color:var(--amber)">●</span>'
+       +'<span class="t">'+esc(x.o.type||'Shoot')+(x.o.call?' · call '+esc(x.o.call):'')+(x.o.notes?' <span class="tiny muted">— '+esc(x.o.notes.split('\n')[0])+'</span>':'')+'</span>'
+       +'<span class="pj">'+esc(x.p.title)+'</span><button class="btn sm gh" data-act="tl-day" data-p="'+x.p.id+'" data-d="'+x.o.id+'">Edit</button></div>';
+    }else{
+      h+='<div class="row'+(x.o.done?' done':'')+'"><span class="d'+(x.date===t0?' today':'')+'" style="'+(late?'color:var(--warn)':'')+'">'+fmt(x.date)+'</span>'
+       +'<span class="k" style="color:var(--accent)">'+(x.kind==='ms'?'◆':'·')+'</span>'
+       +'<button class="t" style="text-align:left" data-act="tl-task" data-p="'+x.p.id+'" data-t="'+x.o.id+'">'+esc(x.o.title)+(late&&!x.o.done?' <span class="pill warn">passed</span>':'')+'</button>'
+       +'<span class="pj">'+esc(x.p.title)+'</span>'
+       +'<button class="chk'+(x.o.done?' on':'')+'" data-act="tl-done" data-p="'+x.p.id+'" data-t="'+x.o.id+'">✓</button></div>';
+    }
+  });
+  return h+'</div>';
+}
+function phaseForm(p){
+  const v={};PHASES.forEach((_,i)=>v['ph'+i]=(p.phaseDates||{})[i]||'');
+  openForm('Phase dates — '+p.title,PHASES.map((ph,i)=>({k:'ph'+i,label:ph,type:'date'})),v,o=>{
+    p.phaseDates={};PHASES.forEach((_,i)=>{if(o['ph'+i])p.phaseDates[i]=o['ph'+i];});
+    const t=today();let cur=-1;Object.entries(p.phaseDates).forEach(([i,d])=>{if(d<=t&&+i>cur)cur=+i;});
+    if(cur>=0)p.phase=cur;
+    save();render();},
+   'Only the start date of each phase. A phase runs until the next dated one begins. Leave blank anything that does not apply. The current phase is set from today’s date.');
+}
+
 /* ---------------- GUIDE ---------------- */
 const card=(t,b)=>'<div class="card"><h2>'+t+'</h2><div style="margin-top:9px;font-size:13.5px;line-height:1.65;color:var(--dim)">'+b+'</div></div>';
 function vGuide(){
@@ -1693,6 +1838,7 @@ function vGuide(){
 /* ---------------- navigation (grouped, progressive) ---------------- */
 const NAVTREE=[
  {k:'now',ic:'◉',n:'Now'},
+ {k:'timeline',ic:'▬',n:'Months'},
  {k:'tasks',ic:'☑',n:'Tasks'},
  {k:'prep',ic:'✔',n:'Prep'},
  {k:'film',ic:'▤',n:'The film',kids:[
@@ -1731,7 +1877,7 @@ function renderNav(){
 /* ---------------- render ---------------- */
 const VIEWS={now:vNow,prep:vPrep,tasks:vTasks,film:vFilm,shoot:vShoot,scenes:vScenes,shots:vShots,
   board:vBoard,cast:vCast,crew:vCrew,places:vPlaces,sched:vSched,budget:vBudget,
-  people:vPeople,projects:vProjects,guide:vGuide};
+  people:vPeople,projects:vProjects,guide:vGuide,timeline:vTimeline};
 function render(){
   if(!P()){S.projects.push(newProject());S.activeProject=S.projects[0].id;}
   document.documentElement.dataset.theme=S.theme||'dark';
@@ -1747,14 +1893,18 @@ function render(){
 function go(v){view=v;window.scrollTo(0,0);render();}
 
 /* ---------------- forms ---------------- */
-function taskForm(t){
-  openForm(t?'Edit task':'New task',[
+function taskForm(t,preset){
+  openForm(t?'Edit task':(preset&&preset.milestone?'New milestone':'New task'),[
     {k:'title',label:'What is the task?',ph:'Small enough to start in the next five minutes'},
     {k:'notes',label:'Notes',type:'textarea',ph:'Optional. Leave it blank.'},
     {k:'energy',label:'What does it take?',type:'select',opts:[['none','Not sure'],['low','Low fuel'],['mid','Normal'],['high','Full brain']]},
-    {k:'due',label:'Date (optional)',type:'date'}],t||{energy:'none'},o=>{
+    {k:'due',label:'Date (optional)',type:'date'},
+    {k:'milestone',label:'Kind',type:'select',opts:[['','Task — something to do'],['1','Milestone — a date the plan hinges on']]}],
+    t?{...t,milestone:t.milestone?'1':''}:{energy:'none',milestone:'',...(preset||{})},o=>{
     if(!o.title.trim())return;
-    if(t)Object.assign(t,o);else P().tasks.unshift({id:uid(),...o,done:false,created:today()});
+    o.milestone=!!o.milestone;
+    if(t)Object.assign(t,o);else if(o.milestone)P().tasks.push({id:uid(),...o,done:false,created:today()});
+    else P().tasks.unshift({id:uid(),...o,done:false,created:today()});
     save();render();},
     t?null:'One task, one verb. If it needs more than one sitting it is a project, not a task — break it now while it is cheap.');
 }
@@ -2346,6 +2496,14 @@ document.addEventListener('click',e=>{
     case 'promise':promiseForm();break;
     case 'told':p.promise.told=today();save();render();toast('Logged. That is the mechanism working.');break;
     case 'phase':p.phase=+b.dataset.p;save();render();break;
+    case 'ms-new':taskForm(null,{milestone:'1',due:today()});break;
+    case 'tl-phases':phaseForm(S.projects.find(x=>x.id===b.dataset.p)||p);break;
+    case 'tl-done':{const pr=S.projects.find(x=>x.id===b.dataset.p);const t=pr&&pr.tasks.find(x=>x.id===b.dataset.t);
+      if(!t)break;t.done=!t.done;t.doneAt=t.done?today():null;if(t.done)t.pinned=false;save();render();break;}
+    case 'tl-task':{const pr=S.projects.find(x=>x.id===b.dataset.p);const t=pr&&pr.tasks.find(x=>x.id===b.dataset.t);
+      if(!t)break;if(pr.id!==S.activeProject){S.activeProject=pr.id;crewTier=pr.tier;}closeModal();taskForm(t);break;}
+    case 'tl-day':{const pr=S.projects.find(x=>x.id===b.dataset.p);const d=pr&&pr.days.find(x=>x.id===b.dataset.d);
+      if(!d)break;if(pr.id!==S.activeProject){S.activeProject=pr.id;crewTier=pr.tier;}closeModal();dayForm(d);break;}
     case 'tier':crewTier=+b.dataset.i;render();break;
     case 'settier':p.tier=+b.dataset.i;save();render();break;
     case 'crewfilter':crewFilter=b.dataset.f;render();break;
