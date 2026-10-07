@@ -1,0 +1,368 @@
+<title>Satti of Dongola</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@500&display=swap">
+<style>
+/* Layout: a single reading column; the tree is a vertical line of descent that splits into three branch columns (stacking on phones). */
+:root{
+  --bg:#f3f1ec;          /* Nile-bank limestone */
+  --surface:#fbfaf7;
+  --ink:#1d2430;
+  --muted:#5b6370;
+  --rule:#d8d3c8;
+  --nile:#1f5c78;        /* river blue accent */
+  --palm:#4b6b3a;        /* date-palm green */
+  --ochre:#a7792b;
+  --doc:#2f6a46; --trad:#9a6a12; --inf:#7a4d8f; --unk:#8b8f97;
+  --display:"Marcellus","Trajan Pro",Georgia,serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --arabic:"Noto Naskh Arabic","Geeza Pro","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12171d;--surface:#19202a;--ink:#e6e3dc;--muted:#a3a9b3;--rule:#2d3743;
+  --nile:#6fb3d2;--palm:#95b97f;--ochre:#d6a65a;
+  --doc:#74c093;--trad:#e0b25a;--inf:#c49ad6;--unk:#9aa0a8;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12171d;--surface:#19202a;--ink:#e6e3dc;--muted:#a3a9b3;--rule:#2d3743;
+  --nile:#6fb3d2;--palm:#95b97f;--ochre:#d6a65a;
+  --doc:#74c093;--trad:#e0b25a;--inf:#c49ad6;--unk:#9aa0a8;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:16px;padding-block:40px 72px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+.col{max-width:68ch}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2.3rem,6vw,3.6rem);letter-spacing:.01em}
+h2{font-size:1.75rem;margin-bottom:14px}
+h3{font-size:1.15rem}
+p{margin:0 0 14px}
+a{color:var(--nile)}
+a:focus-visible{outline:2px solid var(--nile);outline-offset:2px}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.ar{font-family:var(--arabic);direction:rtl;unicode-bidi:isolate}
+header{display:flex;flex-direction:column;gap:14px}
+.lede{font-size:1.2rem;color:var(--ink)}
+.answer{border-left:3px solid var(--nile);padding:4px 0 4px 18px}
+.answer p:last-child{margin:0}
+
+/* evidence chips */
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.doc{color:var(--doc)} .trad{color:var(--trad)} .inf{color:var(--inf)} .unk{color:var(--unk)}
+.jump{margin:0;display:flex;flex-wrap:wrap;gap:6px 10px;font-size:.98rem}
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:.9rem;color:var(--muted)}
+.legend span{display:inline-flex;gap:8px;align-items:center}
+
+/* word study */
+.word{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:28px;align-items:start}
+.glyph{background:var(--surface);border:1px solid var(--rule);padding:22px;display:flex;flex-direction:column;gap:6px}
+.glyph .big{font-family:var(--display);font-size:3rem;line-height:1}
+.glyph .ar{font-size:2rem;line-height:1.3}
+.glyph dl{margin:10px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;font-size:.92rem}
+.glyph dt{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-top:3px}
+.glyph dd{margin:0}
+
+/* timeline strata */
+.strata{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.stratum{display:grid;grid-template-columns:9.5rem minmax(0,1fr);gap:20px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.when{font-family:var(--mono);font-size:.82rem;color:var(--nile);font-variant-numeric:tabular-nums;padding-top:3px}
+.stratum h3{margin-bottom:4px}
+.stratum p{margin:0;color:var(--muted)}
+
+/* tree */
+.tree{display:flex;flex-direction:column;align-items:center}
+.node{background:var(--surface);border:1px solid var(--rule);padding:12px 16px;width:min(100%,460px);display:flex;flex-direction:column;gap:4px}
+.node .nm{font-family:var(--display);font-size:1.1rem;line-height:1.25}
+.node .nm .ar{font-size:1rem;color:var(--muted);margin-inline-start:6px}
+.node .note{font-size:.88rem;color:var(--muted);line-height:1.45}
+.node .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.node.key{border-color:var(--nile);border-width:2px}
+.node.ghost{border-style:dashed;background:transparent}
+.link{width:2px;height:22px;background:var(--rule)}
+.link.dash{background:repeating-linear-gradient(var(--muted) 0 4px,transparent 4px 8px);opacity:.7}
+.gap-note{font-family:var(--mono);font-size:.72rem;color:var(--muted);padding:4px 0;text-align:center}
+.split{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;position:relative;padding-top:22px}
+.split::before{content:"";position:absolute;top:0;left:16.6%;right:16.6%;height:2px;background:var(--rule)}
+.branch{display:flex;flex-direction:column;align-items:center;min-width:0}
+.branch .label{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--palm);margin-bottom:8px;text-align:center}
+.branch .node{width:100%}
+.branch::before{content:"";width:2px;height:22px;background:var(--rule);margin-top:-22px;margin-bottom:0}
+
+/* confidence table */
+.tbl{overflow-x:auto;border:1px solid var(--rule);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:620px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+tr:last-child td{border-bottom:0}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.step{border-top:2px solid var(--palm);padding-top:12px}
+.step h3{margin-bottom:6px}
+.step p{font-size:.95rem;color:var(--muted);margin:0}
+.ask{background:var(--surface);border:1px solid var(--rule);padding:18px 22px}
+.ask ol{margin:8px 0 0;padding-left:22px}
+.ask li{margin-bottom:4px}
+
+.sources ol{padding-left:22px;margin:0;font-size:.92rem;display:flex;flex-direction:column;gap:6px}
+.sources li{overflow-wrap:anywhere}
+.warn{font-size:.9rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px}
+
+@media (max-width:760px){
+  .word{grid-template-columns:minmax(0,1fr)}
+  .stratum{grid-template-columns:minmax(0,1fr);gap:4px}
+  .split{grid-template-columns:minmax(0,1fr);gap:26px}
+  .split::before{display:none}
+  .steps{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="col">
+  <span class="eyebrow">Surname study · Northern State, Sudan · Old Dongola (Tungul)</span>
+  <h1>Satti of Dongola</h1>
+  <p class="lede">Where the name comes from, the best-documented family line that carries it, and how to connect your own branch when written records are thin.</p>
+  <div class="answer">
+    <p><strong>Short answer.</strong> “Satti” (<span class="ar">ساتي</span>) is a Nubian word from the Dongolawi (Andaandi) language. It means “the poor one,” in the Sufi sense of a <em>faqīr</em>: a Qur’an reciter dedicated to God. It started as a title for holy men around Old Dongola and became a common given name there. In Sudan, an ancestor’s given name often turns into a family surname, so a Satti family is almost certainly descended from a Dongolawi man called Satti.</p>
+    <p>The earliest and best-recorded bearer is the 16th-century saint <strong>Muhammad “Satti” Suwar al-Dhahab</strong> of Old Dongola. His descendants are still known in al-Ghaddar, Omdurman and El Obeid. Your family’s oral pedigree places you in his family on both sides: <strong>Sawarab</strong> through your father’s line and <strong>Ziyadab</strong> through a maternal line, with home villages at Old Dongola and Bina. Both clans trace back to him, so your line most likely meets his twice.</p>
+  </div>
+  <p class="jump"><strong>Your two trees:</strong> <a href="#father">Father’s side · Satti (Ziyadab ✕ Sawarab)</a> · <a href="#mother">Mother’s side · Ja’aliyin (‘Abbas)</a></p>
+  <div class="legend" aria-label="Evidence key">
+    <span><i class="chip doc">Documented</i> printed or archaeological source</span>
+    <span><i class="chip trad">Tradition</i> family or tribal genealogy</span>
+    <span><i class="chip inf">Inference</i> my reasoning</span>
+    <span><i class="chip unk">Unknown</i> needs your family</span>
+  </div>
+</header>
+
+<section>
+  <span class="eyebrow">01 · The word</span>
+  <h2>What “Satti” means</h2>
+  <div class="word">
+    <div class="glyph">
+      <span class="big">Satti</span>
+      <span class="ar">ساتي</span>
+      <dl>
+        <dt>Language</dt><dd>Dongolawi Nubian (Andaandi)</dd>
+        <dt>Literal</dt><dd>“the poor one” (a <em>faqīr</em>)</dd>
+        <dt>Sense</dt><dd>a Qur’an reciter devoted to God</dd>
+        <dt>Later use</dt><dd>an honorific like <em>Sayyid</em> or <em>Shaykh</em>, then a common given name</dd>
+        <dt>Not related</dt><dd>the Satti tribe of Pakistani Punjab and Kashmir</dd>
+      </dl>
+    </div>
+    <div class="col">
+      <p>The historian Ahmad Ibrahim Abu Shouk writes that “Satti,” added to the name of Shaykh Muhammad Suwar al-Dhahab, is <span class="ar">لقب منحوت من اللغة النوبية (الدنقلاوية)</span>, a title taken from Dongolawi Nubian. It means the poor one, or a Qur’an reciter given to God. He says it then became <em>a common name in the Dongola region and an honorific equal to Sayyid or Shaykh</em>. <span class="chip doc">Documented</span></p>
+      <p>The word is regional, which helps your search. Satti is rare outside the Dongola reach of the Nile, roughly from Kerma to al-Dabbah. A Sudanese family called Satti is very likely Danagla, the people of Dongola. <span class="chip inf">Inference</span></p>
+      <p>Ancestry.com and Geneanet trace “Satti” to a Rajput clan in Pakistan. That is a different word with a different history. Expect false matches from those sites and ignore them for a Sudanese line. <span class="chip doc">Documented</span></p>
+      <p><strong>How it became a surname.</strong> Sudanese names are a chain: your own name, then your father’s, then your grandfather’s, and so on. Families abroad and in official papers often freeze one link of that chain as a surname. If Satti is your surname, a man named Satti is usually one to four generations above you. He was probably named in honour of a holy ancestor or a local saint. <span class="chip inf">Inference</span></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">02 · Deep ancestry</span>
+  <h2>The layers beneath a Dongolawi family</h2>
+  <p class="col">Any Satti line from Dongola sits on the same stack of history. You can’t name individuals before about 1500, but you can say whose land it was.</p>
+  <div class="strata">
+    <div class="stratum"><span class="when">c. 2500–1500 BCE</span><div><h3>Kerma</h3><p>The first great Nubian kingdom, centred just north of Dongola. Its people are the deep ancestors of the Nile Nubians.</p></div></div>
+    <div class="stratum"><span class="when">c. 800 BCE–350 CE</span><div><h3>Kush: Napata and Meroë</h3><p>The Kushite kingdom ruled from upriver at Napata and Meroë. Dongola lay at its heart.</p></div></div>
+    <div class="stratum"><span class="when">c. 550–1300s</span><div><h3>Makuria, a Christian kingdom with Old Dongola as its capital</h3><p>Old Dongola (Tungul) was the royal seat. The 652 <em>Baqt</em> treaty with Egypt kept it independent for six centuries. Dongolawi, the language that gave us “Satti,” descends from the speech of this kingdom.</p></div></div>
+    <div class="stratum"><span class="when">1317–1500s</span><div><h3>Islamisation and Arab marriage ties</h3><p>Makuria’s throne hall became a mosque in 1317. Arab groups, including those later called Ja’aliyin, married into Nubian families. Genetic studies date the main Arab–Nubian admixture in the Danagla to about 855–1095 CE. That suggests the mixing began long before the kingdom fell. <span class="chip doc">Documented</span></p></div></div>
+    <div class="stratum"><span class="when">1504–1821</span><div><h3>Funj era: the holy families</h3><p>Sufi scholars founded Qur’an schools (<em>khalwas</em>) around Old Dongola. The Suwar al-Dhahab family was among the most revered, and the title “Satti” comes from this world.</p></div></div>
+    <div class="stratum"><span class="when">1821–present</span><div><h3>Turkiyya, Mahdiyya and dispersal</h3><p>Danagla merchants and soldiers spread to Kordofan, Omdurman and Khartoum, then abroad. Many Satti families today live far from Dongola but still trace back to a home village there.</p></div></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow" id="father">03 · Family tree · your father’s side</span>
+  <h2>The Suwar al-Dhahab line, where “Satti” is first recorded</h2>
+  <p class="col">This is the oldest documented family where “Satti” appears as a name. The dashed gaps are generations that no published source names. The bottom row shows the three known branches and where your own line would attach.</p>
+
+  <div class="tree" role="tree" aria-label="Satti family tree">
+    <div class="node ghost" role="treeitem">
+      <div class="top"><span class="nm">al-‘Abbas ibn ‘Abd al-Muttalib <span class="ar">العباس</span></span><span class="chip trad">Tradition</span></div>
+      <span class="note">Uncle of the Prophet, died about 653. The Ja’aliyin, and the Bedairiya within them, trace their descent to him. Historians treat this as a claimed pedigree, not a biological record.</span>
+    </div>
+    <div class="link"></div>
+    <div class="node ghost" role="treeitem">
+      <div class="top"><span class="nm">‘Abdallah ibn al-‘Abbas <span class="ar">عبد الله</span></span><span class="chip doc">Documented</span></div>
+      <span class="note">A real historical figure: the Companion and Qur’an scholar, died about 687. His being in the Ja’ali chain is the tradition; the man himself is documented.</span>
+    </div>
+    <div class="link dash"></div>
+    <span class="gap-note">‘Ali · Muhammad · al-Fadl · Sa‘d · Muhammad Dhu al-Kala‘ · Ahmad · Muhammad Hatil · Kurb · Qasas · ‘Adi · Yaman · Qays</span>
+    <div class="link dash"></div>
+    <div class="node ghost" role="treeitem">
+      <div class="top"><span class="nm">Idris → Ibrahim Ja’al <span class="ar">إبراهيم جعل</span></span><span class="chip trad">Tradition</span></div>
+      <span class="note">Idris is said to be the ‘Abbasid who came to Nubia. His son Ibrahim Ja’al gives the Ja’aliyin their name. A second version of the chain reaches Ibrahim through Ahmad al-Yamani instead.</span>
+    </div>
+    <div class="link dash"></div>
+    <span class="gap-note">Ahmad · Masruq · ‘Abdallah Harqan · Qada‘a · Abu al-Dis · Kardam · Sarar · Samra</span>
+    <div class="link dash"></div>
+    <div class="node ghost" role="treeitem">
+      <div class="top"><span class="nm">Badir <span class="ar">بدير</span></span><span class="chip trad">Tradition</span></div>
+      <span class="note">Namesake ancestor of the Bedairiya, who are counted as part of the Ja’ali group. His sons include Dahmash (the Dahmashiya), Hilal and Aghbash. Bedairiya genealogies list Shaykh ‘Isa and Shaykh Muhammad Suwar al-Dhahab among the Bedairiya. Wikipedia’s note on Satti Majid puts the family in the “Zubaid section” of the tribe.</span>
+    </div>
+    <div class="link dash"></div>
+    <span class="gap-note">generations unrecorded</span>
+    <div class="link dash"></div>
+    <div class="node" role="treeitem">
+      <div class="top"><span class="nm">Salih al-Badiri <span class="ar">صالح البديري</span></span><span class="chip trad">Tradition</span></div>
+    </div>
+    <div class="link"></div>
+    <div class="node" role="treeitem">
+      <div class="top"><span class="nm">Shaykh ‘Isa ibn Salih al-Badiri <span class="ar">عيسى</span></span><span class="chip doc">Documented</span></div>
+      <span class="note">Known as <em>jadd al-mayya</em>, “ancestor of the hundred.” He had ten sons who each had about ten scholar sons. He studied under ‘Abd al-Rahman ibn Jabir, according to the <em>Kitab al-Tabaqat</em>. Some sources call him ‘Isa Suwar al-Dhahab and give his death as 1070 AH (about 1660). He is said to be a maternal cousin of Shaykh ‘Abdallah al-Aghbash, under whom he studied Qur’an recitation.</span>
+    </div>
+    <div class="link"></div>
+    <div class="node key" role="treeitem">
+      <div class="top"><span class="nm">Shaykh Muhammad “Satti” Suwar al-Dhahab <span class="ar">ساتي محمد سوار الذهب</span></span><span class="chip doc">Documented</span></div>
+      <span class="note">Founder of the family Qur’an school at Old Dongola. He is the first man recorded with the title “Satti.” Tradition says he brought the al-Duri reading of the Qur’an to Sudan around 1504. Evliya Çelebi saw a Suwar al-Dhahab tomb at Old Dongola in the early 1670s. The <em>Tabaqat</em> links him to King Qashqash of Dongola, whose existence a 2026 excavation confirmed.</span>
+    </div>
+    <div class="link"></div>
+
+    <div class="split">
+      <div class="branch" role="group">
+        <span class="label">Branch A · stayed in Dongola</span>
+        <div class="node"><div class="top"><span class="nm">Ziyadab family <span class="ar">الزياداب</span></span><span class="chip doc">Documented</span></div><span class="note">They trace their descent to “Satti Muhammad Suwar al-Dhahab.” Home village: al-Ghaddar, a few miles from Old Dongola.</span></div>
+        <div class="link dash"></div><span class="gap-note">≈ 8–10 generations</span><div class="link dash"></div>
+        <div class="node"><div class="top"><span class="nm">Majid Muhammad al-Qadi</span><span class="chip trad">Tradition</span></div><span class="note">Father, from his full name. The family were religious judges, hence “al-Qadi.”</span></div>
+        <div class="link"></div>
+        <div class="node"><div class="top"><span class="nm">Shaykh Satti Majid (1883–1963)</span><span class="chip doc">Documented</span></div><span class="note">Born and buried at al-Ghaddar. Known as “Shaykh al-Islam in North America,” he lived in the US from 1904 to 1929. In 1941 the villagers made him head of the family’s religious seat (the <em>sajjada</em>).</span></div>
+      </div>
+
+      <div class="branch" role="group">
+        <span class="label">Branch B · moved south (Sawarab)</span>
+        <div class="node"><div class="top"><span class="nm">al-Nur Suwar al-Dhahab</span><span class="chip trad">Tradition</span></div><span class="note">Sent by the Funj sultan of Sennar to teach in Kordofan. Settled in El Obeid.</span></div>
+        <div class="link"></div>
+        <div class="node"><div class="top"><span class="nm">Salih al-Nur</span><span class="chip trad">Tradition</span></div><span class="note">Received the Khatmiyya Sufi order from Muhammad ‘Uthman al-Mirghani.</span></div>
+        <div class="link"></div>
+        <div class="node"><div class="top"><span class="nm">Mirghani &amp; Hassan</span><span class="chip trad">Tradition</span></div><span class="note">Mirghani led Danagla fighters in the Mahdist war. Hassan built the Sawarab mosque in Omdurman.</span></div>
+        <div class="link dash"></div>
+        <div class="node"><div class="top"><span class="nm">Field Marshal ‘Abd al-Rahman Swar al-Dahab</span><span class="chip doc">Documented</span></div><span class="note">Led Sudan’s 1985–86 transitional government, then stepped down voluntarily. Died in 2018.</span></div>
+      </div>
+
+      <div class="branch" role="group">
+        <span class="label">Branch C · your line (Ziyadab ✕ Sawarab)</span>
+        <div class="node ghost"><div class="top"><span class="nm">Ziyadab and Sawarab, from the saint</span><span class="chip unk">Gap</span></div><span class="note">About 6–8 unnamed generations back to Muhammad “Satti” Suwar al-Dhahab. Your recited chain ends in “Zeyadab”. Your family also counts the Sawarab on the father’s side. Published sources trace both clans to the saint.</span></div>
+        <div class="link dash"></div>
+        <div class="node"><div class="top"><span class="nm">Hassan <span class="ar">حسن</span></span><span class="chip trad">From you</span></div><span class="note">The oldest name in your recited chain. Roughly born 1760–1810. Home villages: Old Dongola and Bina.</span></div>
+        <div class="link"></div>
+        <div class="node"><div class="top"><span class="nm">Khabir (Haber) <span class="ar">خبير</span></span><span class="chip trad">From you</span></div><span class="note">Remembered as the Suwar al-Dhahab man who divorced and remarried several times; his children took their mother’s clan name, Ziyadab. Where Salih fits in the chain is still open.</span></div>
+        <div class="link"></div>
+        <div class="node"><div class="top"><span class="nm">Hassan <span class="ar">حسن</span></span><span class="chip trad">From you</span></div><span class="note">Roughly born 1820–1860, in the Turkiyya era.</span></div>
+        <div class="link"></div>
+        <div class="node key"><div class="top"><span class="nm">Satti Mohamed <span class="ar">ساتي محمد</span></span><span class="chip trad">From you</span></div><span class="note">The ancestor your surname comes from. “Satti Mohamed” is the same form as the saint’s own name, “Satti Muhammad” Suwar al-Dhahab, so he was likely named in the saint’s honour. <i class="chip inf">Inference</i></span></div>
+        <div class="link"></div>
+        <div class="node"><div class="top"><span class="nm">Mohamed Osman <span class="ar">محمد عثمان</span></span><span class="chip trad">From you</span></div><span class="note">Your grandfather. As a single name, “Mohamed Osman” usually honours Sayyid Muhammad ‘Uthman al-Mirghani, founder of the Khatmiyya Sufi order. <i class="chip inf">Inference</i></span></div>
+        <div class="link"></div>
+        <div class="node"><div class="top"><span class="nm">Kamal <span class="ar">كمال</span></span><span class="chip trad">From you</span></div><span class="note">Your father.</span></div>
+        <div class="link"></div>
+        <div class="node key"><div class="top"><span class="nm">Mohamed Kamal Satti <span class="ar">محمد كمال</span></span><span class="chip trad">From you</span></div><span class="note">You. Seven generations named, back to the first Hassan.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mother">
+  <span class="eyebrow">03b · Your mother’s side</span>
+  <h2>The Ja’aliyin line: Hamed to Abbas</h2>
+  <p class="col">This is a separate family from the Satti line above. It belongs to your mother. They are Ja’aliyin from Metemma, and the family later lived in Omdurman.</p>
+  <div class="tree" role="tree" aria-label="Ja’aliyin family tree">
+    <div class="node ghost" role="treeitem"><div class="top"><span class="nm">Ja’aliyin <span class="ar">الجعليين</span></span><span class="chip trad">Tradition</span></div><span class="note">From <strong>Metemma</strong>, the old seat of the Nafi‘ab meks on the west bank of the Nile opposite Shendi; later in Omdurman. The section (<em>khashm al-bait</em>) is still to be confirmed: Nafi‘ab, Sa‘dab or ‘Awadiya are the likeliest.</span></div>
+    <div class="link dash"></div>
+    <div class="node" role="treeitem"><div class="top"><span class="nm">Hamed <span class="ar">حامد</span> <span style="font-size:.8rem">(or Ahmed)</span></span><span class="chip trad">From you</span></div><span class="note">The oldest name remembered. Roughly born 1770–1800, in the late Funj period. “Hamed” is the more likely form.</span></div>
+    <div class="link"></div>
+    <div class="node" role="treeitem"><div class="top"><span class="nm">Mohamed <span class="ar">محمد</span></span><span class="chip trad">From you</span></div><span class="note">Roughly born 1800–1830.</span></div>
+    <div class="link"></div>
+    <div class="node key" role="treeitem"><div class="top"><span class="nm">Isa <span class="ar">عيسى</span></span><span class="chip trad">From you</span></div><span class="note">The Isa ancestor, confirmed by the family as Isa (not ‘Isawi). Roughly born 1830–1860, during the Turkiyya.</span></div>
+    <div class="link"></div>
+    <div class="node" role="treeitem"><div class="top"><span class="nm">Osman <span class="ar">عثمان</span></span><span class="chip trad">From you</span></div><span class="note">Roughly born 1860–1890. He would have lived through the Mahdiyya, when Omdurman became the capital (1885–98).</span></div>
+    <div class="link"></div>
+    <div class="node" role="treeitem"><div class="top"><span class="nm">Abdalla <span class="ar">عبد الله</span></span><span class="chip trad">From you</span></div></div>
+    <div class="link"></div>
+    <div class="node" role="treeitem"><div class="top"><span class="nm">Abbas <span class="ar">عباس</span></span><span class="chip trad">From you</span></div><span class="note">Your mother’s father. The family calls his line <strong>Hadarbi</strong> (Hedeerbi). He married a woman of the <strong>Baqlab</strong>, your mother’s mother’s people.</span></div>
+    <div class="link"></div>
+    <div class="node ghost" role="treeitem"><div class="top"><span class="nm">Your mother, then you</span><span class="chip trad">From you</span></div></div>
+  </div>
+  <p class="col" style="margin-top:18px"><strong>Full name chain:</strong> <span class="ar">عباس عبد الله عثمان عيسى محمد حامد</span>, read as Abbas son of Abdalla son of Osman son of Isa son of Mohamed son of Hamed. That is six generations, back to about 1780.</p>
+
+  <h3 style="margin-top:28px">What the research has ruled in and out</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Lead</th><th>Finding</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Metemma origin</strong> (confirmed by the family)</td><td>Metemma was the seat of the Nafi‘ab meks from 1558 to 1821, rivals of their Sa‘dab cousins at Shendi. The ‘Awadiya, the most numerous Ja’aliyin section, also live in the villages of Shendi and Metemma.</td><td><span class="chip trad">From you</span></td></tr>
+      <tr><td><strong>How the family likely reached Omdurman: the Metemma massacre, 1 July 1897</strong></td><td>The Mahdist commander Mahmud wad Ahmad sacked Metemma and killed the Ja’aliyin leader ‘Abdallah wad Sa‘d. MacMichael says over 2,000 died. The women and children were taken to the Mahdist treasury in Omdurman. Osman, born about 1860–90, belongs to exactly that generation.</td><td><span class="chip doc">Event documented</span><br><span class="chip inf">Link to you: lead</span></td></tr>
+      <tr><td><strong>“Hadarbi”: your mother’s father’s line</strong> (حضربي، from الحضاربة Hadarba)</td><td>Sudanese genealogies list the Hadarba (also Hadarma or Hadareb) as people from <em>Hadramawt</em> in Yemen. They are said to have crossed the Red Sea, settled at Suakin among the Beja and ruled there. The traveller Mansfield Parkyns (1853) called the people of Suakin “Hadarba” and noted that they were enterprising traders. A Hadarbi family living among the Ja’aliyin of Metemma would most likely descend from such traders and have joined the Ja’aliyin by marriage.</td><td><span class="chip doc">Group documented</span><br><span class="chip inf">Link: likely, needs the Arabic spelling</span></td></tr>
+      <tr><td><strong>Baqlab</strong> (بقلاب?): your mother’s mother’s clan</td><td>Not found in MacMichael or online under this spelling. The “-ab” ending marks a family clan named after an ancestor, probably one of the small houses of the Metemma area.</td><td><span class="chip unk">Needs Arabic spelling</span></td></tr>
+      <tr><td><strong>Wad Hamid</strong> (ود حامد), a town in Metemma locality</td><td>The name means “son of Hamid”, and most of its people are said to descend from one family. Your oldest remembered ancestor is Hamed. This may only be a shared name, but it is worth asking about.</td><td><span class="chip inf">Weak lead</span></td></tr>
+      <tr><td>‘Isawiya section of the Jamu‘iya, south Omdurman (Mek ‘Isawi, d. about 1801)</td><td>The family confirms the ancestor was Isa, not ‘Isawi. Isa was also born about two generations too late to be Mek ‘Isawi.</td><td><span class="chip unk">Ruled out</span></td></tr>
+      <tr><td>Jamu‘iya and Ja’aliyin houses of Omdurman: Fatihab (Abu Si‘id), Nailab, Kitayab (al-Masalma), and the Jamu‘iya of al-‘Abbasiya</td><td>These are the main Ja’aliyin-group families with old roots in Omdurman. None is yet tied to this chain.</td><td><span class="chip inf">Open</span></td></tr>
+      <tr><td>Families that moved to Omdurman from Shendi, Metemma or al-Damer during or after the Mahdiyya</td><td>Many Ja’aliyin families arrived in Omdurman from the 1880s. Osman’s generation fits that timing.</td><td><span class="chip inf">Open</span></td></tr>
+      <tr><td>A web search for this exact chain (عيسى محمد حامد, عثمان عيسى, عبدالله عثمان عيسى)</td><td>No published family tree or notable person matches. That is normal for a private family.</td><td><span class="chip unk">No match</span></td></tr>
+    </tbody>
+  </table></div>
+
+</section>
+
+<section>
+  <span class="eyebrow">04 · How sure is each claim</span>
+  <h2>What is solid and what is not</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Claim</th><th>Status</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>“Satti” is a Dongolawi Nubian title meaning a <em>faqīr</em> or Qur’an reciter</td><td><span class="chip doc">Documented</span></td><td>Abu Shouk (historian), cited in Wikipedia. One scholarly voice; no Nubian dictionary entry found yet.</td></tr>
+        <tr><td>The Suwar al-Dhahab holy family were established at Old Dongola by the 1600s</td><td><span class="chip doc">Documented</span></td><td><em>Kitab al-Tabaqat</em>, Evliya Çelebi’s 1670s travels, and the 2026 <em>Azania</em> study.</td></tr>
+        <tr><td>Muhammad Suwar al-Dhahab was the son of ‘Isa ibn Salih al-Badiri</td><td><span class="chip trad">Tradition</span></td><td>Abu Shouk. <em>Al-Sharq al-Awsat</em> instead calls him an immigrant from Arabia who arrived in 1504. The two accounts conflict.</td></tr>
+        <tr><td>The family are Bedairiya, of Ja’ali and ‘Abbasid descent</td><td><span class="chip trad">Tradition</span></td><td>Tribal genealogies. Scholars note that many Danagla are Arabised Nubians and may not be Ja’aliyin at all.</td></tr>
+        <tr><td>Every Sudanese Satti descends from the saint</td><td><span class="chip inf">Unlikely</span></td><td>The name spread as an honorific, so many unrelated men were given it.</td></tr>
+        <tr><td>Your family is Sawarab on the father’s side and Ziyadab on the mother’s, from Old Dongola and Bina</td><td><span class="chip trad">Tradition</span></td><td>Your family’s oral pedigree. It fits the published sources: both clans are Suwar al-Dhahab descendants at Old Dongola.</td></tr>
+        <tr><td>The exact generations between Salih/Khabir and the saint</td><td><span class="chip unk">Unknown</span></td><td>About 7–9 names. Kept by the Suwar al-Dhahab <em>sajjada</em> at Old Dongola and by the oldest Sawarab and Ziyadab elders.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">05 · Closing the gap</span>
+  <h2>Researching without written records</h2>
+  <p class="col">In northern Sudan, the record is mostly oral, and it’s often good for 8 to 12 generations. Here is the order that works best.</p>
+  <div class="steps">
+    <div class="step"><h3>1. Record the name chain</h3><p>Ask the oldest relatives to recite the full chain: “X son of Y son of Satti son of …”. Ask for each link in Arabic, because spellings drift in English.</p></div>
+    <div class="step"><h3>2. Get the village and the khalwa</h3><p>Ask which village the family “belongs to” (<span class="ar">بلدنا</span>). Is it al-Ghaddar, Old Dongola, al-Khandaq, Argo or Kerma? Ask which saint’s tomb the family visits, and which Qur’an school the grandfathers attended.</p></div>
+    <div class="step"><h3>3. Ask the tribe and section</h3><p>Ask whether the family say they are Danagla, Bedairiya, Ja’aliyin or Shaiqiya, and which section (<em>khashm al-bait</em>), for example Ziyadab or Sawarab. Section names tie you to published tribal trees.</p></div>
+    <div class="step"><h3>4. Contact the sajjada</h3><p>The Suwar al-Dhahab religious seat at Old Dongola and the Sawarab mosque in Omdurman keep genealogies. Elders there can say whether your chain joins theirs.</p></div>
+    <div class="step"><h3>5. Search the printed sources</h3><p>Look at the <em>Kitab al-Tabaqat</em> (Yusuf Fadl Hasan’s edition), MacMichael’s <em>A History of the Arabs in the Sudan</em> (1922), which reprints tribal <em>nisba</em> trees, and the Sudan Archive at Durham University, which holds colonial-era Dongola Province files.</p></div>
+    <div class="step"><h3>6. Test male-line DNA</h3><p>A Y-DNA test of a male Satti, alongside a male from a known Suwar al-Dhahab or Ziyadab line, can confirm or rule out a shared father line. Danagla men mostly carry haplogroups J and E1b1b, so you need fine-grained testing such as Big Y, not just the haplogroup.</p></div>
+  </div>
+  <div class="ask" style="margin-top:22px">
+    <h3>To build the next version of this tree, send me:</h3>
+    <ol>
+      <li>Your name chain as far back as anyone can recite it, in Arabic if possible.</li>
+      <li>The home village in the Dongola area.</li>
+      <li>Any tribe or section name your elders use.</li>
+      <li>Any family saint, mosque or khalwa they mention.</li>
+    </ol>
+  </div>
+  <p class="warn">The National Records Office in Khartoum holds Turkiyya and Condominium records. Access has been badly disrupted since the war began in April 2023, so check before relying on it.</p>
+</section>
+
+<section class="sources">
+  <span class="eyebrow">Sources</span>
+  <h2>Where this comes from</h2>
+  <ol>
+    <li>Abu Shouk, A. I., “Satti Majid Muhammad Suwar al-Dahab: Shaykh al-Islam in North America,” <a href="https://sudanile.com/%D8%B3%D8%A7%D8%AA%D9%8A-%D9%85%D8%A7%D8%AC%D8%AF-%D9%85%D8%AD%D9%85%D8%AF-%D8%B3%D9%88%D8%A7%D8%B1-%D8%A7%D9%84%D8%AF%D9%87%D8%A8-%D8%B4%D9%8A%D8%AE-%D8%A7%D9%84%D8%A5%D8%B3%D9%84%D8%A7%D9%85-%D9%81/">Sudanile</a> (Arabic). Source for the meaning of “Satti” and the ‘Isa, Muhammad and Ziyadab chain.</li>
+    <li><a href="https://en.wikipedia.org/wiki/Satti_Majid">Satti Majid</a>, Wikipedia, and <a href="https://ar.wikipedia.org/wiki/%D8%B3%D8%A7%D8%AA%D9%8A_%D9%85%D8%A7%D8%AC%D8%AF">ساتي ماجد</a>, Arabic Wikipedia.</li>
+    <li>“Sawar,” <a href="https://archive.aawsat.com/details.asp?issueno=10261&amp;article=416740"><em>Al-Sharq al-Awsat</em></a> (Arabic). Source for the Sawarab branch from Old Dongola to El Obeid and Omdurman.</li>
+    <li>Barański, Obłuski &amp; Wyżgoł (2026), “The King of Nubia at work,” <a href="https://www.tandfonline.com/doi/full/10.1080/0067270X.2026.2615518"><em>Azania</em></a>; summary at <a href="https://scitechdaily.com/ancient-document-confirms-legendary-african-king-actually-existed/">SciTechDaily</a>.</li>
+    <li><a href="https://en.wikipedia.org/wiki/Danagla">Danagla</a>, <a href="https://en.wikipedia.org/wiki/Dongolawi_language">Dongolawi language</a> and <a href="https://en.wikipedia.org/wiki/Bedaria_tribe">Bedaria tribe</a>, Wikipedia.</li>
+    <li>Sirak et al. (2021), <a href="https://www.nature.com/articles/s41467-021-27356-8">“Social stratification without genetic differentiation at Kulubnarti”</a>, <em>Nature Communications</em>. Source for the Danagla admixture dates.</li>
+    <li><a href="https://sudaneseonline.com/board/300/msg/%D8%A7%D9%84%D8%A8%D8%AF%D9%8A%D8%B1%D9%8A%D8%A9-%D8%A7%D9%84%D8%AF%D9%87%D9%85%D8%B4%D9%8A%D8%A9---%D9%85%D9%86%D9%82%D9%88%D9%84-%D9%85%D9%86-%D9%85%D9%86%D8%AA%D8%AF%D9%89-%D8%A7%D9%84%D8%BA%D8%B1%D9%8A%D8%A8%D8%A9-.(%D9%84%D9%84%D9%81%D8%A7%D8%A6%D8%AF%D8%A9)-.-1278925273.html">“al-Bedairiya al-Dahmashiya,”</a> Sudanese Online forum (Arabic). A tribal genealogy, used for the upper tree only.</li>
+    <li>Kitab al-Tabaqat by Wad Dayf Allah, <a href="https://sudaneseonline.com/cgi-bin/sdb/2bb.cgi?board=310&amp;msg=1285865828&amp;page=1&amp;seq=msg">electronic text</a> (Arabic).</li>
+    <li><a href="https://www.ancestry.com/last-name-meaning/satti">Ancestry</a> and <a href="https://en.geneanet.org/surnames/SATTI">Geneanet</a>. These describe the unrelated Pakistani Satti surname.</li>
+  </ol>
+</section>
+
+</div>
